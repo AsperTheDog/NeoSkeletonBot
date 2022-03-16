@@ -1,0 +1,10 @@
+<div class="nodeBoxSel" cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="position">
+    <div class="nodeBoxHead">
+        {{ mainData.type }}
+    </div>
+    <app-phantomValueNode *ngFor="let val of mainData.inputs" [valData]="val"></app-phantomValueNode>
+    <app-phantomValueNode *ngFor="let val of mainData.outputs" [valData]="val"></app-phantomValueNode>
+    <hr class="dashed">
+    <app-phantomEventNode [valData]="mainData.inputEvent"></app-phantomEventNode>
+    <app-phantomEventNode *ngFor="let event of mainData.events" [valData]="event"></app-phantomEventNode>
+</div>

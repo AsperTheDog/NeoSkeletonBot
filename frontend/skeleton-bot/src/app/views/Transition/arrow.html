@@ -1,0 +1,12 @@
+<div [ngStyle]="{'top.px': 0, 'left.px': 0}" class="arrowContainer">
+  <svg style="position: absolute" height="100%" width="100%">
+    <path [ngClass]="(!destIsMouse && !origIsMouse) ? 'arrowLine' : ''"
+          [attr.d]="getDirs()" 
+          [attr.stroke]="data.arrowColor"
+          fill="none"
+          stroke-width="7"
+          stroke-linecap="round"
+          (dblclick)="removeTrans()">
+    </path>
+  </svg>
+</div>

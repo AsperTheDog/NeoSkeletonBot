@@ -154,3 +154,8 @@ cython_debug/
 Bot/bot.yaml
 cert/cert.pem
 cert/key.pem
+
+fsmLogic/mains/*
+!fsmLogic/mains/__init__.py
+fsmLogic/actionCodes/custom/*
+fsmLogic/dataFiles/front/*

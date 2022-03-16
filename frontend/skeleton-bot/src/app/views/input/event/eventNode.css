@@ -1,0 +1,70 @@
+.nodeValue {
+  height: 40px;
+  width: 40px;
+  position:relative;
+}
+
+.nodeBoxLeft {
+  float: left;
+}
+
+.nodeBoxRight {
+  float: right;
+}
+
+.hoverable {
+  pointer-events: none;
+  border-radius: 10px;
+  border: rgb(0, 0, 0) 2px dotted;
+  padding: 5px 0px;
+  text-align: center;
+  font-size: x-large;
+  display: block;
+  background: #8f8f8f;
+  left: 0px;
+  width: 98%;
+  position: absolute;
+  top: 10px;
+  font-weight: bolder;
+  text-decoration: none;
+}
+
+
+
+.nodeBoxSection {
+  height: 40px;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.arrowLocation {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+}
+
+polygon:hover {
+  stroke:rgb(255, 0, 0);
+}
+
+.nodeBoxFlipDiv {
+  width: 20px;
+  height: 40px;
+  margin: auto;
+}
+
+.nodeBoxFlipButton {
+  cursor: ew-resize;
+  border-radius: 4px;
+  width: 100%;
+  height: 50%;
+  margin-top: 40%;
+  display: inline-block;
+  background-color:rgb(131, 131, 131);
+  border: none;
+}
+
+.nodeBoxFlipButton:active {
+  background-color:rgb(206, 206, 206);
+}

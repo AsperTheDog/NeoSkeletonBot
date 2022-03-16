@@ -1,0 +1,25 @@
+<div class="nodeBoxSection">
+    <div [ngClass]="{
+        'nodeValue': true, 
+        'nodeBoxLeft': ((valData.nature == 'in') && !valData.flipped) || ((valData.nature == 'out') && valData.flipped), 
+        'nodeBoxRight': (valData.nature == 'out') && !valData.flipped || ((valData.nature == 'in') && valData.flipped)
+    }">
+        <div>
+            <svg height="40" width="40">
+                <polygon (mouseenter)="documentEnter()" (mouseleave)="documentLeave()"
+                    (mousedown)="createTransition()" (dblclick)="removeAllTrans()"
+                    [attr.points]="valData.flipped ? '35,2 5,20 35,38' : '5,2 35,20 5,38'"
+                    stroke="gray" stroke-width="4"
+                    [attr.fill]="valData.transitionNumber == 0 ? 'black' : 'gray'" />
+            </svg>
+        </div>
+        <span #locationRef
+            [ngStyle]="{'top.px': 20, 'left.px': ((valData.nature == 'in') && !valData.flipped) || ((valData.nature == 'out') && valData.flipped) ? 7 : 33}"
+            class="arrowLocation"></span>
+    </div>
+    <div class="nodeBoxFlipDiv">
+        <button class="nodeBoxFlipButton" (mouseup)="updateInput()"
+            (mousedown)="valData.flipped = !valData.flipped"></button>
+    </div>
+    <span class="hoverable" *ngIf="isHovering">{{valData.name}}</span>
+</div>

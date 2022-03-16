@@ -1,0 +1,16 @@
+<div #mainRef [className]="mainController.selectedNode == this.mainDataID ? 'nodeBoxSel' : 'nodeBox'" cdkDrag
+    (cdkDragMoved)="onDragMove()" (cdkDragStarted)="onDragStart()" (cdkDragEnded)="getActionCoords($event)"
+    (click)="onSelect()" name="Test" [cdkDragFreeDragPosition]="position">
+    <div class="nodeBoxHead" cdkDragHandle>
+        {{ mainData.type }}
+    </div>
+    <app-valueNode #valueRef *ngFor="let val of mainData.inputs" [valDataID]="val.id">
+    </app-valueNode>
+    <app-valueNode #valueRef *ngFor="let val of mainData.outputs" [valDataID]="val.id">
+    </app-valueNode>
+    <hr class="dashed">
+    <app-eventNode #eventRef [valDataID]="mainData.inputEvent.id">
+    </app-eventNode>
+    <app-eventNode #eventRef *ngFor="let event of mainData.events" [valDataID]="event.id">
+    </app-eventNode>
+</div>

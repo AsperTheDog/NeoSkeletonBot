@@ -1,0 +1,11 @@
+<div #mainRef [className]="mainController.selectedNode == this.mainDataID ? 'nodeBoxSel' : 'nodeBox'" cdkDrag
+    [cdkDragDisabled]="dragDisabled" (cdkDragMoved)="onDragMove()" (cdkDragStarted)="onDragStart()"
+    (click)="onSelect()" name="Test" (cdkDragEnded)="getVarCoords($event)" [cdkDragFreeDragPosition]="position">
+    <div class="nodeBoxHead" cdkDragHandle>
+        Global Event
+        <h4 style="margin-top: 10px; margin-bottom: 10px;">{{mainData.name}}</h4>
+    </div>
+    <app-valueNode #valueRef [valDataID]="mainData.output.id"></app-valueNode>
+    <hr class="dashed">
+    <app-eventNode #eventRef [valDataID]="mainData.eventOutput.id"></app-eventNode>
+</div>

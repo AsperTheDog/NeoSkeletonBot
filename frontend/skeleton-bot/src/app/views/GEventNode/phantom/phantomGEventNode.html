@@ -1,0 +1,9 @@
+<div class="nodeBoxSel" cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="position">
+    <div class="nodeBoxHead" cdkDragHandle>
+        Global Event
+        <h4 style="margin-top: 10px; margin-bottom: 10px;">{{mainData.name}}</h4>
+    </div>
+    <app-phantomValueNode [valData]="mainData.output"></app-phantomValueNode>
+    <hr class="dashed">
+    <app-phantomEventNode [valData]="mainData.eventOutput"></app-phantomEventNode>
+</div>

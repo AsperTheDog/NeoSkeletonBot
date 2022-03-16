@@ -1,0 +1,8 @@
+<div class="nodeBoxSel" cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="position">
+    <div class="nodeBoxHead" cdkDragHandle>
+        Pipeline
+        <h4 style="margin-top: 10px; margin-bottom: 10px;">{{mainData ? mainData.type : ""}}</h4>
+    </div>
+    <app-phantomValueNode #valueRef *ngIf="mainData.point" [valData]="mainData.point"></app-phantomValueNode>
+    <app-phantomEventNode #eventRef *ngIf="mainData.eventPoint" [valData]="mainData.eventPoint"></app-phantomEventNode>
+</div>

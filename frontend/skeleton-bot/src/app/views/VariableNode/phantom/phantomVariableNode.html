@@ -1,0 +1,14 @@
+<div class="nodeBoxSel" cdkDrag [cdkDragDisabled]="true" [cdkDragFreeDragPosition]="position">
+    <div class="nodeBoxHead">
+        {{varElem.constant ? 'value' : 'variable'}}
+        <input *ngIf="!varElem.constant" style="margin-top: 10px;" placeholder="" type="text" disabled="true" [(ngModel)]="varElem.name" />
+    </div>
+    <div class="initValueBox">
+        <input *ngIf="valueType.id != 2" placeholder="initial value" type="text" disabled="true" [(ngModel)]="varElem.initialValue"/>
+        <select class="varComboInput" *ngIf="valueType.id == 2 && varElem.possibleValues != null" disabled="true" [(ngModel)]="varElem.initialValue">
+            <option *ngFor="let value of varElem.possibleValues" [selected]="value == varElem.initialValue">{{value}}</option>
+        </select>
+    </div>
+    <app-phantomValueNode #inputRef [valData]="mainData.input"></app-phantomValueNode>
+    <app-phantomValueNode #outputRef [valData]="mainData.output"></app-phantomValueNode>
+</div>

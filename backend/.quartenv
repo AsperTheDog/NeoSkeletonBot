@@ -1,0 +1,2 @@
+QUART_APP=routes:app
+QUART_ENV=development

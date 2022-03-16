@@ -1,0 +1,10 @@
+<div #mainRef [className]="mainController.selectedNode == this.mainDataID ? 'nodeBoxSel' : 'nodeBox'" cdkDrag
+    [cdkDragDisabled]="dragDisabled" (cdkDragMoved)="onDragMove()" (cdkDragStarted)="onDragStart()"
+    (click)="onSelect()" name="Test" (cdkDragEnded)="getVarCoords($event)" [cdkDragFreeDragPosition]="position">
+    <div class="nodeBoxHead" cdkDragHandle>
+        Pipeline
+        <h4 style="margin-top: 10px; margin-bottom: 10px;">{{mainData.type}}</h4>
+    </div>
+    <app-valueNode *ngIf="mainData.point" #valueRef [valDataID]="mainData.point.id"></app-valueNode>
+    <app-eventNode *ngIf="mainData.eventPoint" #eventRef [valDataID]="mainData.eventPoint.id"></app-eventNode>
+</div>

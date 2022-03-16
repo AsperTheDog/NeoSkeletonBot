@@ -1,0 +1,81 @@
+{
+  "types": [
+    {
+      "id": 0,
+      "name": "Number",
+      "color": "blue",
+      "compatible": [
+        0,
+        4
+      ],
+      "canBeVar": true,
+      "varInOut": [
+        0,
+        0
+      ],
+      "hasInitial": true,
+      "initial": "0"
+    },
+    {
+      "id": 1,
+      "name": "Text",
+      "color": "orange",
+      "compatible": [
+        1,
+        4
+      ],
+      "canBeVar": true,
+      "varInOut": [
+        1,
+        1
+      ],
+      "hasInitial": true,
+      "initial": "null"
+    },
+    {
+      "id": 2,
+      "name": "Combo",
+      "color": "green",
+      "compatible": [
+        2,
+        1,
+        4
+      ],
+      "canBeVar": true,
+      "varInOut": [
+        1,
+        2
+      ],
+      "hasInitial": false,
+      "initial": ""
+    },
+    {
+      "id": 3,
+      "name": "Structure",
+      "color": "purple",
+      "compatible": [
+        3
+      ],
+      "canBeVar": false,
+      "varInOut": [],
+      "hasInitial": false,
+      "initial": ""
+    },
+    {
+      "id": 4,
+      "name": "Any",
+      "color": "white",
+      "compatible": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "canBeVar": false,
+      "varInOut": [],
+      "hasInitial": false,
+      "initial": ""
+    }
+  ]
+}

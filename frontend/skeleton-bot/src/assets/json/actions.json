@@ -1,0 +1,452 @@
+{
+  "actions": [
+    {
+      "type": "condition",
+      "id": 0,
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "cdkPos": {
+        "x": 0,
+        "y": 0
+      },
+      "inputs": [
+        {
+          "id": 0,
+          "name": "first value",
+          "nature": "in",
+          "valueType": 0,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": 0,
+          "name": "second value",
+          "nature": "in",
+          "valueType": 0,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "outputs": [],
+      "events": [
+        {
+          "id": 0,
+          "name": "larger",
+          "nature": "out",
+          "flipped": false,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": 0,
+          "name": "equal",
+          "nature": "out",
+          "flipped": false,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": 0,
+          "name": "smaller",
+          "nature": "out",
+          "flipped": false,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "inputEvent": {
+        "id": 0,
+        "name": "incoming event",
+        "nature": "in",
+        "flipped": false,
+        "transitionNumber": 0,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "type": "operation",
+      "id": 1,
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "cdkPos": {
+        "x": 0,
+        "y": 0
+      },
+      "inputs": [
+        {
+          "id": 0,
+          "name": "first value",
+          "nature": "in",
+          "valueType": 0,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": 0,
+          "name": "second value",
+          "nature": "in",
+          "valueType": 0,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": 0,
+          "name": "operator",
+          "nature": "in",
+          "valueType": 2,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": [
+            "add",
+            "substract",
+            "multiply",
+            "divide",
+            "modulus",
+            "remainder"
+          ],
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": 0,
+          "name": "result",
+          "nature": "out",
+          "valueType": 0,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "events": [
+        {
+          "id": 0,
+          "name": "completed",
+          "nature": "out",
+          "flipped": false,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "inputEvent": {
+        "id": 0,
+        "name": "incoming event",
+        "nature": "in",
+        "flipped": false,
+        "transitionNumber": 0,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "type": "print",
+      "id": 2,
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "cdkPos": {
+        "x": 0,
+        "y": 0
+      },
+      "inputs": [
+        {
+          "id": 0,
+          "name": "text",
+          "nature": "in",
+          "valueType": 1,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "outputs": [],
+      "events": [
+        {
+          "id": 0,
+          "name": "completed",
+          "nature": "out",
+          "flipped": false,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "inputEvent": {
+        "id": 0,
+        "name": "incoming event",
+        "nature": "in",
+        "flipped": false,
+        "transitionNumber": 0,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "type": "wait",
+      "id": 3,
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "cdkPos": {
+        "x": 0,
+        "y": 0
+      },
+      "inputs": [
+        {
+          "id": 0,
+          "name": "seconds",
+          "nature": "in",
+          "valueType": 0,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "outputs": [],
+      "events": [
+        {
+          "id": 0,
+          "name": "completed",
+          "nature": "out",
+          "flipped": false,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "inputEvent": {
+        "id": 0,
+        "name": "incoming event",
+        "nature": "in",
+        "flipped": false,
+        "transitionNumber": 0,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "type": "number to text",
+      "id": 4,
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "cdkPos": {
+        "x": 0,
+        "y": 0
+      },
+      "inputs": [
+        {
+          "id": 0,
+          "name": "number",
+          "nature": "in",
+          "valueType": 0,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": 0,
+          "name": "text",
+          "nature": "out",
+          "valueType": 1,
+          "inColor": "black",
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "events": [
+        {
+          "id": 0,
+          "name": "completed",
+          "nature": "out",
+          "flipped": false,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "inputEvent": {
+        "id": 0,
+        "name": "incoming event",
+        "nature": "in",
+        "flipped": false,
+        "transitionNumber": 0,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "type": "text to number",
+      "id": 5,
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "cdkPos": {
+        "x": 0,
+        "y": 0
+      },
+      "inputs": [
+        {
+          "id": 0,
+          "name": "text",
+          "nature": "in",
+          "valueType": 1,
+          "inColor": "black",
+          "comboString": false,
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": 0,
+          "name": "number",
+          "nature": "out",
+          "valueType": 0,
+          "inColor": "black",
+          "comboString": false,
+          "fromVariable": false,
+          "flipped": false,
+          "comboValues": null,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "events": [
+        {
+          "id": 0,
+          "name": "completed",
+          "nature": "out",
+          "flipped": false,
+          "transitionNumber": 0,
+          "offset": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "inputEvent": {
+        "id": 0,
+        "name": "incoming event",
+        "nature": "in",
+        "flipped": false,
+        "transitionNumber": 0,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    }
+  ]
+}

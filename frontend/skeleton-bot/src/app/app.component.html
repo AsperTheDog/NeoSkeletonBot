@@ -1,0 +1,219 @@
+<div *ngIf="!mainController.loaded" class="loadingInterface">
+  <div class="loader"></div>
+</div>
+
+<div class="header">
+  <button [attr.disabled]="!mainController.usr || !mainController.selectedGuild" [ngClass]="!mainController.usr || !mainController.selectedGuild ? 'headerSaveDisabled' : 'headerSaveButton'" (click)="mainController.save()">
+    <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 16 16">
+      <path
+        d="M 3.8 2.8 L 9.8 2.8 L 12.8 5.8 L 12.8 13.3 L 3.8 13.3 Z M 5.3 3.5 L 5.3 5.8 L 8.3 5.8 L 8.3 3.5 Z M 5.3 8.8 L 5.3 8.8 L 5.3 12.6 L 11.3 12.6 L 11.3 8.8 Z" />
+    </svg>
+  </button>
+  <div *ngIf="!mainController.usr" class="headerLoadFiller"></div>
+  <select *ngIf="mainController.usr && mainController.selectedGuild" class="headerLoadSelect" [(ngModel)]="requestedBoard" (change)="changeBoard()">
+    <option *ngFor="let op of mainController.boardList" [selected]="evName == op">{{op}}</option>
+  </select>
+  <div class="infoDisplay">
+    <h2 [className]="mainController.infoDisplayText[0][1] ? 'errorDisplayText' : 'infoDisplayText'">
+      {{mainController.infoDisplayText[0][0]}}</h2>
+    <h2 [className]="mainController.infoDisplayText[1][1] ? 'errorDisplayText' : 'infoDisplayText'">
+      {{mainController.infoDisplayText[1][0]}}</h2>
+    <h2 [className]="mainController.infoDisplayText[2][1] ? 'errorDisplayText' : 'infoDisplayText'">
+      {{mainController.infoDisplayText[2][0]}}</h2>
+  </div>
+    <div class="headerLogin" *ngIf="!mainController.usr">
+      <div class="headerLoginAvatarNotLogged">
+        <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
+          <path
+            d="M 8 4.5 A 1 1 0 0 0 8 8.5 A 1 1 0 0 0 8 4.5 M 8 8.9 Q 4 8.9 4 11.5 L 12 11.5 Q 12 8.9 8 8.9" />
+        </svg>
+      </div>
+    <a class="headerLoginLogin" href="https://discord.com/api/oauth2/authorize?client_id=682744116143980699&redirect_uri=https%3A%2F%2Ffreechmod.ddns.net%3A12546%2Flogin&response_type=code&scope=identify%20guilds%20guilds.members.read">login</a>
+  </div>
+  <div class="headerLogin" *ngIf="mainController.usr">
+    <img class="headerLoginAvatar" src={{mainController.usr.avatar}}/>
+    <h3 class="headerLoginName">{{mainController.usr.username}}</h3>
+    <button class="headerLoginLogout" (click)="mainController.logout()">logout</button>
+    <select *ngIf="mainController.guilds.length != 0" class="headerLoginSelect" [(ngModel)]="mainController.selectedGuild" (change)="mainController.changeGuilds()">
+      <option *ngFor="let guild of mainController.guilds" [label]="guild.name">{{guild.id}}</option>
+    </select>
+    <button class="headerLoginLogout" (click)="invite()">invite</button>
+  </div>
+</div>
+
+<div [ngStyle]="{'width.px': origSize[0], 'height.px': origSize[1], 'z-index': 1}">
+  <div #board class="board" role="main" [cdkDragDisabled]="dragDisabled" [cdkDragFreeDragPosition]="dragPos"
+    (cdkDragStarted)="dragEvent()" (cdkDragMoved)="updateDragPos()" cdkDrag wheel>
+    <span *ngIf="dragged && mainController.usr" [@inAnimation]>
+      <app-actionNode #NodeRef *ngFor="let node of mainController.activeBoard.actions" [mainDataID]="node.id">
+      </app-actionNode>
+      <app-variableNode #NodeRef *ngFor="let node of mainController.activeBoard.varInstances" [mainDataID]="node.id">
+      </app-variableNode>
+      <app-GEventNode #NodeRef *ngFor="let node of mainController.activeBoard.globalEvents" [mainDataID]="node.id">
+      </app-GEventNode>
+      <app-pipelineNode #NodeRef *ngFor="let node of mainController.activeBoard.pipelines" [mainDataID]="node.id">
+      </app-pipelineNode>
+      <app-arrow *ngFor="let transition of mainController.activeBoard.transitions" [dataID]="transition.id"
+        [destAddress]="transition.destination[1]" [origAddress]="transition.origin[1]"></app-arrow>
+    </span>
+  </div>
+</div>
+
+<div *ngIf="!dragged" class="disclaimer" [@outAnimation]>
+  CLICK AND DRAG THE BOARD TO MOVE AROUND
+</div>
+
+
+<button [className]="draggingNode ? 'sideMenuBottomButtonDeleteActive' : 'sideMenuBottomButtonDelete'"
+  (mouseenter)="mainController.hoveringDelete = true" (mouseleave)="mainController.hoveringDelete = false">
+  <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 16 16">
+    <path
+      d="M 5 5 L 5 4 L 7 4 L 8 3 L 9 3 L 10 4 L 12 4 L 12 5 Z M 5 6 L 12 6 L 11 13 L 6 13 L 5 6 L 5 6 Z M 6.476 7.001 L 7 12 L 8 12 L 7.742 7.001 Z M 9.291 7.001 L 9 12 L 10 12 L 10.53 7.001 Z" />
+  </svg>
+</button>
+
+<div #sideBar class="sideMenu">
+  <div *ngIf="mainController.usr && mainController.selectedGuild" class="sideMenuTop">
+    <mat-tab-group [dynamicHeight]="true" [disablePagination]="true">
+      <mat-tab label="Actions" class="sideMenuTopTab">
+        <div class="actionTabContainer">
+          <mat-accordion multi="false" class="sideMenuAcc">
+            <mat-expansion-panel *ngFor="let templ of mainController.actionTemplates">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{templ.type}}
+                </mat-panel-title>
+                <mat-panel-description>
+                  In:{{templ.inputs.length}} - Out:{{templ.outputs.length}} - Ev:{{templ.events.length}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="actionShowcase"
+                [ngStyle]="{height: ((templ.inputs.length + templ.outputs.length + templ.events.length) * 40 + 200) + 'px'}">
+                <app-phantomActionNode [mainData]="templ"></app-phantomActionNode>
+              </div>
+              <div class="actionDescription">
+                <button [disabled]="!dragged" class="sideMenuBottomButtonAdd"
+                  (click)="mainController.getNewAction(templ.id)">
+                  <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+                    viewBox="0 0 16 16">
+                    <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
+                  </svg>
+                </button>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+      <mat-tab label="Variables">
+        <div class="varSelectInputContainer">
+          <div class="varSelectLeft">
+            <span class="varSelectorText">Value type </span>
+          </div>
+          <div class="varSelectRight">
+            <select class="varSelectInput" [(ngModel)]="varTypeInput" (change)="updateShowcaseVariable()">
+              <option *ngFor="let valType of mainController.allowedValues" [label]="valType[1]">{{valType[0]}}</option>
+            </select>
+          </div>
+          <hr class="varSelectorSep" />
+        </div>
+        <div class="varSelectInputContainer">
+          <div class="varSelectLeft">
+            <span class="varSelectorText">Constant </span>
+          </div>
+          <div class="varSelectRight">
+            <input class="varSelectInput" *ngIf="this.mainController.activeBoard && this.mainController.activeBoard.name == 'Main'" type="checkbox" [(ngModel)]="varIsConstant"
+              (change)="updateShowcaseVariable()" />
+            <input class="varSelectInput" disabled="true" *ngIf="this.mainController.activeBoard && this.mainController.activeBoard.name != 'Main'" type="checkbox" [(ngModel)]="varIsConstant"
+              (change)="updateShowcaseVariable()" />
+          </div>
+          <hr class="varSelectorSep" />
+        </div>
+        <div *ngIf="!varIsConstant" class="varSelectInputContainer">
+          <div class="varSelectLeft">
+            <span class="varSelectorText">Name </span>
+          </div>
+          <div class="varSelectRight">
+            <input class="varSelectInput" type="text" [(ngModel)]="varName" (change)="updateShowcaseVariable()" />
+          </div>
+          <hr class="varSelectorSep" />
+        </div>
+        <div *ngIf="varType.hasInitial" class="varSelectInputContainer">
+          <div class="varSelectLeft">
+            <span class="varSelectorText">Initial Value </span>
+          </div>
+          <div class="varSelectRight">
+            <input class="varSelectInput" type="text" [(ngModel)]="varInitialValue"
+              (change)="updateShowcaseVariable()" />
+          </div>
+          <hr class="varSelectorSep" />
+        </div>
+        <div class="variableShowcase" [ngStyle]="{height: (2 * 40 + 200) + 'px'}">
+          <app-phantomVariableNode #phantomVar [mainData]="showCaseVar" [varElem]="showCaseVarElem"></app-phantomVariableNode>
+        </div>
+        <button [disabled]="!dragged || (!showCaseVarElem.constant && varName == '')" class="sideMenuBottomButtonAdd" style="height: auto;"
+          (click)="mainController.getNewVariable(showCaseVar, showCaseVarElem); resetShowCase('var')">
+          <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+            viewBox="0 0 16 16">
+            <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
+          </svg>
+        </button>
+      </mat-tab>
+      <mat-tab label="GEvents" *ngIf="this.mainController.activeBoard && this.mainController.activeBoard.name == 'Main'">
+        <div class="varSelectInputContainer">
+          <select class="evSelectInput" [(ngModel)]="evType" (change)="updateShowcaseEvent()">
+            <option [selected]="op == 'init'" *ngFor="let op of globalEvents">{{op}}</option>
+          </select>
+        </div>
+        <div class="eventShowcase" [ngStyle]="{height: (2 * 40 + 200) + 'px'}">
+          <app-phantomGEventNode [mainData]="showCaseEvent"></app-phantomGEventNode>
+        </div>
+        <button [disabled]="!dragged || (evType == 'actionEventInput' && mainController.hasEvInput)" class="sideMenuBottomButtonAdd" style="height: auto;"
+          (click)="mainController.getNewGEvent(showCaseEvent); resetShowCase('event')">
+          <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+            viewBox="0 0 16 16">
+            <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
+          </svg>
+        </button>
+      </mat-tab>
+      <mat-tab label="Pipeline" *ngIf="this.mainController.activeBoard && this.mainController.activeBoard.name != 'Main'">
+        <div class="varSelectInputContainer">
+          <select class="evSelectInput" [(ngModel)]="evType" (change)="updateShowcasePipeline()">
+            <option [selected]="op == 'init'" *ngFor="let op of globalEvents">{{op}}</option>
+          </select>
+          <hr class="varSelectorSep" />
+        </div>
+        <div class="varSelectInputContainer">
+          <div class="varSelectLeft">
+            <span class="varSelectorText">Name </span>
+          </div>
+          <div class="varSelectRight">
+            <input class="varSelectInput" type="text" [(ngModel)]="evName" (change)="updateShowcasePipeline()" />
+          </div>
+          <hr class="varSelectorSep" />
+        </div>
+        <div class="varSelectInputContainer">
+          <div class="varSelectRight" *ngIf="evType != 'actionEventInput' && evType != 'actionEventOutput'">
+            <select class="varSelectInput" [(ngModel)]="evTypeInput" (change)="updateShowcasePipeline()">
+              <option *ngFor="let valType of mainController.allowedValues" [label]="valType[1]">{{valType[0]}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="eventShowcase" [ngStyle]="{height: (2 * 40 + 200) + 'px'}">
+          <app-phantomPipelineNode #phantomPipe [mainData]="showCasePipeline"></app-phantomPipelineNode>
+        </div>
+        <button [disabled]="!dragged || (evType == 'actionEventInput' && mainController.hasEvInput) || evName == ''" class="sideMenuBottomButtonAdd" style="height: auto;"
+          (click)="mainController.getNewPipeline(showCasePipeline); resetShowCase('pipeline')">
+          <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+            viewBox="0 0 16 16">
+            <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
+          </svg>
+        </button>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="sideDisclaimer" *ngIf="!mainController.usr || !mainController.selectedGuild">
+    log in to configure the bot
+  </div>
+</div>
+
+<router-outlet></router-outlet>
