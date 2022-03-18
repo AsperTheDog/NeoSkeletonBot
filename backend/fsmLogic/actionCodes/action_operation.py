@@ -1,6 +1,7 @@
 from fsmLogic.nodeClasses.actionTemplate import Action
 from fsmLogic.actionManager import ActionManager
 from fsmLogic.nodeClasses.inputs import ValueInput, EventOutput, ValueOutput
+from Bot.bot import client
 from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
@@ -31,7 +32,7 @@ class Operation(Action):
         super().__init__()
         super().addConnections(self.__class__.inputs, self.__class__.outputs, self.__class__.outEvents)
 
-    async def execute(self):
+    async def execute(self, client):
         values = super().getValues()
         if values[2] == "add":
             super().setValue(values[0] + values[1], 0)

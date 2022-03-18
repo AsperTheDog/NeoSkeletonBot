@@ -263,6 +263,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
+  deleteBoard() {
+    this.requestedBoard = "Main"
+    this.mainController.deleteBoard()
+  }
+
   invite() {
     window.open("https://discord.com/api/oauth2/authorize?client_id=682744116143980699&permissions=8&scope=bot", '_blank')!.focus();
   }

@@ -1,16 +1,16 @@
 from fsmLogic.nodeClasses.actionTemplate import Action
 from fsmLogic.actionManager import ActionManager
 from fsmLogic.nodeClasses.inputs import ValueInput, EventOutput, ValueOutput
-from Bot.bot import client
 from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class Print(Action):
+class SendMessage(Action):
     guildID = -1
-    templID = 4
+    templID = 5
     inputs = [
-        ValueInput(0, "value", ValueType.Any, None),
+        ValueInput(0, "Text", ValueType.Any, None),
+        ValueInput(0, "Channel", ValueType.Number, None)
     ]
     outputs = []
     outEvents = [
@@ -23,7 +23,7 @@ class Print(Action):
 
     async def execute(self, client):
         values = super().getValues()
-        print(values[0])
+        await client.get_channel(values[1]).send(str(values[0]))
         return super().sendEvent(0)
 
     @classmethod

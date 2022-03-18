@@ -157,6 +157,7 @@ export class MainControllerService {
   }
 
   save() {
+    if (!this.usr || !this.selectedGuild) return;
     this.manageInfo("Saved changes", false)
     this.http.post<Board>(this.backendURL + "saveBoard", this.activeBoard).subscribe(data => {
       this.retrieveActions()
@@ -181,8 +182,7 @@ export class MainControllerService {
     }
   }
 
-  checkIfDelete(node: Action | Variable | GlobalEvent | Pipeline, type: string) {
-    if (!this.hoveringDelete) return;
+  deleteElem(node: Action | Variable | GlobalEvent | Pipeline, type: string, spl:boolean = true) {
     this.cleanTransitions(node.id)
     if (type == 'var') {
       node = (node as Variable)
@@ -215,12 +215,19 @@ export class MainControllerService {
       if (node.eventPoint) {
         this.usedIDs.delete(node.eventPoint.id)
       }
-      this.activeBoard.pipelines.splice(this.activeBoard.pipelines.indexOf(node), 1)
+      if (spl){
+        this.activeBoard.pipelines.splice(this.activeBoard.pipelines.indexOf(node), 1)
+      }
       this.manageInfo("Deleted pipeline node", false)
       if (node.type == "actionEventInput") {
         this.hasEvInput = false;
       }
     }
+  }
+
+  checkIfDelete(node: Action | Variable | GlobalEvent | Pipeline, type: string) {
+    if (!this.hoveringDelete) return;
+    this.deleteElem(node, type)
   }
 
   getNewAction(templateID: number) {
@@ -277,7 +284,7 @@ export class MainControllerService {
       vr.varAttr = vrElem.id
     }
     this.activeBoard.varInstances.push(vr)
-    vr.position = {
+    vr.cdkPos = {
       x: this.mouse.offset.x - 300,
       y: this.mouse.offset.y - 70
     }
@@ -289,7 +296,7 @@ export class MainControllerService {
     this.getID(ge.output)
     this.getID(ge.eventOutput)
     this.activeBoard.globalEvents.push(ge)
-    ge.position = {
+    ge.cdkPos = {
       x: this.mouse.offset.x - 300,
       y: this.mouse.offset.y - 70
     }
@@ -308,7 +315,7 @@ export class MainControllerService {
       this.getID(ge.point!)
     }
     this.activeBoard.pipelines.push(ge)
-    ge.position = {
+    ge.cdkPos = {
       x: this.mouse.offset.x - 300,
       y: this.mouse.offset.y - 70
     }
@@ -330,6 +337,43 @@ export class MainControllerService {
       this.hasEvInput = false
     }
     this.manageInfo("Loaded new schematic " + this.activeBoard.name, false)
+  }
+
+  clearBoard() {
+    if (!this.usr || !this.selectedGuild) return;
+    const conf = confirm("Are you sure you want to clear the board?")
+    if (!conf) return;
+    const elems: [Action[], Variable[], Pipeline[], GlobalEvent[]] = [[], [], [], []]
+    for (let act of this.activeBoard.actions){
+      this.deleteElem(act, "action", false)
+      elems[0].push(act)
+    }
+    for (let vr of this.activeBoard.varInstances){
+      this.deleteElem(vr, "var", false)
+      elems[1].push(vr)
+    }
+    for (let pipe of this.activeBoard.pipelines){
+      this.deleteElem(pipe, "pipeline", false)
+      elems[2].push(pipe)
+    }
+    for (let ev of this.activeBoard.globalEvents){
+      this.deleteElem(ev, "event", false)
+      elems[3].push(ev)
+    }
+    for (let elem of elems[0]){
+      this.activeBoard.actions.splice(this.activeBoard.actions.indexOf(elem), 1)
+    }
+    for (let elem of elems[1]){
+      this.activeBoard.varInstances.splice(this.activeBoard.varInstances.indexOf(elem), 1)
+    }
+    for (let elem of elems[2]){
+      this.activeBoard.pipelines.splice(this.activeBoard.pipelines.indexOf(elem), 1)
+    }
+    for (let elem of elems[3]){
+      this.activeBoard.globalEvents.splice(this.activeBoard.globalEvents.indexOf(elem), 1)
+    }
+    this.activeBoard.variables = []
+    this.activeBoard.transitions = []
   }
 
   includeIDs(bd: Board) {
@@ -459,6 +503,22 @@ export class MainControllerService {
           this.usr = undefined
           this.loaded = true
         }
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  deleteBoard() {
+    if (!this.usr || !this.selectedGuild) return;
+    var confr = confirm("Are you sure you want to remove this board?")
+    if (!confr) return;
+    const delURL = this.backendURL + "deleteBoard/" + this.selectedGuild + "/" + this.activeBoard.name
+    this.changeBoard('Main', false)
+    this.http.delete(delURL).subscribe(
+      (response) => {
+        this.retrieveBoards()
       },
       (error) => {
         console.log(error);

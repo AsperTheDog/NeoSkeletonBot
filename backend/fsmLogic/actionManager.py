@@ -10,7 +10,8 @@ class ActionManager:
         if cls.guildID not in ActionManager._actions:
             ActionManager._actions[cls.guildID] = {}
         ActionManager._actions[cls.guildID][cls.__name__] = cls
-        ActionManager._actionIDs.append(cls.templID)
+        if cls.templID not in ActionManager._actionIDs:
+            ActionManager._actionIDs.append(cls.templID)
 
     @staticmethod
     def getAction(action, guild):
@@ -33,3 +34,9 @@ class ActionManager:
             count += 1
         ActionManager._actionIDs.append(count)
         return count
+
+    @staticmethod
+    def removeAction(guild, board):
+        if guild not in ActionManager._actions or board not in ActionManager._actions[guild]:
+            return
+        ActionManager._actions[guild].pop(board)

@@ -1,32 +1,30 @@
-import asyncio
-import json
 import os
 
-from quart import Quart, jsonify, request, redirect
-from quart_cors import cors
+from flask import Flask, jsonify, request, redirect
+from flask_cors import CORS
 import requests
 
-from fsmLogic import serializeManager
+from fsmLogic import serializeManager, actionManager
 from fsmLogic.actionManager import ActionManager
-from manager import Board
+from fsmLogic.boardManager import BoardManager
 from SessionManager import SessionManager
 
-from Bot.bot import runBot
-
+exec("from fsmLogic.mains import *")
 exec("from fsmLogic.actionCodes import *")
 actionPaths = os.listdir("fsmLogic/actionCodes/custom")
 for pth in actionPaths:
-    exec("from fsmLogic.actionCodes.custom." + pth + " import *")
+    if pth != ".gitkeep":
+        exec("from fsmLogic.actionCodes.custom." + pth + " import *")
 
-app = Quart(__name__)
-cors(app)
+app = Flask(__name__)
+CORS(app)
 app.config['SECRET_KEY'] = "8wY7gtqDw8rhhEl4ms89fg"
 
-Board.updateGEvents()
+BoardManager.updateGEvents()
 
 
 @app.route('/boards', methods=['GET'])
-async def getBoards():
+def getBoards():
     exists = SessionManager.existsCookie(request.args.get('token'))
     if not exists:
         return jsonify([])
@@ -35,7 +33,7 @@ async def getBoards():
 
 
 @app.route('/actions', methods=['GET'])
-async def getActions():
+def getActions():
     exists = SessionManager.existsCookie(request.args.get('token'))
     if not exists:
         return jsonify([])
@@ -47,19 +45,26 @@ async def getActions():
 
 
 @app.route('/gEvents')
-async def getGlobalEvents():
-    return jsonify(Board.globalEvents)
+def getGlobalEvents():
+    return jsonify(BoardManager.globalEvents)
 
 
 @app.route('/saveBoard', methods=['POST'])
-async def saveBoard():
-    data = json.loads(await request.get_data())
+def saveBoard():
+    data = request.get_json()
     ret = serializeManager.saveBoard(data)
     return jsonify({'status': 'OK', 'data': ret}) if ret else jsonify({'status': 'OK', 'data': None})
 
 
+@app.route("/deleteBoard/<guild>/<board>", methods=['DELETE'])
+def deleteBoard(guild=None, board=None):
+    serializeManager.deleteFiles(guild, board)
+    ActionManager.removeAction(guild, board)
+    return jsonify({'status': 'OK'})
+
+
 @app.route('/login', methods=['GET'])
-async def login():
+def login():
     if 'code' not in request.args:
         return redirect("https://freechmod.ddns.net:12547")
     app.logger.info(request.args['code'])
@@ -80,12 +85,12 @@ async def login():
 
 
 @app.route('/getToken', methods=['GET', 'POST'])
-async def getToken():
+def getToken():
     return redirect("https://freechmod.ddns.net:12547")
 
 
 @app.route('/checkCreds', methods=['GET'])
-async def checkCreds():
+def checkCreds():
     token = SessionManager.checkCookie(request.args.get('token'))
     cde = SessionManager.get(token, request.args.get('code'))
     if not cde:
@@ -98,9 +103,13 @@ async def checkCreds():
 
 
 @app.route('/getGuilds', methods=['GET'])
-async def getGuilds():
+def getGuilds():
     exists = SessionManager.existsCookie(request.args.get('token'))
     if not exists:
         return jsonify({'guilds': [{'name': 'login to get guilds', 'id': None}]})
     data = SessionManager.get(request.args.get('token'))
     return jsonify([{'name': elem['name'], 'id': elem['id'], 'icon': elem['icon'], 'permissions': elem['permissions']} for elem in data['guilds'] if elem['owner']])
+
+
+def runFlask():
+    app.run(debug=False, host="0.0.0.0", port=12546, ssl_context=('cert/cert.pem', 'cert/key.pem'))

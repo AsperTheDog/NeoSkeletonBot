@@ -3,16 +3,28 @@
 </div>
 
 <div class="header">
-  <button [attr.disabled]="!mainController.usr || !mainController.selectedGuild" [ngClass]="!mainController.usr || !mainController.selectedGuild ? 'headerSaveDisabled' : 'headerSaveButton'" (click)="mainController.save()">
-    <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 16 16">
+  <button [ngClass]="!mainController.usr || !mainController.selectedGuild ? 'headerSaveDisabled' : 'headerSaveButton'" (click)="mainController.save()">
+    <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
       <path
         d="M 3.8 2.8 L 9.8 2.8 L 12.8 5.8 L 12.8 13.3 L 3.8 13.3 Z M 5.3 3.5 L 5.3 5.8 L 8.3 5.8 L 8.3 3.5 Z M 5.3 8.8 L 5.3 8.8 L 5.3 12.6 L 11.3 12.6 L 11.3 8.8 Z" />
     </svg>
   </button>
+  <button [ngClass]="!mainController.usr || !mainController.selectedGuild || !mainController.activeBoard || mainController.activeBoard['name'] == 'Main' ? 'headerDelete headerSaveDisabled' : 'headerDelete headerSaveButton'" (click)="deleteBoard()">
+    <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
+      <path
+        d="M 8 7 L 12 3 L 13 4 L 9 8 L 13 12 L 12 13 L 8 9 L 4 13 L 3 12 L 7 8 L 3 4 L 4 3 L 8 7" />
+    </svg>
+  </button>
+  
   <div *ngIf="!mainController.usr" class="headerLoadFiller"></div>
   <select *ngIf="mainController.usr && mainController.selectedGuild" class="headerLoadSelect" [(ngModel)]="requestedBoard" (change)="changeBoard()">
     <option *ngFor="let op of mainController.boardList" [selected]="evName == op">{{op}}</option>
   </select>
+  <button [ngClass]="!mainController.usr || !mainController.selectedGuild ? 'headerSaveDisabled' : 'headerSaveButton'" (click)="mainController.clearBoard()">
+    <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
+      <path d="M 13 3 L 7 11 L 5 11 C 4 11 4.2 11.6 4.4 11.8 C 4.4 12.2 4.4 12.6 4 13 L 9 13 C 9.4 12.8 9.6 12.4 9.6 12 C 9.8 12.4 9.76 12.754 9.6 13 L 11 13 C 11.32 12.7 11.4 12.2 11.4 11.8 C 11.6 11.6 11.8 11 11 11 L 7.6 11 L 13.4 3.4 C 13.6 3 13.2 2.8 13 3"/>
+    </svg>
+  </button>
   <div class="infoDisplay">
     <h2 [className]="mainController.infoDisplayText[0][1] ? 'errorDisplayText' : 'infoDisplayText'">
       {{mainController.infoDisplayText[0][0]}}</h2>
@@ -37,7 +49,7 @@
     <select *ngIf="mainController.guilds.length != 0" class="headerLoginSelect" [(ngModel)]="mainController.selectedGuild" (change)="mainController.changeGuilds()">
       <option *ngFor="let guild of mainController.guilds" [label]="guild.name">{{guild.id}}</option>
     </select>
-    <button class="headerLoginLogout" (click)="invite()">invite</button>
+    <button class="headerLoginInvite headerLoginLogout" (click)="invite()">invite</button>
   </div>
 </div>
 
@@ -66,7 +78,7 @@
 
 <button [className]="draggingNode ? 'sideMenuBottomButtonDeleteActive' : 'sideMenuBottomButtonDelete'"
   (mouseenter)="mainController.hoveringDelete = true" (mouseleave)="mainController.hoveringDelete = false">
-  <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 16 16">
+  <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
     <path
       d="M 5 5 L 5 4 L 7 4 L 8 3 L 9 3 L 10 4 L 12 4 L 12 5 Z M 5 6 L 12 6 L 11 13 L 6 13 L 5 6 L 5 6 Z M 6.476 7.001 L 7 12 L 8 12 L 7.742 7.001 Z M 9.291 7.001 L 9 12 L 10 12 L 10.53 7.001 Z" />
   </svg>
@@ -94,7 +106,7 @@
               <div class="actionDescription">
                 <button [disabled]="!dragged" class="sideMenuBottomButtonAdd"
                   (click)="mainController.getNewAction(templ.id)">
-                  <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+                  <svg class="sideMenuBottomSVG" width="100%" height="100%"
                     viewBox="0 0 16 16">
                     <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
                   </svg>
@@ -152,7 +164,7 @@
         </div>
         <button [disabled]="!dragged || (!showCaseVarElem.constant && varName == '')" class="sideMenuBottomButtonAdd" style="height: auto;"
           (click)="mainController.getNewVariable(showCaseVar, showCaseVarElem); resetShowCase('var')">
-          <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+          <svg class="sideMenuBottomSVG" width="100%" height="100%"
             viewBox="0 0 16 16">
             <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
           </svg>
@@ -169,7 +181,7 @@
         </div>
         <button [disabled]="!dragged || (evType == 'actionEventInput' && mainController.hasEvInput)" class="sideMenuBottomButtonAdd" style="height: auto;"
           (click)="mainController.getNewGEvent(showCaseEvent); resetShowCase('event')">
-          <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+          <svg class="sideMenuBottomSVG" width="100%" height="100%"
             viewBox="0 0 16 16">
             <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
           </svg>
@@ -203,7 +215,7 @@
         </div>
         <button [disabled]="!dragged || (evType == 'actionEventInput' && mainController.hasEvInput) || evName == ''" class="sideMenuBottomButtonAdd" style="height: auto;"
           (click)="mainController.getNewPipeline(showCasePipeline); resetShowCase('pipeline')">
-          <svg class="sideMenuBottomSVG" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+          <svg class="sideMenuBottomSVG" width="100%" height="100%"
             viewBox="0 0 16 16">
             <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
           </svg>

@@ -1,7 +1,11 @@
 from Bot.bot import runBot
-from routes import app
+from routes import runFlask
+from threading import Thread
 
 
 if __name__ == "__main__":
     print("Initializing Bot")
-    runBot(app.run_task(debug=True, host="0.0.0.0", port=12546, certfile='cert/cert.pem', keyfile='cert/key.pem'))
+    botThr = Thread(target=runBot, daemon=True)
+    botThr.start()
+    print("initializing Server")
+    runFlask()

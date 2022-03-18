@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from manager import Board
+from fsmLogic.boardManager import BoardManager
 from fsmLogic.nodeClasses.inputs import EventInput, ValueInput, ValueOutput, EventOutput
 
 
@@ -14,16 +14,16 @@ class Action:
     def __eq__(self, other):
         return self.id is not None and other.id is not None and self.id == other.id
 
-    def execute(self):
+    def execute(self, client):
         raise NotImplementedError("Please override function execute() in your action")
 
     def getValues(self):
         vals = []
         for inp in self.inputs:
-            vals.append(Board.getVar(inp.connection))
+            vals.append(BoardManager.getVar(inp.connection))
 
     def setValue(self, value, out):
-        Board.setVar(self.outputs[out].connection, value)
+        BoardManager.setVar(self.outputs[out].connection, value)
 
     def addConnections(self, inputs, outputs, outEvents):
         self.inputs = deepcopy(inputs)

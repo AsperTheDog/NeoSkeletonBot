@@ -4,7 +4,7 @@ import os
 
 import re
 
-from manager import Board
+from fsmLogic.boardManager import BoardManager
 from fsmLogic.nodeClasses.variable import Variable
 from fsmLogic.actionManager import ActionManager
 
@@ -71,9 +71,9 @@ def processConnections(board):
         elif destNode['type'] == "varInstance":
             origInput['element']['hook'].append(destNode['element']['varAttr'])
         elif 'valueType' in origInput['element']:
-            if transition['destination'][0] not in processedVars:
+            if transition['destination'][1] not in processedVars:
                 newVar = getNewID()
-                processedVars[transition['destination'][0]] = newVar
+                processedVars[transition['destination'][1]] = newVar
                 board['variables'].append({
                     "id": newVar,
                     "initialValue": "",
@@ -99,7 +99,7 @@ def genCodeFuncs(board, guild):
         funcRefs.append(str(action['id']))
         actInstance = ActionManager.getAction(action['type'], guild)()
         code = inspect.getsource(actInstance.execute)
-        code = code.replace("async def execute(self)", "async def act" + str(action['id']) + "(vrs)")
+        code = code.replace("async def execute(self, client)", "async def act" + str(action['id']) + "(vrs)")
         matches = set(re.findall(r"values\[([0-9])]", code))
         for match in matches:
             if action['inputs'][int(match)]['hook'] == -1:
@@ -186,10 +186,15 @@ def genCodePipelines(board):
 
 
 def genCodeGEvents(board):
-    gEvents = {event: [] for event in Board.globalEvents}
+    gEvents = {event: [] for event in BoardManager.globalEvents}
+    gEventStr = "    gEvents = {\n"
     for event in board['globalEvents']:
         gEvents[event['name']].append((event['output']['hook'], event['eventOutput']['hook']))
-    return gEvents
+    for event, hooks in gEvents.items():
+        if len(hooks) != 0:
+            gEventStr += "        '" + event + "': " + str(hooks) + ",\n"
+    gEventStr += "    }\n"
+    return gEventStr
 
 
 def genCodeAction(board, guild, actID=None):
@@ -201,9 +206,9 @@ def genCodeAction(board, guild, actID=None):
     finalCode = "from fsmLogic.nodeClasses.actionTemplate import Action\n"
     finalCode += "from fsmLogic.actionManager import ActionManager\n"
     finalCode += "from fsmLogic.nodeClasses.inputs import ValueInput, ValueOutput, EventOutput\n"
+    finalCode += "from Bot.bot import client\n"
     finalCode += "import asyncio\n"
     finalCode += "\n\n"
-    finalCode += "@ActionManager.actionclass\n"
     finalCode += "class " + bName + "(Action):\n"
     if not actID:
         finalCode += "    templID = " + str(ActionManager.getNewID()) + "\n"
@@ -227,7 +232,7 @@ def genCodeAction(board, guild, actID=None):
     finalCode += "        super().__init__()\n"
     finalCode += "        super().addConnections(self.__class__.inputs, self.__class__.outputs, self.__class__.outEvents)\n"
     finalCode += "\n"
-    finalCode += "    async def execute(self):\n"
+    finalCode += "    async def execute(self, client):\n"
     finalCode += "        values = super().getValues()\n"
     finalCode += "        async def changeVar(vrs, vr, val):\n"
     finalCode += "            async with vrs['lock']:\n"
@@ -258,6 +263,9 @@ def genCodeAction(board, guild, actID=None):
     finalCode += "    @classmethod\n"
     finalCode += "    def getTemplate(cls):\n"
     finalCode += "        return super().getTemplate(cls)\n"
+    finalCode += "\n"
+    finalCode += "\n"
+    finalCode += "ActionManager.actionclass(" + bName + ")"
 
     if not os.path.isdir("fsmLogic/actionCodes/custom/" + hashGuildID(guild)):
         os.mkdir("fsmLogic/actionCodes/custom/" + hashGuildID(guild))
@@ -279,18 +287,22 @@ def genCodeMain(board, guild):
     variables = genCodeVars(board, True)
     gEvs = genCodeGEvents(board)
 
-    finalCode = "from fsmLogic.actionManager import ActionManager\n"
+    finalCode = "from fsmLogic.boardManager import BoardManager\n"
     finalCode += "import asyncio\n"
+    finalCode += "import json\n"
     finalCode += "\n\n"
-    finalCode += "@ActionManager.actionclass\n"
     finalCode += "class MainBoard_" + guild + ":\n"
     finalCode += "    guildID = '" + guild + "'\n"
     finalCode += variables
+    finalCode += gEvs
     finalCode += "\n"
-    finalCode += "    def __init__(self):\n"
-    finalCode += "        super().__init__()\n"
+    finalCode += "    @classmethod\n"
+    finalCode += "    def processEvent(cls, client, event, initVal):\n"
+    finalCode += "        for ev in cls.gEvents[event]:\n"
+    finalCode += "            asyncio.get_event_loop().create_task(cls.execute(client, ev[1], ev[0], initVal))\n"
     finalCode += "\n"
-    finalCode += "    async def execute(self, initNext, initVar, initValue):\n"
+    finalCode += "    @classmethod\n"
+    finalCode += "    async def execute(cls, client, initNext, initVars, initValue):\n"
     finalCode += "        async def changeVar(vrs, vr, val):\n"
     finalCode += "            async with vrs['lock']:\n"
     finalCode += "                vrs[vr] = val\n"
@@ -303,10 +315,13 @@ def genCodeMain(board, guild):
         finalCode += "            " + func + ": act" + func + ",\n"
     finalCode += "        }\n"
     finalCode += "        nxt_Main = initNext\n"
-    finalCode += "        await changeVar(MainBoard_" + guild + ".vrs_Main, initVar, initValue)\n"
+    finalCode += "        for initVar in initVars:\n"
+    finalCode += "            await changeVar(cls.vrs_Main, initVar, initValue)\n"
     finalCode += "        while nxt_Main in actions_Main:\n"
-    finalCode += "            nxt_Main = await actions_Main[nxt_Main](MainBoard_" + guild + ".vrs_Main)\n"
+    finalCode += "            nxt_Main = await actions_Main[nxt_Main](cls.vrs_Main)\n"
     finalCode += "\n"
+    finalCode += "\n"
+    finalCode += "BoardManager.mainClass(MainBoard_" + guild + ")\n"
 
     with open("fsmLogic/mains/mainBoard_" + guild + ".py", "w") as file:
         file.write(finalCode)
@@ -316,6 +331,9 @@ def compileMain(board, guild):
     prepareData(board)
     processConnections(board)
     genCodeMain(board, guild)
+
+    newMod = importlib.import_module("fsmLogic.mains.mainBoard_" + guild)
+    importlib.reload(newMod)
 
 
 def compileAction(board, guild):
@@ -327,4 +345,5 @@ def compileAction(board, guild):
     processConnections(board)
     genCodeAction(board, guild, actID)
 
-    importlib.import_module("fsmLogic.actionCodes.custom." + hashGuildID(guild) + ".action_" + board['name'])
+    newMod = importlib.import_module("fsmLogic.actionCodes.custom." + hashGuildID(guild) + ".action_" + board['name'])
+    importlib.reload(newMod)

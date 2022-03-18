@@ -71,6 +71,10 @@
   border-radius: 5px;
 }
 
+.headerDelete {
+  margin-left: 0;
+}
+
 .headerSaveButton:active {
   background-color: #969696;
   transition-duration: 0.2s;
@@ -89,7 +93,6 @@
   color: white;
   height: 70%;
   margin-top: 1vh;
-  margin-left: 1vw;
   font-size: large;
   text-align: center;
   border-radius: 5px;
@@ -109,13 +112,12 @@
 }
 
 .headerLoginSelect {
-  width: 10vw;
+  width: 11vw;
   background-color: #2b2b2b;
   border: none;
   color: white;
   height: 70%;
   margin-top: 1vh;
-  margin-left: 1vw;
   font-size: large;
   text-align: center;
   border-radius: 5px;
@@ -146,14 +148,20 @@
 .headerLoginLogout {
   float: right;
   position: relative;
-  width: 2.8%;
+  width: 3.5%;
   margin: 1vh 1vw;
+
   height: 70%;
   border: none;
   background-color: #2b2b2b;
-  color: #ffffff;
-  font-size: larger;
+  color: #ff9b9b;
+  font-size: large;
   border-radius: 5px;
+}
+
+.headerLoginInvite {
+  color: #cdc2ff;
+  margin-left: 0;
 }
 
 .headerLoginLogout:hover {
@@ -191,19 +199,10 @@
   background-color: #2b2b2b;
 }
 
-.headerLoadSelect:hover {
-  background-color: rgb(54, 54, 54);
-}
-
-.headerLoadSelect:active {
-  border: none;
-}
-
 .infoDisplay {
   float: left;
   width: 40vw;
   height: 99%;
-  margin-left: 10vw;
   background-color: #000000;
   padding-bottom: 0.1%;
 }

@@ -17,6 +17,6 @@ client = MyClient()
 client.add_cog(EventListener(client))
 
 
-def runBot(quartApp):
-    asyncio.get_event_loop().create_task(quartApp)
+def runBot():
+    print("starting client")
     client.run(data['token'])
