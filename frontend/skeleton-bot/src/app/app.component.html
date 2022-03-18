@@ -3,13 +3,13 @@
 </div>
 
 <div class="header">
-  <button [ngClass]="!mainController.usr || !mainController.selectedGuild ? 'headerSaveDisabled' : 'headerSaveButton'" (click)="mainController.save()">
+  <button [ngClass]="!mainController.usr || !mainController.selectedGuild ? 'headerSaveDisabled' : 'headerSaveButton'" (click)="save()">
     <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
       <path
         d="M 3.8 2.8 L 9.8 2.8 L 12.8 5.8 L 12.8 13.3 L 3.8 13.3 Z M 5.3 3.5 L 5.3 5.8 L 8.3 5.8 L 8.3 3.5 Z M 5.3 8.8 L 5.3 8.8 L 5.3 12.6 L 11.3 12.6 L 11.3 8.8 Z" />
     </svg>
   </button>
-  <button [ngClass]="!mainController.usr || !mainController.selectedGuild || !mainController.activeBoard || mainController.activeBoard['name'] == 'Main' ? 'headerDelete headerSaveDisabled' : 'headerDelete headerSaveButton'" (click)="deleteBoard()">
+  <button [ngClass]="!mainController.usr || !mainController.selectedGuild || !mainController.activeBoard || mainController.activeBoard['name'] == 'Main' ? 'headerDelete headerSaveDisabled' : 'headerDelete headerSaveButton'" (click)="mainController.deleteBoard()">
     <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
       <path
         d="M 8 7 L 12 3 L 13 4 L 9 8 L 13 12 L 12 13 L 8 9 L 4 13 L 3 12 L 7 8 L 3 4 L 4 3 L 8 7" />
@@ -17,7 +17,7 @@
   </button>
   
   <div *ngIf="!mainController.usr" class="headerLoadFiller"></div>
-  <select *ngIf="mainController.usr && mainController.selectedGuild" class="headerLoadSelect" [(ngModel)]="requestedBoard" (change)="changeBoard()">
+  <select *ngIf="mainController.usr && mainController.selectedGuild" class="headerLoadSelect" [(ngModel)]="mainController.requestedBoard" (change)="changeBoard()">
     <option *ngFor="let op of mainController.boardList" [selected]="evName == op">{{op}}</option>
   </select>
   <button [ngClass]="!mainController.usr || !mainController.selectedGuild ? 'headerSaveDisabled' : 'headerSaveButton'" (click)="mainController.clearBoard()">

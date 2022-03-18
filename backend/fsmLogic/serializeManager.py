@@ -1,4 +1,5 @@
 import os
+from copy import deepcopy
 
 from fsmLogic import actionParser
 import json
@@ -52,7 +53,7 @@ def saveBoard(data):
     if data['name'] == "Main":
         if len(data['actions']) + len(data['varInstances']) + len(data['globalEvents']) == 0:
             removeMain(guild)
-            return
+            return True
         path = "fsmLogic/dataFiles/front/" + guild + "/Main.json"
         if not os.path.isdir("fsmLogic/dataFiles/front/" + guild):
             os.mkdir("fsmLogic/dataFiles/front/" + guild)
@@ -60,13 +61,18 @@ def saveBoard(data):
         if not os.path.isdir("fsmLogic/dataFiles/front/" + guild + "/ActionBoards"):
             os.makedirs("fsmLogic/dataFiles/front/" + guild + "/ActionBoards")
         path = "fsmLogic/dataFiles/front/" + guild + "/ActionBoards/" + data['name'] + ".json"
-    with open(path, "w") as file:
-        json.dump(data, file, indent=4)
+        if not os.path.isfile(path):
+            with open(path, "w") as file:
+                json.dump(data, file, indent=4)
+    unchanged = deepcopy(data)
     if data['name'] == 'Main':
-        actionParser.compileMain(data, guild)
-        return
-    actionParser.compileAction(data, guild)
-    return ActionManager.getAction(data['name'], guild).getTemplate()
+        ret = actionParser.compileMain(data, guild)
+    else:
+        ret = actionParser.compileAction(data, guild)
+    if ret:
+        with open(path, "w") as file:
+            json.dump(unchanged, file, indent=4)
+    return ret
 
 
 def deleteFiles(guild, board):
@@ -75,6 +81,16 @@ def deleteFiles(guild, board):
         os.rmdir("fsmLogic/dataFiles/front/" + guild + "/ActionBoards")
         if len(os.listdir("fsmLogic/dataFiles/front/" + guild)) == 0:
             os.rmdir("fsmLogic/dataFiles/front/" + guild)
-    os.remove("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/action_" + board + ".py")
+    if os.path.isfile("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/action_" + board + ".py"):
+        os.remove("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/action_" + board + ".py")
     if len(os.listdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))) == 0:
         os.rmdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))
+
+
+def getBoard(guild, name):
+    if not os.path.isdir("fsmLogic/dataFiles/front/" + guild) or \
+       not os.path.isdir("fsmLogic/dataFiles/front/" + guild + "/ActionBoards") or \
+       not os.path.isfile("fsmLogic/dataFiles/front/" + guild + "/ActionBoards/" + name + ".json"):
+        return
+    with open("fsmLogic/dataFiles/front/" + guild + "/ActionBoards/" + name + ".json", "r") as board:
+        return jsonify(json.load(board))

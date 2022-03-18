@@ -1,14 +1,15 @@
-<div #mainRef [className]="mainController.selectedNode == this.mainDataID ? 'nodeBoxSel' : 'nodeBox'" cdkDrag
-    [cdkDragDisabled]="dragDisabled" (cdkDragMoved)="onDragMove()" (cdkDragStarted)="onDragStart()"
-    (click)="onSelect()" name="Test" (cdkDragEnded)="getVarCoords($event)" [cdkDragFreeDragPosition]="position">
+<div #mainRef class="nodeBox" cdkDrag [cdkDragDisabled]="dragDisabled" (cdkDragMoved)="onDragMove()"
+    (cdkDragStarted)="onDragStart()" name="Test" (cdkDragEnded)="getVarCoords($event)"
+    [cdkDragFreeDragPosition]="position">
     <div class="nodeBoxHead" cdkDragHandle>
         {{varAttr.constant ? 'value' : 'variable'}}
         <input *ngIf="!varAttr.constant" style="margin-top: 10px;" placeholder="" type="text"
-            (mouseenter)="disableDrag()" (mouseleave)="enableDrag()" [(ngModel)]="varName" (change)="checkVariableName()"/>
+            (mouseenter)="disableDrag()" (mouseleave)="enableDrag()" [(ngModel)]="varName"
+            (change)="checkVariableName()" />
     </div>
     <div class="initValueBox">
-        <input *ngIf="valueType.id != 2" placeholder="initial value" type="text"
-            (mouseenter)="disableDrag()" (mouseleave)="enableDrag()" [(ngModel)]="varAttr.initialValue" />
+        <input *ngIf="valueType.id != 2" placeholder="initial value" type="text" (mouseenter)="disableDrag()"
+            (mouseleave)="enableDrag()" [(ngModel)]="varAttr.initialValue" />
         <select class="varComboInput" *ngIf="valueType.id == 2 && varAttr.possibleValues != null"
             [(ngModel)]="varAttr.initialValue">
             <option *ngFor="let value of varAttr.possibleValues" [selected]="value == varAttr.initialValue">{{value}}

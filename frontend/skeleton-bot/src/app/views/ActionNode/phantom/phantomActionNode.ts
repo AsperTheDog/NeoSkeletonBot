@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Action } from './../../../utils/Action';
+import { Action } from '../../../utils/dataTypes/Action';
 
 @Component({
   selector: 'app-phantomActionNode',

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { Action } from './../../utils/Action';
+import { Action } from '../../utils/dataTypes/Action';
 import { MainControllerService } from 'src/app/services/main-controller.service';
 import { CdkDragEnd, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
 import { DragShieldService } from 'src/app/services/dragshield.service';
@@ -46,11 +46,6 @@ export class ActionNode implements OnInit, AfterViewInit {
 
   onDragStart() {
     this.dragShield.canvas.draggingNode = true;
-    this.onSelect()
-  }
-
-  onSelect() {
-    this.mainController.selectedNode = this.mainData.id
   }
 
   onDragMove() {

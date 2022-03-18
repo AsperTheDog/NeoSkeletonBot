@@ -53,7 +53,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     public mainController: MainControllerService,
     private route: ActivatedRoute) {
     this.dragShield.canvas = this;
-    this.requestedBoard = "Main";
     this.globalEvents = this.mainController.globalEventList
   }
 
@@ -63,7 +62,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild("phantomVar") phantomVar: PhantomVariableNode;
   @ViewChild("phantomPipe") phantomPipe: PhantomPipelineNode;
 
-  requestedBoard: string;
   globalEvents: string[];
 
   origSize = [20000, 20000]
@@ -237,9 +235,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   changeBoard() {
-    if (this.requestedBoard != "Main") {
+    if (this.mainController.requestedBoard != "Main") {
       this.varIsConstant = true
-      this.globalEvents = this.mainController.customActionEvents
+      this.globalEvents = this.mainController.pipelineTypes
       this.evType = "actionValueInput"
       this.updateShowcasePipeline()
     }
@@ -252,24 +250,24 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.evType = this.globalEvents[0]
     this.updateShowcaseEvent()
     this.updateShowcaseVariable()
-    if (this.requestedBoard != "...") {
-      this.mainController.changeBoard(this.requestedBoard, false)
+    if (this.mainController.requestedBoard != "...") {
+      this.mainController.changeBoard(this.mainController.requestedBoard, false)
     }
     else {
       var newName = prompt("Insert new schematic name")
       if (!newName) return;
       this.mainController.changeBoard(newName, true)
-      this.requestedBoard = newName
     }
-  }
-
-  deleteBoard() {
-    this.requestedBoard = "Main"
-    this.mainController.deleteBoard()
   }
 
   invite() {
     window.open("https://discord.com/api/oauth2/authorize?client_id=682744116143980699&permissions=8&scope=bot", '_blank')!.focus();
+  }
+
+  save() {
+    this.mainController.save()!.subscribe((data) => {
+      this.mainController.saveProcess(data)
+    })
   }
 }
 

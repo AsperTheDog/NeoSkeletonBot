@@ -1,6 +1,6 @@
-<div #mainRef [className]="mainController.selectedNode == this.mainDataID ? 'nodeBoxSel' : 'nodeBox'" cdkDrag
-    [cdkDragDisabled]="dragDisabled" (cdkDragMoved)="onDragMove()" (cdkDragStarted)="onDragStart()"
-    (click)="onSelect()" name="Test" (cdkDragEnded)="getVarCoords($event)" [cdkDragFreeDragPosition]="position">
+<div #mainRef class="nodeBox" cdkDrag [cdkDragDisabled]="dragDisabled" (cdkDragMoved)="onDragMove()"
+    (cdkDragStarted)="onDragStart()" name="Test" (cdkDragEnded)="getVarCoords($event)"
+    [cdkDragFreeDragPosition]="position">
     <div class="nodeBoxHead" cdkDragHandle>
         Global Event
         <h4 style="margin-top: 10px; margin-bottom: 10px;">{{mainData.name}}</h4>

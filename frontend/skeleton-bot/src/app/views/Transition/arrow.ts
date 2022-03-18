@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MainControllerService } from 'src/app/services/main-controller.service';
-import { Action } from 'src/app/utils/Action';
+import { Action } from 'src/app/utils/dataTypes/Action';
 import { GlobalEvent } from 'src/app/utils/GlobalEvent';
 import { mouseData } from 'src/app/utils/Mouse';
 import { Transition } from 'src/app/utils/Transition';

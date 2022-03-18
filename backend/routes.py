@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, jsonify, request, redirect
+from flask import Flask, jsonify, request, redirect, abort
 from flask_cors import CORS
 import requests
 
@@ -44,6 +44,16 @@ def getActions():
     return jsonify(acts)
 
 
+@app.route('/revertBoard', methods=['GET'])
+def getBoard():
+    guild = request.args.get('guild')
+    name = request.args.get('name')
+    ret = serializeManager.getBoard(guild, name)
+    if not ret:
+        return abort(400, 'Board not found')
+    return ret
+
+
 @app.route('/gEvents')
 def getGlobalEvents():
     return jsonify(BoardManager.globalEvents)
@@ -53,7 +63,8 @@ def getGlobalEvents():
 def saveBoard():
     data = request.get_json()
     ret = serializeManager.saveBoard(data)
-    return jsonify({'status': 'OK', 'data': ret}) if ret else jsonify({'status': 'OK', 'data': None})
+    print(ret)
+    return jsonify({'status': ret})
 
 
 @app.route("/deleteBoard/<guild>/<board>", methods=['DELETE'])

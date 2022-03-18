@@ -328,22 +328,38 @@ def genCodeMain(board, guild):
 
 
 def compileMain(board, guild):
-    prepareData(board)
-    processConnections(board)
-    genCodeMain(board, guild)
+    try:
+        prepareData(board)
+        processConnections(board)
+        genCodeMain(board, guild)
 
-    newMod = importlib.import_module("fsmLogic.mains.mainBoard_" + guild)
-    importlib.reload(newMod)
+        newMod = importlib.import_module("fsmLogic.mains.mainBoard_" + guild)
+        importlib.reload(newMod)
+    except (AttributeError, SyntaxError, ImportError, TypeError) as err:
+        print(err)
+        if os.path.isfile("fsmLogic/mains/mainBoard_" + guild + ".py"):
+            os.remove("fsmLogic/mains/mainBoard_" + guild + ".py")
+        return False
+    return True
 
 
 def compileAction(board, guild):
-    act = ActionManager.getAction(board['name'], guild)
-    actID = None
-    if act:
-        actID = act.templID
-    prepareData(board)
-    processConnections(board)
-    genCodeAction(board, guild, actID)
+    try:
+        act = ActionManager.getAction(board['name'], guild)
+        actID = None
+        if act:
+            actID = act.templID
+        prepareData(board)
+        processConnections(board)
+        genCodeAction(board, guild, actID)
 
-    newMod = importlib.import_module("fsmLogic.actionCodes.custom." + hashGuildID(guild) + ".action_" + board['name'])
-    importlib.reload(newMod)
+        newMod = importlib.import_module("fsmLogic.actionCodes.custom." + hashGuildID(guild) + ".action_" + board['name'])
+        importlib.reload(newMod)
+    except (AttributeError, SyntaxError, ImportError, TypeError) as err:
+        print(err)
+        if os.path.isfile("fsmLogic/actionCodes/custom/" + hashGuildID(guild) + "/action_" + board['name'] + ".py"):
+            os.remove("fsmLogic/actionCodes/custom/" + hashGuildID(guild) + "/action_" + board['name'] + ".py")
+            if len(os.listdir("fsmLogic/actionCodes/custom/" + hashGuildID(guild))) == 0:
+                os.rmdir("fsmLogic/actionCodes/custom/" + hashGuildID(guild))
+        return False
+    return True

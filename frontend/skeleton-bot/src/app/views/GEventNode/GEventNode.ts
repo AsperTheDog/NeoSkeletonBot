@@ -41,11 +41,6 @@ export class GEventNode implements OnInit, AfterViewInit {
 
   onDragStart() {
     this.dragShield.canvas.draggingNode = true;
-    this.onSelect()
-  }
-
-  onSelect() {
-    this.mainController.selectedNode = this.mainData.id
   }
 
   onDragMove() {

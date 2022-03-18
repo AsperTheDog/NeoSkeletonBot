@@ -1,6 +1,5 @@
-<div #mainRef [className]="mainController.selectedNode == this.mainDataID ? 'nodeBoxSel' : 'nodeBox'" cdkDrag
-    (cdkDragMoved)="onDragMove()" (cdkDragStarted)="onDragStart()" (cdkDragEnded)="getActionCoords($event)"
-    (click)="onSelect()" name="Test" [cdkDragFreeDragPosition]="position">
+<div #mainRef class="nodeBox" cdkDrag (cdkDragMoved)="onDragMove()" (cdkDragStarted)="onDragStart()"
+    (cdkDragEnded)="getActionCoords($event)" name="Test" [cdkDragFreeDragPosition]="position">
     <div class="nodeBoxHead" cdkDragHandle>
         {{ mainData.type }}
     </div>

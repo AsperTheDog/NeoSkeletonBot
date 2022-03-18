@@ -1,5 +1,4 @@
-import { Pipeline } from "./Pipeline";
-import { EventInput, ValueInput } from "./Value";
+import { ValueInput, EventInput } from "./Value";
 
 export class Action {
     constructor (id: number, type: string, inputs: ValueInput[], outputs: ValueInput[], events: EventInput[], inputEvent: EventInput) {
