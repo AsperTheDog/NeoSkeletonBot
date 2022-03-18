@@ -1,20 +1,20 @@
-import { Injectable, Type } from '@angular/core';
+import { Injectable } from '@angular/core';
 import globalEventList from '../../assets/json/globalEvents.json';
 import valueTypes from '../../assets/json/types.json';
-import { Board } from '../utils/Board';
-import { mouseData } from '../utils/Mouse';
-import { Transition } from '../utils/Transition';
-import { EventInput, ValueInput } from '../utils/Value';
-import { Action } from '../utils/Action';
-import { Variable } from '../utils/Variable';
-import { GlobalEvent } from '../utils/GlobalEvent';
-import { ValueType } from '../utils/ValueType';
+import { Board } from '../utils/dataTypes/Board';
+import { mouseData } from '../utils/dataTypes/Mouse';
+import { Transition } from '../utils/dataTypes/Transition';
+import { EventInput, ValueInput } from '../utils/dataTypes/Value';
+import { Action } from '../utils/dataTypes/Action';
+import { Variable } from '../utils/dataTypes/Variable';
+import { GlobalEvent } from '../utils/dataTypes/GlobalEvent';
+import { ValueType } from '../utils/dataTypes/ValueType';
 import { ValueNode } from '../views/input/value/valueNode';
 import { EventNode } from '../views/input/event/eventNode';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Pipeline } from '../utils/Pipeline';
-import { VarElement } from '../utils/VarElement';
-import { User } from '../utils/User';
+import { Pipeline } from '../utils/dataTypes/Pipeline';
+import { VarElement } from '../utils/dataTypes/VarElement';
+import { User } from '../utils/dataTypes/User';
 import { CookieService } from 'ngx-cookie';
 
 @Injectable({
@@ -28,7 +28,7 @@ export class MainControllerService {
     this.valueTypeMap = new Map<number, ValueType>();
 
     this.globalEventList = globalEventList.events;
-    this.customActionEvents = globalEventList.customActionEvents;
+    this.pipelineTypes = globalEventList.customActionEvents;
     this.hoveringDelete = false;
     this.spawnLocation = { x: 0, y: 0 }
     this.mouse = new mouseData()
@@ -53,13 +53,13 @@ export class MainControllerService {
   templateMap: Map<number, Action>;
   valueTypeMap: Map<number, ValueType>;
 
-  activeBoard: Board;
-  selectedNode: number;
   globalEventList: string[];
-  customActionEvents: string[];
+  pipelineTypes: string[];
   actionTemplates: Action[];
-  boardList: string[];
   allowedValues: [number, string][];
+
+  activeBoard: Board;
+  boardList: string[];
 
   hoveringDelete: boolean;
 
@@ -71,7 +71,6 @@ export class MainControllerService {
   mouse: mouseData;
 
   infoDisplayText: [string, boolean][] = [["", false], ["", false], ["This is the log, info about your actions will be shown here", false]];
-  infoCount: number = 0;
   hasEvInput = false;
 
   backendURL: string = "https://freechmod.ddns.net:12546/";
@@ -83,6 +82,8 @@ export class MainControllerService {
   selectedGuild: string | undefined;
 
   loaded = true;
+  cancelledChange = false;
+  requestedBoard = "Main";
 
   manageInfo(newText: string, isError: boolean) {
     this.infoDisplayText.shift()
@@ -156,12 +157,23 @@ export class MainControllerService {
     })
   }
 
+  saveProcess(data: {status: boolean}) {
+    let saved = false;
+    if (!data.status){
+      this.manageInfo("Parse error, could not save board", true)
+      saved = false;
+    }
+    else {
+      this.manageInfo("Saved changes", false)
+      saved = true;
+    }
+    this.retrieveActions()
+    return saved
+  }
+
   save() {
     if (!this.usr || !this.selectedGuild) return;
-    this.manageInfo("Saved changes", false)
-    this.http.post<Board>(this.backendURL + "saveBoard", this.activeBoard).subscribe(data => {
-      this.retrieveActions()
-    })
+    return this.http.post<{status: boolean}>(this.backendURL + "saveBoard", this.activeBoard)
   }
 
   getID(elem: Action | Variable | GlobalEvent | ValueInput | EventInput | Transition | Pipeline | VarElement) {
@@ -322,21 +334,41 @@ export class MainControllerService {
     this.manageInfo("Created new Pipeline Node '" + ge.name + "'", false)
   }
 
-  changeBoard = (loadBoard: string, isNew: boolean) => {
-    this.save()
-    if (isNew) {
-      this.boards.set(loadBoard, new Board(loadBoard, this.selectedGuild!, [], [], [], [], [], []))
-      this.boardList[this.boardList.length - 1] = loadBoard
-      this.boardList.push("...")
+  changeBoard = (loadBoard: string, isNew: boolean, savePrev=true) => {
+    const changeProcess = () => {
+      if (isNew) {
+        this.boards.set(loadBoard, new Board(loadBoard, this.selectedGuild!, [], [], [], [], [], []))
+        this.boardList[this.boardList.length - 1] = loadBoard
+        this.boardList.push("...")
+      }
+      this.activeBoard = this.boards.get(loadBoard)!
+      if (loadBoard != "Main" && this.activeBoard.pipelines.find((elem) => (elem.type == "actionEventInput"))) {
+        this.hasEvInput = true
+      }
+      else {
+        this.hasEvInput = false
+      }
+      this.requestedBoard = this.activeBoard.name
+      this.manageInfo("Loaded new schematic " + this.activeBoard.name, false)
     }
-    this.activeBoard = this.boards.get(loadBoard)!
-    if (loadBoard != "Main" && this.activeBoard.pipelines.find((elem) => (elem.type == "actionEventInput"))) {
-      this.hasEvInput = true
+
+    if (!savePrev){
+      changeProcess()
     }
-    else {
-      this.hasEvInput = false
+    else{
+      this.save()!.subscribe((data) => {
+        const saved = this.saveProcess(data)
+        if (!saved){
+          const confr = confirm("The board could not be saved, do you want to undo changes?")
+          if (!confr){
+            this.requestedBoard = this.activeBoard.name
+            return;
+          }
+          this.revertBoard(this.activeBoard.name)
+        }
+        changeProcess()
+      })
     }
-    this.manageInfo("Loaded new schematic " + this.activeBoard.name, false)
   }
 
   clearBoard() {
@@ -480,7 +512,6 @@ export class MainControllerService {
     const payload = this.cookieParam.append('code', this.usrCode)
     this.http.get<{token: string, usr: User}>(actURL, {params: payload}).subscribe(
       (response) => {
-        console.log(response.token)
         this.cookieService.put('token', response.token)
         this.cookieParam = new HttpParams().append('token', response.token)
         if (response.usr.id){
@@ -515,7 +546,7 @@ export class MainControllerService {
     var confr = confirm("Are you sure you want to remove this board?")
     if (!confr) return;
     const delURL = this.backendURL + "deleteBoard/" + this.selectedGuild + "/" + this.activeBoard.name
-    this.changeBoard('Main', false)
+    this.changeBoard('Main', false, false)
     this.http.delete(delURL).subscribe(
       (response) => {
         this.retrieveBoards()
@@ -535,5 +566,20 @@ export class MainControllerService {
   changeGuilds() {
     this.loaded = false
     this.retrieveBoards()
+  }
+
+  revertBoard(name: string) {
+    if (!this.selectedGuild) return;
+    const payload = this.cookieParam.append('guild', this.selectedGuild).append('name', name)
+    const revURL = this.backendURL + "revertBoard"
+    this.http.get<Board>(revURL, {params: payload}).subscribe(
+      (response) => {
+        this.boards.set(name, response)
+        console.log(this.boards.get(name))
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
   }
 }
