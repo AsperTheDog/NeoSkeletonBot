@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MainControllerService } from 'src/app/services/main-controller.service';
-import { Variable } from 'src/app/utils/Variable';
+import { Variable } from 'src/app/utils/dataTypes/Variable';
 import { DragShieldService } from 'src/app/services/dragshield.service';
 import { CdkDragEnd, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
-import { ValueInput } from 'src/app/utils/Value';
-import { ValueType } from 'src/app/utils/ValueType';
+import { ValueInput } from 'src/app/utils/dataTypes/Value';
+import { ValueType } from 'src/app/utils/dataTypes/ValueType';
 import { ValueNode } from '../input/value/valueNode';
-import { VarElement } from 'src/app/utils/VarElement';
+import { VarElement } from 'src/app/utils/dataTypes/VarElement';
 
 @Component({
   selector: 'app-variableNode',
@@ -39,9 +39,9 @@ export class VariableNode implements OnInit, AfterViewInit {
   varName: string;
 
   ngOnInit(): void {
-    this.mainData = this.mainController.get(this.mainDataID)
-    this.varAttr = this.mainController.get(this.mainData.varAttr)
-    this.valueType = this.mainController.getType(this.varAttr.valueType)
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID)
+    this.varAttr = this.mainController.boardMan.idMan.get(this.mainData.varAttr)
+    this.valueType = this.mainController.typeValMan.getType(this.varAttr.valueType)
     this.mainData.input.valueType = this.valueType.varInOut[0]
     this.mainData.output.valueType = this.valueType.varInOut[1]
     this.position = this.mainData.cdkPos
@@ -92,7 +92,7 @@ export class VariableNode implements OnInit, AfterViewInit {
       return;
     }
     if (this.varAttr.name == this.varName) return;
-    var newVar = this.mainController.changeVarElems(this.varAttr.name, this.varName)
+    var newVar = this.mainController.boardMan.changeVarElems(this.varAttr.name, this.varName)
     this.mainData.varAttr = newVar.id
     this.varAttr = newVar
   }

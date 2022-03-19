@@ -1,6 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Pipeline } from 'src/app/utils/Pipeline';
-import { ValueInput } from 'src/app/utils/Value';
+import { Pipeline } from 'src/app/utils/dataTypes/Pipeline';
 import { PhantomEventNode } from '../../input/event/phantom/phantomEventNode';
 import { PhantomValueNode } from '../../input/value/phantom/phantomValueNode';
 

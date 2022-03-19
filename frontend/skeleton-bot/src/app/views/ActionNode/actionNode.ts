@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Action } from '../../utils/dataTypes/Action';
 import { MainControllerService } from 'src/app/services/main-controller.service';
-import { CdkDragEnd, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { DragShieldService } from 'src/app/services/dragshield.service';
-import { EventInput } from 'src/app/utils/Value';
+import { EventInput } from 'src/app/utils/dataTypes/Value';
 import { ValueNode } from '../input/value/valueNode';
 import { EventNode } from '../input/event/eventNode';
 
@@ -29,7 +29,7 @@ export class ActionNode implements OnInit, AfterViewInit {
   position = { x: 0, y: 0 }
 
   ngOnInit(): void {
-    this.mainData = this.mainController.get(this.mainDataID)
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID)
     this.position = this.mainData.cdkPos
   }
 

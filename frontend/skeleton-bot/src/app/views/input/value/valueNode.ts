@@ -1,9 +1,9 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DragShieldService } from 'src/app/services/dragshield.service';
 import { MainControllerService } from 'src/app/services/main-controller.service';
-import { Transition } from 'src/app/utils/Transition';
-import { EventInput, ValueInput } from 'src/app/utils/Value';
-import { ValueType } from 'src/app/utils/ValueType';
+import { Transition } from 'src/app/utils/dataTypes/Transition';
+import { EventInput, ValueInput } from 'src/app/utils/dataTypes/Value';
+import { ValueType } from 'src/app/utils/dataTypes/ValueType';
 import { ActionNode } from '../../ActionNode/actionNode';
 import { GEventNode } from '../../GEventNode/GEventNode';
 import { PipelineNode } from '../../PipelineNode/PipelineNode';
@@ -35,8 +35,8 @@ export class ValueNode implements OnInit {
   valueType: ValueType;
 
   ngOnInit(): void {
-    this.valData = this.mainController.get(this.valDataID)
-    this.valueType = this.mainController.getType(this.valData.valueType)
+    this.valData = this.mainController.boardMan.idMan.get(this.valDataID)
+    this.valueType = this.mainController.typeValMan.getType(this.valData.valueType)
     this.hoveringStyle = this.valueType.color
     if (this.valData.comboValues) {
       this.comboTag = this.valData.comboValues.length + ""
@@ -73,7 +73,7 @@ export class ValueNode implements OnInit {
       this.valData.nature == "out" ? [] : [this.parentNode.mainData.id, this.valData.id],
       this.valueType.color
     )
-    this.mainController.addTransition(trns)
+    this.mainController.boardMan.addTransition(trns)
     this.mainController.transStartInput = this
     this.activeTransition = trns;
     this.valData.inColor = this.valueType.color
@@ -91,14 +91,14 @@ export class ValueNode implements OnInit {
 
     if (this.mainController.hovering == null) {
       this.mainController.manageInfo("Transition canceled: no destination", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
 
     if (this.mainController.hovering instanceof EventNode) {
       this.mainController.manageInfo("Transition canceled: cannot connect value to event", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
@@ -117,14 +117,14 @@ export class ValueNode implements OnInit {
 
     if (origNode.valData.nature == destNode.valData.nature) {
       this.mainController.manageInfo("Transition cancelled: must be made between an input and an output", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
 
     if (!origNode.valueType.compatible.includes(destNode.valueType.id)) {
       this.mainController.manageInfo("Transition canceled: origin and destination are not of compatible types", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
@@ -137,14 +137,14 @@ export class ValueNode implements OnInit {
       origNode.comboTag != "") {
 
       this.mainController.manageInfo("Transition canceled: Origin has a different combo attached", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
 
     if (destNode.valData.fromVariable) {
       this.mainController.manageInfo("Transition canceled: Destination is already linked to a variable", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
@@ -152,13 +152,13 @@ export class ValueNode implements OnInit {
     if (origNode.parentNode instanceof VariableNode) {
       if (destNode.parentNode instanceof VariableNode){
         this.mainController.manageInfo("Transition canceled: Variables cannot be attached to other variables", true)
-        this.mainController.removeTransition();
+        this.mainController.boardMan.removeTransition();
         this.activeTransition = null;
         return;
       }
       if (destNode.valData.transitionNumber != 0) {
         this.mainController.manageInfo("Transition canceled: Variable origins can only be attached to empty destinations", true)
-        this.mainController.removeTransition();
+        this.mainController.boardMan.removeTransition();
         this.activeTransition = null;
         return;
       }
@@ -179,7 +179,7 @@ export class ValueNode implements OnInit {
     destNode.valData.inColor = origNode.valueType.color
 
     if (origNode.valueType.id == 2 && origNode.parentNode instanceof VariableNode) {
-      var varElem = this.mainController.get(origNode.parentNode.mainData.varAttr)
+      var varElem = this.mainController.boardMan.idMan.get(origNode.parentNode.mainData.varAttr)
       var futureCombo = destNode.valData.comboValues
       varElem.possibleValues = futureCombo
       origNode.comboTag = destNode.comboTag
@@ -201,7 +201,7 @@ export class ValueNode implements OnInit {
     if (this.valData.transitionNumber == 0) {
       if (this.parentNode instanceof VariableNode) {
         if (this.comboTag != "") {
-          var varElem = this.mainController.get(this.parentNode.mainData.varAttr)
+          var varElem = this.mainController.boardMan.idMan.get(this.parentNode.mainData.varAttr)
           this.comboTag = ""
           varElem.possibleValues = null
         }
@@ -210,6 +210,6 @@ export class ValueNode implements OnInit {
   }
 
   removeAllTrans() {
-    this.mainController.cleanTransitions(this.parentNode.mainData.id, this.valData)
+    this.mainController.boardMan.cleanTransitions(this.parentNode.mainData.id, this.valData)
   }
 }

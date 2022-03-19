@@ -1,11 +1,11 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MainControllerService } from 'src/app/services/main-controller.service';
 import { Action } from 'src/app/utils/dataTypes/Action';
-import { GlobalEvent } from 'src/app/utils/GlobalEvent';
-import { mouseData } from 'src/app/utils/Mouse';
-import { Transition } from 'src/app/utils/Transition';
-import { EventInput, ValueInput } from 'src/app/utils/Value';
-import { Variable } from 'src/app/utils/Variable';
+import { GlobalEvent } from 'src/app/utils/dataTypes/GlobalEvent';
+import { MouseData } from 'src/app/utils/dataTypes/Mouse';
+import { Transition } from 'src/app/utils/dataTypes/Transition';
+import { EventInput, ValueInput } from 'src/app/utils/dataTypes/Value';
+import { Variable } from 'src/app/utils/dataTypes/Variable';
 
 @Component({
   selector: 'app-arrow',
@@ -21,8 +21,8 @@ export class Arrow implements OnChanges {
   @Input() origAddress: number | null;
 
   data: Transition;
-  orig: ValueInput | EventInput | mouseData;
-  dest: ValueInput | EventInput | mouseData;
+  orig: ValueInput | EventInput | MouseData;
+  dest: ValueInput | EventInput | MouseData;
   origParent: Action | Variable | GlobalEvent;
   destParent: Action | Variable | GlobalEvent;
   origIsMouse: boolean = false;
@@ -31,12 +31,12 @@ export class Arrow implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.data){
-      this.data = this.mainController.get(this.dataID)
+      this.data = this.mainController.boardMan.idMan.get(this.dataID)
     }
     if ("destAddress" in changes) {
       if (this.data.destination.length != 0) {
-        this.destParent = this.mainController.get(this.data.destination[0])!
-        this.dest = this.mainController.get(this.data.destination[1])!
+        this.destParent = this.mainController.boardMan.idMan.get(this.data.destination[0])!
+        this.dest = this.mainController.boardMan.idMan.get(this.data.destination[1])!
         this.destIsMouse = false;
       }
       else{
@@ -46,8 +46,8 @@ export class Arrow implements OnChanges {
     }
     if ("origAddress" in changes) {
       if (this.data.origin.length != 0) {
-        this.origParent = this.mainController.get(this.data.origin[0])!
-        this.orig = this.mainController.get(this.data.origin[1])!
+        this.origParent = this.mainController.boardMan.idMan.get(this.data.origin[0])!
+        this.orig = this.mainController.boardMan.idMan.get(this.data.origin[1])!
         this.origIsMouse = false;
       }
       else{
@@ -58,7 +58,7 @@ export class Arrow implements OnChanges {
   }
 
   removeTrans = () => {
-    this.mainController.removeTransition(this.data)
+    this.mainController.boardMan.removeTransition(this.data)
   }
   
   getDirs = () => {

@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MainControllerService } from 'src/app/services/main-controller.service';
 import { DragShieldService } from 'src/app/services/dragshield.service';
-import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
-import { GlobalEvent } from 'src/app/utils/GlobalEvent';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { GlobalEvent } from 'src/app/utils/dataTypes/GlobalEvent';
 import { EventNode } from '../input/event/eventNode';
 import { ValueNode } from '../input/value/valueNode';
 
@@ -28,7 +28,7 @@ export class GEventNode implements OnInit, AfterViewInit {
   mainData: GlobalEvent;
 
   ngOnInit(): void {
-    this.mainData = this.mainController.get(this.mainDataID)
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID)
     this.position = this.mainData.cdkPos
   }
 

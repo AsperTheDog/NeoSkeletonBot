@@ -4,7 +4,7 @@ import { DragShieldService } from 'src/app/services/dragshield.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { EventNode } from '../input/event/eventNode';
 import { ValueNode } from '../input/value/valueNode';
-import { Pipeline } from 'src/app/utils/Pipeline';
+import { Pipeline } from 'src/app/utils/dataTypes/Pipeline';
 
 @Component({
   selector: 'app-pipelineNode',
@@ -28,7 +28,7 @@ export class PipelineNode implements OnInit, AfterViewInit {
   mainData: Pipeline;
 
   ngOnInit(): void {
-    this.mainData = this.mainController.get(this.mainDataID)
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID)
     this.position = this.mainData.cdkPos
   }
 

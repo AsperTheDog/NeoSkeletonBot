@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { EventInput, ValueInput } from 'src/app/utils/Value';
+import { EventInput, ValueInput } from 'src/app/utils/dataTypes/Value';
 
 @Component({
   selector: 'app-phantomEventNode',

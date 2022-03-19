@@ -83,7 +83,8 @@ def deleteFiles(guild, board):
             os.rmdir("fsmLogic/dataFiles/front/" + guild)
     if os.path.isfile("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/action_" + board + ".py"):
         os.remove("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/action_" + board + ".py")
-    if len(os.listdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))) == 0:
+    if len(os.listdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))) == 1:
+        os.remove("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/__init__.py")
         os.rmdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))
 
 

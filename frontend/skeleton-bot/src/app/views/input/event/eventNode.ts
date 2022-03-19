@@ -1,8 +1,8 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DragShieldService } from 'src/app/services/dragshield.service';
 import { MainControllerService } from 'src/app/services/main-controller.service';
-import { Transition } from 'src/app/utils/Transition';
-import { EventInput } from 'src/app/utils/Value';
+import { Transition } from 'src/app/utils/dataTypes/Transition';
+import { EventInput } from 'src/app/utils/dataTypes/Value';
 import { ActionNode } from '../../ActionNode/actionNode';
 import { GEventNode } from '../../GEventNode/GEventNode';
 import { PipelineNode } from '../../PipelineNode/PipelineNode';
@@ -30,7 +30,7 @@ export class EventNode implements OnInit {
   valData: EventInput;
 
   ngOnInit(): void {
-    this.valData = this.mainController.get(this.valDataID)
+    this.valData = this.mainController.boardMan.idMan.get(this.valDataID)
   }
 
   public documentEnter(): void {
@@ -62,7 +62,7 @@ export class EventNode implements OnInit {
       this.valData.nature == "out" ? [] : [this.parentNode.mainData.id, this.valData.id],
       'gray'
     )
-    this.mainController.addTransition(trns)
+    this.mainController.boardMan.addTransition(trns)
     this.mainController.transStartInput = this
     this.activeTransition = trns;
   }
@@ -79,14 +79,14 @@ export class EventNode implements OnInit {
 
     if (this.mainController.hovering == null) {
       this.mainController.manageInfo("Transition canceled: no destination", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
 
     if (this.mainController.hovering instanceof ValueNode) {
       this.mainController.manageInfo("Transition canceled: cannot connect event to value", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
@@ -104,14 +104,14 @@ export class EventNode implements OnInit {
     }
 
     if (origNode == destNode) {
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
 
     if (origNode.valData.nature == destNode.valData.nature) {
       this.mainController.manageInfo("Transition cancelled: must be made between an input and an output", true)
-      this.mainController.removeTransition();
+      this.mainController.boardMan.removeTransition();
       this.activeTransition = null;
       return;
     }
@@ -139,6 +139,6 @@ export class EventNode implements OnInit {
 
   removeAllTrans() {
     this.mainController.manageInfo("Removed all transitions for node '" + this.valData.name + "'", false)
-    this.mainController.cleanTransitions(this.parentNode.mainData.id, this.valData)
+    this.mainController.boardMan.cleanTransitions(this.parentNode.mainData.id, this.valData)
   }
 }

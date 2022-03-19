@@ -1,5 +1,5 @@
 
-export class mouseData {
+export class MouseData {
   constructor () {
     this.offset = {x: 0, y: 0}
   }

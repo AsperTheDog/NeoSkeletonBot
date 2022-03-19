@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MainControllerService } from 'src/app/services/main-controller.service';
-import { EventInput, ValueInput } from 'src/app/utils/Value';
-import { ValueType } from 'src/app/utils/ValueType';
+import { EventInput, ValueInput } from 'src/app/utils/dataTypes/Value';
+import { ValueType } from 'src/app/utils/dataTypes/ValueType';
 
 @Component({
   selector: 'app-phantomValueNode',
@@ -22,7 +22,7 @@ export class PhantomValueNode implements OnInit {
   }
 
   updateType() {
-    this.valueType = this.mainController.getType(this.valData.valueType)
+    this.valueType = this.mainController.typeValMan.getType(this.valData.valueType)
   }
 
   public documentEnter(): void {

@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GlobalEvent } from 'src/app/utils/GlobalEvent';
-import { Variable } from 'src/app/utils/Variable';
+import { GlobalEvent } from 'src/app/utils/dataTypes/GlobalEvent';
 
 @Component({
   selector: 'app-phantomGEventNode',

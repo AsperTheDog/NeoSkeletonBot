@@ -1,18 +1,18 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { DragShieldService } from './services/dragshield.service';
 import { MainControllerService } from './services/main-controller.service';
-import { Variable } from './utils/Variable';
+import { Variable } from './utils/dataTypes/Variable';
 import { PhantomVariableNode } from './views/VariableNode/phantom/phantomVariableNode';
 import { trigger, style, animate, transition } from '@angular/animations';
-import { EventInput, ValueInput } from './utils/Value';
+import { EventInput, ValueInput } from './utils/dataTypes/Value';
 import { ActionNode } from './views/ActionNode/actionNode';
 import { VariableNode } from './views/VariableNode/variableNode';
 import { GEventNode } from './views/GEventNode/GEventNode';
-import { GlobalEvent } from './utils/GlobalEvent';
-import { ValueType } from './utils/ValueType';
-import { Pipeline } from './utils/Pipeline';
+import { GlobalEvent } from './utils/dataTypes/GlobalEvent';
+import { ValueType } from './utils/dataTypes/ValueType';
+import { Pipeline } from './utils/dataTypes/Pipeline';
 import { PhantomPipelineNode } from './views/PipelineNode/phantom/phantomPipelineNode';
-import { VarElement } from './utils/VarElement';
+import { VarElement } from './utils/dataTypes/VarElement';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -53,7 +53,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     public mainController: MainControllerService,
     private route: ActivatedRoute) {
     this.dragShield.canvas = this;
-    this.globalEvents = this.mainController.globalEventList
   }
 
   @ViewChildren("nodeRef") nodeRefs: QueryList<ActionNode | VariableNode | GEventNode>;
@@ -61,8 +60,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild("sideBar") sideBar: ElementRef;
   @ViewChild("phantomVar") phantomVar: PhantomVariableNode;
   @ViewChild("phantomPipe") phantomPipe: PhantomPipelineNode;
-
-  globalEvents: string[];
 
   origSize = [20000, 20000]
   dragPos = { x: 0, y: 0 };
@@ -77,7 +74,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   window = window
 
   varTypeInput: string = "0";
-  varType: ValueType = this.mainController.getType(0);
+  varType: ValueType = this.mainController.typeValMan.getType(0);
   varIsConstant: boolean = false;
   varName: string = "";
   varInitialValue: string = "";
@@ -116,8 +113,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
-        this.mainController.usrCode = params['usrCode'];
-        if (this.mainController.usrCode){
+        this.mainController.sessionMan.setCode(params['usrCode'])
+        if (this.mainController.sessionMan.getCode()){
           this.mainController.loaded = false
           this.mainController.checkCreds()
         }
@@ -167,7 +164,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   updateShowcaseVariable() {
     const varTypeID = parseInt(this.varTypeInput)
-    this.varType = this.mainController.getType(varTypeID)
+    this.varType = this.mainController.typeValMan.getType(varTypeID)
     this.showCaseVar.input.valueType = this.varType.varInOut[0];
     this.showCaseVar.output.valueType = this.varType.varInOut[1];
     this.showCaseVarElem.valueType = varTypeID;
@@ -237,17 +234,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   changeBoard() {
     if (this.mainController.requestedBoard != "Main") {
       this.varIsConstant = true
-      this.globalEvents = this.mainController.pipelineTypes
       this.evType = "actionValueInput"
       this.updateShowcasePipeline()
     }
     else {
       this.varIsConstant = false
       this.evType = "init"
-      this.globalEvents = this.mainController.globalEventList
       this.updateShowcaseEvent()
     }
-    this.evType = this.globalEvents[0]
     this.updateShowcaseEvent()
     this.updateShowcaseVariable()
     if (this.mainController.requestedBoard != "...") {
@@ -265,7 +259,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   save() {
-    this.mainController.save()!.subscribe((data) => {
+    this.mainController.saveBoard()!.subscribe((data) => {
       this.mainController.saveProcess(data)
     })
   }
