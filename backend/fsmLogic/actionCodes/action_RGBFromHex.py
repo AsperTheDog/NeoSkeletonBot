@@ -5,19 +5,19 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class ToNumber(Action):
+class RGBFromHex(Action):
     guildID = -1
     group = "Values"
-    templID = 6
+    templID = 19
     inputs = [
-        ValueInput("value", ValueType.Text),
+        ValueInput("Hex", ValueType.Text)
     ]
     outputs = [
-        ValueOutput("result", ValueType.Number)
+        ValueOutput("RBG", ValueType.Structure)
     ]
     outEvents = [
-        EventOutput("completed"),
-        EventOutput("parse error")
+        EventOutput("Completed"),
+        EventOutput("Error")
     ]
 
     def __init__(self):
@@ -27,13 +27,15 @@ class ToNumber(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
+        h = values[0]['value'].lstrip('#')
         try:
-            super().setValue(int(values[0]['value']), 0)
+            rgb = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
         except ValueError:
             return super().sendEvent(1)
+        rgb = {'r': rgb[0], 'g': rgb[1], 'b': rgb[2]}
+        super().setValue(rgb, 0)
         return super().sendEvent(0)
 
     @classmethod
     def getTemplate(cls):
         return super().getTemplate(cls)
-

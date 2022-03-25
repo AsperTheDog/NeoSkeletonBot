@@ -1,3 +1,5 @@
+import disnake
+
 from fsmLogic.nodeClasses.actionTemplate import Action
 from fsmLogic.actionManager import ActionManager
 from fsmLogic.nodeClasses.inputs import ValueInput, EventOutput, ValueOutput
@@ -5,19 +7,21 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class ToNumber(Action):
+class WaitForReaction(Action):
     guildID = -1
-    group = "Values"
-    templID = 6
+    group = "Interaction"
+    templID = 15
     inputs = [
-        ValueInput("value", ValueType.Text),
+        ValueInput("Message", ValueType.Number),
+        ValueInput("Timeout", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("result", ValueType.Number)
+        ValueOutput("Author", ValueType.Number),
+        ValueOutput("EmojiReaction", ValueType.Text)
     ]
     outEvents = [
         EventOutput("completed"),
-        EventOutput("parse error")
+        EventOutput("timeout")
     ]
 
     def __init__(self):
@@ -27,13 +31,21 @@ class ToNumber(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
+
+        def check(reaction, user):
+            return reaction.message.id == values[0]['value']
+
         try:
-            super().setValue(int(values[0]['value']), 0)
-        except ValueError:
+            reaction, user = await client.wait_for('reaction_add', timeout=values[1]['value'], check=check)
+        except TimeoutError:
             return super().sendEvent(1)
+        super().setValue(user.id, 0)
+        if isinstance(reaction.emoji, str):
+            super().setValue(reaction.emoji, 1)
+        else:
+            super().setValue(reaction.emoji.name, 1)
         return super().sendEvent(0)
 
     @classmethod
     def getTemplate(cls):
         return super().getTemplate(cls)
-

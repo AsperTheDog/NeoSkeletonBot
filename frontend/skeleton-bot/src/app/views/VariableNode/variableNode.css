@@ -52,23 +52,53 @@
 }
 
 .initValueBox {
-  width: 80%;
+  width: 95%;
   margin:auto;
   height: 30px;
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-.initValueBox input {
+.initValueBoxInput {
   text-align: center;
   color: black;
-  width: 100%;
+  width: 95%;
   height: 100%;
   background-color: rgb(124, 124, 124);
   border-radius: 5px;
   border: none;
   font-size: large;
   font-weight: bolder;
+}
+
+.initValueBoxInputExpand {
+  text-align: center;
+  color: black;
+  width: 75%;
+  height: 100%;
+  background-color: rgb(124, 124, 124);
+  border-radius: 5px;
+  border: none;
+  font-size: large;
+  font-weight: bolder;
+}
+
+.initValueExpand {
+  float: right;
+  width: 19%;
+  height: 105%;
+  margin-left: 0.7%;
+  border: none;
+  background-color: rgb(124, 124, 124);
+  border-radius: 5px;
+}
+
+.initValueExpand:hover {
+  background-color: rgb(151, 151, 151);
+}
+
+.initValueExpand:active {
+  background-color: rgb(192, 192, 192);
 }
 
 ::placeholder {
@@ -91,4 +121,10 @@ input[type=number]::-webkit-inner-spin-button {
   font-size: large;
   text-align: center;
   border-radius: 5px;
+}
+
+.varDateInput {
+  width: 76%;
+  height: 10px;
+  background-color: #1d1d1d;
 }

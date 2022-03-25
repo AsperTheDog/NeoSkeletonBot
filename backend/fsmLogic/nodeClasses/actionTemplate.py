@@ -2,28 +2,30 @@ from copy import deepcopy
 
 from fsmLogic.boardManager import BoardManager
 from fsmLogic.nodeClasses.inputs import EventInput, ValueInput, ValueOutput, EventOutput
+from fsmLogic.nodeClasses.variable import Variable
 
 
 class Action:
+    guildID = -1
+    group = "Values"
+    templID = 6
+
     def __init__(self):
-        self.id = None
         self.inputs = []
         self.outputs = []
         self.outEvents = []
 
-    def __eq__(self, other):
-        return self.id is not None and other.id is not None and self.id == other.id
-
-    def execute(self, client):
+    def execute(self, client, guild):
         raise NotImplementedError("Please override function execute() in your action")
 
     def getValues(self):
-        vals = []
-        for inp in self.inputs:
-            vals.append(BoardManager.getVar(inp.connection))
+        pass
 
     def setValue(self, value, out):
-        BoardManager.setVar(self.outputs[out].connection, value)
+        pass
+
+    def checkValues(self, vrs):
+        pass
 
     def addConnections(self, inputs, outputs, outEvents):
         self.inputs = deepcopy(inputs)
@@ -35,6 +37,7 @@ class Action:
         return {
             "type": obj.__name__,
             "id": obj.templID,
+            "group": obj.group,
             "position": {
                 "x": 0,
                 "y": 0

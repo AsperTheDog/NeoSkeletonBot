@@ -15,9 +15,11 @@ export class ValueType {
 
   id: number;
   name: string;
+  input: string;
   color: string;
   compatible: number[];
   canBeVar: boolean;
+  canExpand: boolean;
   varInOut: number[];
   hasInitial: boolean;
   initial: string;

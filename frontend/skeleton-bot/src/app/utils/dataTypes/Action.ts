@@ -12,6 +12,7 @@ export class Action {
     
     id: number;
     type: string;
+    group: string;
     position: {x: number, y: number}
     cdkPos: {x: number, y: number}
     inputs: ValueInput[];

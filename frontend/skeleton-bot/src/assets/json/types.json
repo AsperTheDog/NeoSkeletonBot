@@ -3,12 +3,14 @@
     {
       "id": 0,
       "name": "Number",
+      "input": "number",
       "color": "blue",
       "compatible": [
         0,
         4
       ],
       "canBeVar": true,
+      "canExpand": false,
       "varInOut": [
         0,
         0
@@ -19,6 +21,7 @@
     {
       "id": 1,
       "name": "Text",
+      "input": "text",
       "color": "orange",
       "compatible": [
         1,
@@ -30,11 +33,13 @@
         1
       ],
       "hasInitial": true,
+      "canExpand": true,
       "initial": "null"
     },
     {
       "id": 2,
       "name": "Combo",
+      "input": "combo",
       "color": "green",
       "compatible": [
         2,
@@ -42,6 +47,7 @@
         4
       ],
       "canBeVar": true,
+      "canExpand": false,
       "varInOut": [
         1,
         2
@@ -52,18 +58,25 @@
     {
       "id": 3,
       "name": "Structure",
+      "input": "",
       "color": "purple",
       "compatible": [
+        3, 
+        4
+      ],
+      "canBeVar": true,
+      "canExpand": false,
+      "varInOut": [
+        3,
         3
       ],
-      "canBeVar": false,
-      "varInOut": [],
       "hasInitial": false,
-      "initial": ""
+      "initial": "{}"
     },
     {
       "id": 4,
       "name": "Any",
+      "input": "",
       "color": "white",
       "compatible": [
         0,
@@ -73,8 +86,45 @@
         4
       ],
       "canBeVar": false,
+      "canExpand": false,
       "varInOut": [],
       "hasInitial": false,
+      "initial": ""
+    },
+    {
+      "id": 5,
+      "name": "Boolean",
+      "input": "checkbox",
+      "color": "lightblue",
+      "compatible": [
+        4,
+        5
+      ],
+      "canBeVar": true,
+      "canExpand": false,
+      "varInOut": [
+        5,
+        5
+      ],
+      "hasInitial": true,
+      "initial": "false"
+    },
+    {
+      "id": 6,
+      "name": "Datetime",
+      "input": "datetime-local",
+      "color": "yellow",
+      "compatible": [
+        6,
+        5
+      ],
+      "canBeVar": true,
+      "canExpand": false,
+      "varInOut": [
+        6,
+        6
+      ],
+      "hasInitial": true,
       "initial": ""
     }
   ]

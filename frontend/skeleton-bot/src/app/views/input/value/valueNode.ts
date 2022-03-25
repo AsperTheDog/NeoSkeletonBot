@@ -156,7 +156,7 @@ export class ValueNode implements OnInit {
         this.activeTransition = null;
         return;
       }
-      if (destNode.valData.transitionNumber != 0) {
+      if (destNode.valData.transitionNumber != 0 && !(destNode.valData.transitionNumber == 1 && destNode == this)) {
         this.mainController.manageInfo("Transition canceled: Variable origins can only be attached to empty destinations", true)
         this.mainController.boardMan.removeTransition();
         this.activeTransition = null;
@@ -176,7 +176,8 @@ export class ValueNode implements OnInit {
       origNode.valData.transitionNumber++;
     }
 
-    destNode.valData.inColor = origNode.valueType.color
+    this.mainController.hovering.valData.inColor = this.activeTransition.arrowColor
+    //destNode.valData.inColor = origNode.valueType.color
 
     if (origNode.valueType.id == 2 && origNode.parentNode instanceof VariableNode) {
       var varElem = this.mainController.boardMan.idMan.get(origNode.parentNode.mainData.varAttr)

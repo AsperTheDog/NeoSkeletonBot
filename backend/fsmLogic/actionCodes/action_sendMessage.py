@@ -7,23 +7,32 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 @ActionManager.actionclass
 class SendMessage(Action):
     guildID = -1
+    group = "Interaction"
     templID = 5
     inputs = [
-        ValueInput(0, "Text", ValueType.Any, None),
-        ValueInput(0, "Channel", ValueType.Number, None)
+        ValueInput("Text", ValueType.Any),
+        ValueInput("Channel", ValueType.Number)
     ]
-    outputs = []
+    outputs = [
+        ValueOutput("Message", ValueType.Number)
+    ]
     outEvents = [
-        EventOutput(0, "completed")
+        EventOutput("completed"),
+        EventOutput("error")
     ]
 
     def __init__(self):
         super().__init__()
         super().addConnections(self.__class__.inputs, self.__class__.outputs, self.__class__.outEvents)
 
-    async def execute(self, client):
+    async def execute(self, client, guild):
         values = super().getValues()
-        await client.get_channel(values[1]).send(str(values[0]))
+        super().checkValues(values)
+        ch = client.get_channel(values[1]['value'])
+        if not ch:
+            return super().sendEvent(1)
+        msg = await ch.send(str(values[0]['value']))
+        super().setValue(msg.id, 0)
         return super().sendEvent(0)
 
     @classmethod

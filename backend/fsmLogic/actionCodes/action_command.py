@@ -5,16 +5,16 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class GetLetter(Action):
+class Command(Action):
     guildID = -1
-    group = "Text"
-    templID = 2
+    group = "Command"
+    templID = 9
     inputs = [
-        ValueInput("text", ValueType.Text),
-        ValueInput("index", ValueType.Number),
+        ValueInput("raw text", ValueType.Text)
     ]
     outputs = [
-        ValueOutput("letter", ValueType.Text)
+        ValueOutput("command", ValueType.Text),
+        ValueOutput("arguments", ValueType.Structure)
     ]
     outEvents = [
         EventOutput("completed")
@@ -27,7 +27,21 @@ class GetLetter(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        super().setValue(values[0]['value'][values[1]['value']], 0)
+        import shlex
+        cmd = values[0]['value'].split(" ", 1)
+        mainCmd = cmd[0]
+        if len(cmd) > 1:
+            args = cmd[:1]
+            try:
+                args = shlex.split(args)
+            except ValueError:
+                args = shlex.split(args + '"')
+            args = {str(count): arg for count, arg in enumerate(args)}
+            super().setValue(mainCmd, 0)
+            super().setValue(args, 1)
+        else:
+            super().setValue(mainCmd, 0)
+            super().setValue({}, 1)
         return super().sendEvent(0)
 
     @classmethod

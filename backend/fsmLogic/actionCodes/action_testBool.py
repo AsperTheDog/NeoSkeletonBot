@@ -1,3 +1,5 @@
+import disnake
+
 from fsmLogic.nodeClasses.actionTemplate import Action
 from fsmLogic.actionManager import ActionManager
 from fsmLogic.nodeClasses.inputs import ValueInput, EventOutput, ValueOutput
@@ -5,19 +7,17 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class ToNumber(Action):
+class TestBool(Action):
     guildID = -1
-    group = "Values"
-    templID = 6
+    group = "Math"
+    templID = 16
     inputs = [
-        ValueInput("value", ValueType.Text),
+        ValueInput("Bool", ValueType.Boolean)
     ]
-    outputs = [
-        ValueOutput("result", ValueType.Number)
-    ]
+    outputs = []
     outEvents = [
-        EventOutput("completed"),
-        EventOutput("parse error")
+        EventOutput("True"),
+        EventOutput("False")
     ]
 
     def __init__(self):
@@ -27,13 +27,10 @@ class ToNumber(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        try:
-            super().setValue(int(values[0]['value']), 0)
-        except ValueError:
-            return super().sendEvent(1)
-        return super().sendEvent(0)
+        if bool(values[0]['value']):
+            return super().sendEvent(0)
+        return super().sendEvent(1)
 
     @classmethod
     def getTemplate(cls):
         return super().getTemplate(cls)
-

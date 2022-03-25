@@ -1,5 +1,4 @@
 [
-    "on error",
     "on socket event",
     "on message received",
     "on message deleted",

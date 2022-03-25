@@ -4,11 +4,17 @@
         <input *ngIf="!varElem.constant" style="margin-top: 10px;" placeholder="" type="text" disabled="true" [(ngModel)]="varElem.name" />
     </div>
     <div class="initValueBox">
-        <input *ngIf="valueType.id != 2" placeholder="initial value" type="text" disabled="true" [(ngModel)]="varElem.initialValue"/>
+        <input [ngClass]="valueType.canExpand ? 'initValueBoxInputExpand' : 'initValueBoxInput'" *ngIf="valueType.hasInitial" placeholder="initial value" type={{valueType.input}} disabled="true" [(ngModel)]="varElem.initialValue"/>
+        <button *ngIf="valueType.canExpand" class="initValueExpand">
+            <svg width="100%" height="100%" viewBox="0 0 10 10">
+                <path d="M 5 4.3 l 2.8 -2.8 l -0.7 -0.7 l 2.1 0 l 0 2.1 l -0.7 -0.7 l -2.8 2.8 l 2.8 2.8 l 0.7 -0.7 l 0 2.1 l -2.1 0 l 0.7 -0.7 l -2.8 -2.8 l -2.8 2.8 l 0.7 0.7 l -2.1 0 l 0 -2.1 l 0.7 0.7 l 2.8 -2.8 l -2.8 -2.8 l -0.7 0.7 l 0 -2.1 l 2.1 0 l -0.7 0.7 z"/>
+            </svg>
+        </button>
         <select class="varComboInput" *ngIf="valueType.id == 2 && varElem.possibleValues != null" disabled="true" [(ngModel)]="varElem.initialValue">
             <option *ngFor="let value of varElem.possibleValues" [selected]="value == varElem.initialValue">{{value}}</option>
         </select>
     </div>
+    
     <app-phantomValueNode #inputRef [valData]="mainData.input"></app-phantomValueNode>
     <app-phantomValueNode #outputRef [valData]="mainData.output"></app-phantomValueNode>
 </div>

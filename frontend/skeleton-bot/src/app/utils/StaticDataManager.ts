@@ -5,10 +5,14 @@ import { ValueType } from "./dataTypes/ValueType";
 export class TemplateManager {
   constructor () {
     this.templateMap = new Map<number, Action>();
+    this.groups = new Map<string, Action[]>();
   }
 
   actionTemplates: Action[];
+  filteredTemplates: Action[];
+  groups: Map<string, Action[]>;
   templateMap: Map<number, Action>;
+  filterStr: string = "";
   
   getTemplate(templateID: number) {
     return this.templateMap.get(templateID)!
@@ -20,6 +24,28 @@ export class TemplateManager {
     this.actionTemplates.forEach((action) => {
       this.templateMap.set(action.id, action)
     })
+    this.filteredTemplates = this.actionTemplates
+    this.fillGroups()
+  }
+
+  updateFilters(){
+    this.filteredTemplates = []
+    for (let act of this.actionTemplates){
+      if (act.type.toLowerCase().includes(this.filterStr.toLowerCase())){
+        this.filteredTemplates.push(act)
+      }
+    }
+    this.fillGroups()
+  }
+
+  fillGroups(){
+    this.groups.clear()
+    for (let act of this.filteredTemplates){
+      if (!this.groups.has(act.group)){
+        this.groups.set(act.group, [])
+      }
+      this.groups.get(act.group)!.push(act)
+    }
   }
 }
 

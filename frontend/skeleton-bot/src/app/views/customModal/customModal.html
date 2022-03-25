@@ -1,0 +1,6 @@
+<div class="prompt">
+    <textarea class="promptText" [(ngModel)]="mainController.promptData"></textarea>
+    <button class="promptButton" (click)="mainController.updatePrompt()">save</button>
+    <button class="promptButton" (click)="mainController.closePrompt()">cancel</button>
+</div>
+<span class="background" (click)="mainController.closePrompt()"></span>

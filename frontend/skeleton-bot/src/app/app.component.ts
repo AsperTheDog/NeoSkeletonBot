@@ -249,7 +249,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     else {
       var newName = prompt("Insert new schematic name")
-      if (!newName) return;
+      if (!newName){
+        this.mainController.requestedBoard = this.mainController.boardMan.getActive().name
+        return;
+      }
       this.mainController.changeBoard(newName, true)
     }
   }

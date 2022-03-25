@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PipelineNode } from './views/PipelineNode/PipelineNode';
 import { PhantomPipelineNode } from './views/PipelineNode/phantom/phantomPipelineNode';
 import { CookieModule } from 'ngx-cookie';
+import { CustomModal } from './views/customModal/customMoal';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { CookieModule } from 'ngx-cookie';
     PhantomActionNode,
     PhantomVariableNode,
     PhantomGEventNode,
-    PhantomPipelineNode
+    PhantomPipelineNode,
+    CustomModal,
   ],
   imports: [
     BrowserModule,

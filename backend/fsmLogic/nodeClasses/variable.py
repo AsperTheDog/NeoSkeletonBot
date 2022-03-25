@@ -43,6 +43,12 @@ class Variable:
         if param == 0:
             return 0
         elif param == 1:
-            return ""
+            return "''"
+        elif param == 5:
+            return False
         else:
             return None
+
+    @staticmethod
+    def checkValueType(param):
+        return not ValueType.getType(param['type']) or type(param['value']) == ValueType.getType(param['type'])

@@ -359,12 +359,8 @@ export class BoardManager {
   }
 
   setBoard(name: string, response: Board) {
-    console.log("restarting")
     this.clearBoard(name)
-    console.log("cleared")
     this.idMan.includeIDs(response)
-    console.log("added IDs")
     this.boards.set(name, response)
-    console.log("restarted")
   }
 }

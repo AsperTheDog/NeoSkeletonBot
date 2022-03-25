@@ -33,6 +33,7 @@ export class MainControllerService {
     this.mouse = new MouseData()
 
     this.typeValMan.setValueTypes(valueTypes.types)
+    this.manageInfo("This is the log, info about your actions will be shown here", false)
   }
 
   templateMan: TemplateManager;
@@ -52,16 +53,25 @@ export class MainControllerService {
   infoDisplayText: [string, boolean][] = [
     ["", false], 
     ["", false], 
-    ["This is the log, info about your actions will be shown here", false]
+    ["", false]
   ];
 
   loaded = true;
   cancelledChange = false;
   requestedBoard = "Main";
 
+  promptData: string = "";
+  promptDateData: Date = new Date();
+  showModal: boolean = false;
+  selectedVar: VarElement;
+
   manageInfo(newText: string, isError: boolean) {
+    var currentdate = new Date(); 
+  var datetime = (currentdate.getHours() < 10 ? "0" + currentdate.getHours() : currentdate.getHours()) + ":" + 
+                 (currentdate.getMinutes() < 10 ? "0" + currentdate.getMinutes() : currentdate.getMinutes()) + ":" +
+                 (currentdate.getSeconds() < 10 ? "0" + currentdate.getSeconds() : currentdate.getSeconds());
     this.infoDisplayText.shift()
-    this.infoDisplayText.push([newText, isError])
+    this.infoDisplayText.push(["[" + datetime + "] " + newText, isError])
   }
 
   saveProcess(data: {status: boolean}) {
@@ -268,11 +278,25 @@ export class MainControllerService {
     this.httpService.getBoard(this.sessionMan.getGuild()!, name).subscribe(
       (response) => {
         this.boardMan.setBoard(name, response)
-        console.log(this.boardMan.getBoard(name))
       },
       (error) => {
         console.log(error)
       }
     )
+  }
+
+  openPrompt(vr: VarElement) {
+    this.selectedVar = vr;
+    this.promptData = vr.initialValue;
+    this.showModal = true;
+  }
+
+  updatePrompt() {
+    this.selectedVar.initialValue = this.promptData
+    this.closePrompt()
+  }
+
+  closePrompt() {
+    this.showModal = false
   }
 }

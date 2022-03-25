@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import { MainControllerService } from 'src/app/services/main-controller.service';
 import { Variable } from 'src/app/utils/dataTypes/Variable';
 import { DragShieldService } from 'src/app/services/dragshield.service';
-import { CdkDragEnd, CdkDragMove, CdkDragStart } from '@angular/cdk/drag-drop';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { ValueInput } from 'src/app/utils/dataTypes/Value';
 import { ValueType } from 'src/app/utils/dataTypes/ValueType';
 import { ValueNode } from '../input/value/valueNode';
@@ -37,6 +37,8 @@ export class VariableNode implements OnInit, AfterViewInit {
 
   varAttr: VarElement;
   varName: string;
+
+  initBool: boolean = false;
 
   ngOnInit(): void {
     this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID)
@@ -95,5 +97,9 @@ export class VariableNode implements OnInit, AfterViewInit {
     var newVar = this.mainController.boardMan.changeVarElems(this.varAttr.name, this.varName)
     this.mainData.varAttr = newVar.id
     this.varAttr = newVar
+  }
+
+  initBoolChange() {
+    this.varAttr.initialValue = this.initBool ? "true" : "false";
   }
 }

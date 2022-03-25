@@ -5,19 +5,19 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class ToNumber(Action):
+class SendMessage(Action):
     guildID = -1
-    group = "Values"
-    templID = 6
+    group = "Interaction"
+    templID = 21
     inputs = [
-        ValueInput("value", ValueType.Text),
+        ValueInput("Channel", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("result", ValueType.Number)
+        ValueOutput("Message", ValueType.Number)
     ]
     outEvents = [
         EventOutput("completed"),
-        EventOutput("parse error")
+        EventOutput("error")
     ]
 
     def __init__(self):
@@ -27,11 +27,14 @@ class ToNumber(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        try:
-            super().setValue(int(values[0]['value']), 0)
-        except ValueError:
+        if values[0] == 0:
+            ch = client.get_channel(client.get_guild(int(guild)).system_channel)
+        else:
+            ch = client.get_channel(values[0])
+        if not ch:
             return super().sendEvent(1)
-        return super().sendEvent(0)
+        await ch.send(client.errMsg[guild])
+
 
     @classmethod
     def getTemplate(cls):

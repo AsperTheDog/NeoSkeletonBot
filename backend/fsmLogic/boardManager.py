@@ -20,4 +20,6 @@ class BoardManager:
         print("broadcasting event", event, "for guild", guild)
         if guild not in BoardManager._mains:
             return
+        if guild not in client.errCh:
+            client.errCh[guild] = client.get_guild(int(guild)).system_channel
         BoardManager._mains[guild].processEvent(client, event, value)

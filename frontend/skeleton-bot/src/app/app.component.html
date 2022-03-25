@@ -1,3 +1,5 @@
+<app-customModal *ngIf="mainController.showModal"></app-customModal>
+
 <div *ngIf="!mainController.loaded" class="loadingInterface">
   <div class="loader"></div>
 </div>
@@ -16,7 +18,7 @@
     </svg>
   </button>
   
-  <div *ngIf="!mainController.sessionMan.usr" class="headerLoadFiller"></div>
+  <div *ngIf="!mainController.sessionMan.usr || !mainController.boardMan.activeBoard" class="headerLoadFiller"></div>
   <select *ngIf="mainController.sessionMan.usr && mainController.sessionMan.selectedGuild" class="headerLoadSelect" [(ngModel)]="mainController.requestedBoard" (change)="changeBoard()">
     <option *ngFor="let op of mainController.boardMan.boardList" [selected]="evName == op">{{op}}</option>
   </select>
@@ -84,35 +86,56 @@
   </svg>
 </button>
 
+<div class="errorPrompt" *ngIf="mainController.boardMan.activeBoard && mainController.boardMan.activeBoard.name != 'Main' && !mainController.boardMan.activeBoard.hasEvInput">
+  <div class="errorIcon">
+    <svg class="errorSVG" width="100%" height="100%" viewBox="0 0 16 16">
+      <path
+        d="M 8 2 L 2 12 L 14 12 L 8 2 L 8 3 L 13.1 11.5 L 2.9 11.5 L 8 3 M 8 6 A 0.5 0.5 0 0 0 8 7 A 0.5 0.5 0 0 0 8 6 M 7.5 7.3 L 8.5 7.3 L 8.5 11 L 7.5 11 Z" />
+    </svg>
+  </div>
+  <div class="errorText">
+    <h4>The custom action is missing an event input pipeline</h4>
+  </div>
+</div>
+
 <div #sideBar class="sideMenu">
   <div *ngIf="mainController.sessionMan.usr && mainController.sessionMan.selectedGuild" class="sideMenuTop">
     <mat-tab-group [dynamicHeight]="true" [disablePagination]="true">
       <mat-tab label="Actions" class="sideMenuTopTab">
         <div class="actionTabContainer">
           <mat-accordion multi="false" class="sideMenuAcc">
-            <mat-expansion-panel *ngFor="let templ of mainController.templateMan.actionTemplates">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  {{templ.type}}
-                </mat-panel-title>
-                <mat-panel-description>
-                  In:{{templ.inputs.length}} - Out:{{templ.outputs.length}} - Ev:{{templ.events.length}}
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <div class="actionShowcase"
-                [ngStyle]="{height: ((templ.inputs.length + templ.outputs.length + templ.events.length) * 40 + 200) + 'px'}">
-                <app-phantomActionNode [mainData]="templ"></app-phantomActionNode>
+            <div class="sideMenuSearch">
+              <input type="search" placeholder="filter..." [(ngModel)]="mainController.templateMan.filterStr" (input)="mainController.templateMan.updateFilters()"/>
+            </div>
+            <div class="sideMenuDivider" *ngFor="let gr of mainController.templateMan.groups.keys()">
+              <div class="sideMenuDividerTitle">
+                {{gr}}
               </div>
-              <div class="actionDescription">
-                <button [disabled]="!dragged" class="sideMenuBottomButtonAdd"
-                  (click)="mainController.getNewAction(templ.id)">
-                  <svg class="sideMenuBottomSVG" width="100%" height="100%"
-                    viewBox="0 0 16 16">
-                    <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
-                  </svg>
-                </button>
-              </div>
-            </mat-expansion-panel>
+              <mat-expansion-panel *ngFor="let templ of mainController.templateMan.groups.get(gr)">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{templ.type}}
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    In:{{templ.inputs.length}} - Out:{{templ.outputs.length}} - Ev:{{templ.events.length}}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="actionShowcase"
+                  [ngStyle]="{height: ((templ.inputs.length + templ.outputs.length + templ.events.length) * 40 + 200) + 'px'}">
+                  <app-phantomActionNode [mainData]="templ"></app-phantomActionNode>
+                </div>
+                <div class="actionDescription">
+                  <button [disabled]="!dragged" class="sideMenuBottomButtonAdd"
+                    (click)="mainController.getNewAction(templ.id)">
+                    <svg class="sideMenuBottomSVG" width="100%" height="100%"
+                      viewBox="0 0 16 16">
+                      <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
+                    </svg>
+                  </button>
+                </div>
+              </mat-expansion-panel>
+            </div>
+            
           </mat-accordion>
         </div>
       </mat-tab>
@@ -145,17 +168,16 @@
             <span class="varSelectorText">Name </span>
           </div>
           <div class="varSelectRight">
-            <input class="varSelectInput" type="text" [(ngModel)]="varName" (change)="updateShowcaseVariable()" />
+            <input class="varSelectInput" type="text" [(ngModel)]="varName" (input)="updateShowcaseVariable()" />
           </div>
           <hr class="varSelectorSep" />
         </div>
-        <div *ngIf="varType.hasInitial" class="varSelectInputContainer">
+        <div *ngIf="varType.hasInitial && varType.id != 5" class="varSelectInputContainer">
           <div class="varSelectLeft">
             <span class="varSelectorText">Initial Value </span>
           </div>
           <div class="varSelectRight">
-            <input class="varSelectInput" type="text" [(ngModel)]="varInitialValue"
-              (change)="updateShowcaseVariable()" />
+            <input class="varSelectInput" type={{varType.input}} [(ngModel)]="varInitialValue" (input)="updateShowcaseVariable()"/>
           </div>
           <hr class="varSelectorSep" />
         </div>

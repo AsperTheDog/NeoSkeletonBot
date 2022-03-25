@@ -1,0 +1,51 @@
+.background {
+  opacity: 0.6;
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999998 !important;
+}
+
+.prompt {
+  border: solid 3px rgb(65, 65, 65);
+  border-radius: 20px;
+  background-color: rgb(34, 34, 34);
+  position: fixed;
+  width: 25vw;
+  height: 37vh;
+  z-index: 999999 !important;
+  left: 30.5vw;
+  top: 30.5vh;
+  padding: 4vh 3vw;
+}
+
+.promptText {
+  width: 100%;
+  height: 90%;
+  background-color: rgb(58, 58, 58);
+  font-size: x-large;
+  color: rgb(190, 190, 190);
+  border-radius: 6px;
+}
+
+.promptButton {
+  border: none;
+  border-radius: 7px;
+  width: 20%;
+  padding: 1% 2%;
+  font-size: large;
+  margin: 2%;
+  margin-left: 0;
+  background-color: rgb(117, 117, 117);
+}
+
+.promptButton:hover {
+  background-color: rgb(138, 138, 138);
+}
+
+.promptButton:active {
+  background-color: rgb(179, 179, 179);
+}

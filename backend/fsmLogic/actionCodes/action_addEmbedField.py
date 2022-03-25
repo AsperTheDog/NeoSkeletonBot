@@ -5,19 +5,22 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class ToNumber(Action):
+class AddEmbedField(Action):
     guildID = -1
-    group = "Values"
-    templID = 6
+    group = "Embed"
+    templID = 13
     inputs = [
-        ValueInput("value", ValueType.Text),
+        ValueInput("embed", ValueType.Structure),
+        ValueInput("title", ValueType.Text),
+        ValueInput("description", ValueType.Text),
+        ValueInput("inline", ValueType.Boolean)
     ]
     outputs = [
-        ValueOutput("result", ValueType.Number)
+        ValueOutput("result", ValueType.Structure)
     ]
     outEvents = [
         EventOutput("completed"),
-        EventOutput("parse error")
+        EventOutput("error")
     ]
 
     def __init__(self):
@@ -27,13 +30,13 @@ class ToNumber(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        try:
-            super().setValue(int(values[0]['value']), 0)
-        except ValueError:
+        embed = values[0]['value']
+        if 'fields' not in embed or not isinstance(embed['fields'], list):
             return super().sendEvent(1)
+        embed['fields'].append({'name': values[1]['value'], 'value': values[2]['value'], 'inline': bool(values[3]['value'])})
+        super().setValue(embed, 0)
         return super().sendEvent(0)
 
     @classmethod
     def getTemplate(cls):
         return super().getTemplate(cls)
-

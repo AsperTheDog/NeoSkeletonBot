@@ -76,16 +76,17 @@ def saveBoard(data):
 
 
 def deleteFiles(guild, board):
-    os.remove("fsmLogic/dataFiles/front/" + guild + "/ActionBoards/" + board + ".json")
-    if len(os.listdir("fsmLogic/dataFiles/front/" + guild + "/ActionBoards")) == 0:
-        os.rmdir("fsmLogic/dataFiles/front/" + guild + "/ActionBoards")
-        if len(os.listdir("fsmLogic/dataFiles/front/" + guild)) == 0:
-            os.rmdir("fsmLogic/dataFiles/front/" + guild)
+    if os.path.isfile("fsmLogic/dataFiles/front/" + guild + "/ActionBoards/" + board + ".json"):
+        os.remove("fsmLogic/dataFiles/front/" + guild + "/ActionBoards/" + board + ".json")
+        if len(os.listdir("fsmLogic/dataFiles/front/" + guild + "/ActionBoards")) == 0:
+            os.rmdir("fsmLogic/dataFiles/front/" + guild + "/ActionBoards")
+            if len(os.listdir("fsmLogic/dataFiles/front/" + guild)) == 0:
+                os.rmdir("fsmLogic/dataFiles/front/" + guild)
     if os.path.isfile("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/action_" + board + ".py"):
         os.remove("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/action_" + board + ".py")
-    if len(os.listdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))) == 1:
-        os.remove("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/__init__.py")
-        os.rmdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))
+        if len(os.listdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))) == 1:
+            os.remove("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild) + "/__init__.py")
+            os.rmdir("fsmLogic/actionCodes/custom/" + actionParser.hashGuildID(guild))
 
 
 def getBoard(guild, name):

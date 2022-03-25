@@ -1,34 +1,35 @@
 from fsmLogic.nodeClasses.actionTemplate import Action
 from fsmLogic.actionManager import ActionManager
 from fsmLogic.nodeClasses.inputs import ValueInput, EventOutput, ValueOutput
-from Bot.bot import client
 from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
 class Condition(Action):
     guildID = -1
+    group = "Math"
     templID = 0
     inputs = [
-        ValueInput(0, "First value", ValueType.Number, None),
-        ValueInput(0, "Second value", ValueType.Number, None)
+        ValueInput("First value", ValueType.Number),
+        ValueInput("Second value", ValueType.Number)
     ]
     outputs = []
     outEvents = [
-        EventOutput(0, "larger"),
-        EventOutput(0, "equal"),
-        EventOutput(0, "smaller")
+        EventOutput("larger"),
+        EventOutput("equal"),
+        EventOutput("smaller")
     ]
 
     def __init__(self):
         super().__init__()
         super().addConnections(self.__class__.inputs, self.__class__.outputs, self.__class__.outEvents)
 
-    async def execute(self, client):
+    async def execute(self, client, guild):
         values = super().getValues()
-        if values[0] > values[1]:
+        super().checkValues(values)
+        if values[0]['value'] > values[1]['value']:
             return super().sendEvent(0)
-        if values[0] == values[1]:
+        if values[0]['value'] == values[1]['value']:
             return super().sendEvent(1)
         else:
             return super().sendEvent(2)

@@ -54,12 +54,13 @@
       "name": "Structure",
       "color": "purple",
       "compatible": [
-        3
+        3,
+        4
       ],
-      "canBeVar": false,
+      "canBeVar": true,
       "varInOut": [],
-      "hasInitial": false,
-      "initial": ""
+      "hasInitial": true,
+      "initial": "{}"
     },
     {
       "id": 4,
@@ -76,6 +77,22 @@
       "varInOut": [],
       "hasInitial": false,
       "initial": ""
+    },
+    {
+      "id": 5,
+      "name": "Boolean",
+      "color": "lightblue",
+      "compatible": [
+        4,
+        5
+      ],
+      "canBeVar": true,
+      "varInOut": [
+        5,
+        5
+      ],
+      "hasInitial": true,
+      "initial": "false"
     }
   ]
 }

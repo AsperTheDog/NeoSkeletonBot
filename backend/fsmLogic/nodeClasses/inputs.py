@@ -1,9 +1,8 @@
 class ValueInput:
-    def __init__(self, inpID, name, valueType, connection, combo=None):
-        self.inpID = inpID
+    def __init__(self, name, valueType, combo=None):
+        self.inpID = 0
         self.valType = valueType
         self.name = name
-        self.connection = connection
         if self.valType == 2:
             self.combo = combo
         else:
@@ -32,11 +31,10 @@ class ValueInput:
 
 
 class ValueOutput:
-    def __init__(self, inpID, name, valueType, connection):
-        self.inpID = inpID
+    def __init__(self, name, valueType):
+        self.inpID = 0
         self.valType = valueType
         self.name = name
-        self.connection = connection
 
     def __str__(self):
         raise NotImplementedError("Please override function __str__() in your action")
@@ -61,8 +59,8 @@ class ValueOutput:
 
 
 class EventInput:
-    def __init__(self, inpID):
-        self.inpID = inpID
+    def __init__(self):
+        self.inpID = 0
 
     def __str__(self):
         raise NotImplementedError("Please override function __str__() in your action")
@@ -83,8 +81,8 @@ class EventInput:
 
 
 class EventOutput:
-    def __init__(self, inpID, name):
-        self.inpID = inpID
+    def __init__(self, name):
+        self.inpID = 0
         self.name = name
 
     def __str__(self):
