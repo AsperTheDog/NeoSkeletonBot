@@ -30,10 +30,12 @@ class AddEmbedField(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        embed = values[0]['value']
+        import datetime
+        embed = values[0]
         if 'fields' not in embed or not isinstance(embed['fields'], list):
+            client.errMsg[guild] = "[AddEmbedField - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid Embed structure"
             return super().sendEvent(1)
-        embed['fields'].append({'name': values[1]['value'], 'value': values[2]['value'], 'inline': bool(values[3]['value'])})
+        embed['fields'].append({'name': values[1], 'value': values[2], 'inline': bool(values[3])})
         super().setValue(embed, 0)
         return super().sendEvent(0)
 

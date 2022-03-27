@@ -1,3 +1,5 @@
+import datetime
+
 from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
@@ -39,15 +41,21 @@ class Variable:
         }
 
     @staticmethod
-    def getInitValue(param):
+    def getInitValue(param, literal=False):
         if param == 0:
             return 0
         elif param == 1:
-            return "''"
+            return "''" if not literal else ""
+        elif param == 2:
+            return "''" if not literal else ""
+        elif param == 3:
+            return {}
+        elif param == 4:
+            return None
         elif param == 5:
             return False
-        else:
-            return None
+        elif param == 6:
+            return datetime.datetime.now().timestamp()
 
     @staticmethod
     def checkValueType(param):

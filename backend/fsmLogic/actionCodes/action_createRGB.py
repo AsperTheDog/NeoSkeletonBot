@@ -28,7 +28,7 @@ class CreateRGB(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        super().setValue({'r': values[0]['value'], 'g': values[1]['value'], 'b': values[2]['value']}, 0)
+        super().setValue({'r': values[0], 'g': values[1], 'b': values[2]}, 0)
         return super().sendEvent(0)
 
     @classmethod

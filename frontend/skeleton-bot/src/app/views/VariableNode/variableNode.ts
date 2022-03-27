@@ -55,6 +55,7 @@ export class VariableNode implements OnInit, AfterViewInit {
     this.input.updateInput()
     this.output.parentNode = this
     this.output.updateInput()
+    this.initBool = this.varAttr.initialValue == "true"
   }
 
   onDragStart() {

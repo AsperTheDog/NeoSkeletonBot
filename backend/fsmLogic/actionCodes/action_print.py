@@ -25,13 +25,13 @@ class Print(Action):
         values = super().getValues()
         super().checkValues(values)
         import json
-        if isinstance(values[0]['value'], dict):
+        if isinstance(values[0], dict):
             try:
-                print(json.dumps(values[0]['value'], indent=4))
+                print(json.dumps(values[0], indent=4))
             except TypeError:
-                print(values[0]['value'])
+                print(values[0])
         else:
-            print(values[0]['value'])
+            print(values[0])
         return super().sendEvent(0)
 
     @classmethod

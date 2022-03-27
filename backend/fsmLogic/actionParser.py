@@ -84,9 +84,23 @@ def processConnections(board):
                 destInput['element']['hook'] = newVar
                 origInput['element']['hook'].append(newVar)
             else:
-                origInput['element']['hook'].append(processedVars[transition['destination'][0]])
+                origInput['element']['hook'].append(processedVars[transition['destination'][1]])
         else:
             origInput['element']['hook'] = transition['destination'][0]
+    stdVars = {}
+    for action in board['actions']:
+        for input in action['inputs']:
+            if input['hook'] == -1:
+                if input['valueType'] not in stdVars:
+                    newVar = getNewID()
+                    board['variables'].append({
+                        "id": newVar,
+                        "initialValue": Variable.getInitValue(input['valueType'], True),
+                        "valueType": input['valueType']
+                    })
+                    elements[newVar] = {"type": "variable", "element": board['variables'][-1]}
+                    stdVars[input['valueType']] = newVar
+                input['hook'] = stdVars[input['valueType']]
     board.pop('transitions')
     board.pop('varInstances')
 
@@ -107,7 +121,7 @@ def genCodeFuncs(board, guild):
             if action['inputs'][int(match)]['hook'] == -1:
                 inpVal = str(Variable.getInitValue(action['inputs'][int(match)]['valueType']))
             else:
-                inpVal = "vrs[" + str(action['inputs'][int(match)]['hook']) + "]"
+                inpVal = "vrs[" + str(action['inputs'][int(match)]['hook']) + "]['value']"
                 usedVals.append(str(action['inputs'][int(match)]['hook']))
             code = code.replace("values[" + match + "]", inpVal)
         for line in code.splitlines():
@@ -161,13 +175,17 @@ def genCodeVars(board):
     variables = "        vrs_" + bName + " = {\n"
     for variable in board['variables']:
         if variable['initialValue'] == "":
-            initVal = Variable.getInitValue(variable['valueType'])
+            initVal = Variable.getInitValue(variable['valueType'], False)
         else:
             initVal = variable['initialValue']
-        if variable['valueType'] == 0:
-            variables += tabs + "    " + str(variable['id']) + ": {'value': " + str(initVal) + ", 'type': ValueType." + ValueType(variable['valueType']).name + "},\n"
-        else:
-            variables += tabs + "    " + str(variable['id']) + ": {'value': '" + str(initVal) + "', 'type': ValueType." + ValueType(variable['valueType']).name + "},\n"
+            if isinstance(initVal, str):
+                initVal = initVal.replace("'", "\\'")
+                initVal = initVal.replace('"', '\\"')
+                initVal = "'" + initVal + "'"
+            if variable['valueType'] == ValueType.Boolean:
+                initVal = bool(initVal)
+        variables += tabs + "    " + str(variable['id']) + ": {'value': " + str(initVal) + ", 'type': ValueType." + ValueType(
+            variable['valueType']).name + "},\n"
     variables += tabs + "}\n"
     return variables
 
@@ -308,12 +326,12 @@ def genCodeMain(board, guild):
     finalCode += gEvs
     finalCode += "\n"
     finalCode += "    @classmethod\n"
-    finalCode += "    def processEvent(cls, client, event, initVal):\n"
+    finalCode += "    def processEvent(cls, client, event, initVal, guild):\n"
     finalCode += "        for ev in cls.gEvents[event]:\n"
-    finalCode += "            asyncio.get_event_loop().create_task(cls.execute(client, ev[1], ev[0], initVal))\n"
+    finalCode += "            asyncio.get_event_loop().create_task(cls.execute(client, ev[1], ev[0], initVal, guild))\n"
     finalCode += "\n"
     finalCode += "    @classmethod\n"
-    finalCode += "    async def execute(cls, client, initNext, initVars, initValue):\n"
+    finalCode += "    async def execute(cls, client, initNext, initVars, initValue, guild):\n"
     finalCode += "\n"
     for func in functions:
         finalCode += func

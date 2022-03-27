@@ -11,7 +11,7 @@
         <input [ngClass]="valueType.canExpand ? 'initValueBoxInputExpand' : 'initValueBoxInput'" *ngIf="valueType.hasInitial && valueType.id != 5" placeholder="initial value" type={{valueType.input}} (mouseenter)="disableDrag()"
             (mouseleave)="enableDrag()" [(ngModel)]="varAttr.initialValue" />
         <input *ngIf="valueType.id == 5" class="initValueBoxInput" type="checkbox" (mouseenter)="disableDrag()"
-            (mouseleave)="enableDrag()" [(ngModel)]="initBool" (change)="initBoolChange()" [attr.checked]="varAttr.initialValue == 'true'"/>
+            (mouseleave)="enableDrag()" [(ngModel)]="initBool" (change)="initBoolChange()"/>
         <button *ngIf="valueType.canExpand" class="initValueExpand" (click)="mainController.openPrompt(varAttr)">
             <svg width="100%" height="100%" viewBox="0 0 10 10">
                 <path d="M 5 4.3 l 2.8 -2.8 l -0.7 -0.7 l 2.1 0 l 0 2.1 l -0.7 -0.7 l -2.8 2.8 l 2.8 2.8 l 0.7 -0.7 l 0 2.1 l -2.1 0 l 0.7 -0.7 l -2.8 -2.8 l -2.8 2.8 l 0.7 0.7 l -2.1 0 l 0 -2.1 l 0.7 0.7 l 2.8 -2.8 l -2.8 -2.8 l -0.7 0.7 l 0 -2.1 l 2.1 0 l -0.7 0.7 z"/>

@@ -27,9 +27,11 @@ class ToNumber(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
+        import datetime
         try:
-            super().setValue(int(values[0]['value']), 0)
+            super().setValue(int(values[0]), 0)
         except ValueError:
+            client.errMsg[guild] = "[ToNumber - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Text provided is not a number"
             return super().sendEvent(1)
         return super().sendEvent(0)
 

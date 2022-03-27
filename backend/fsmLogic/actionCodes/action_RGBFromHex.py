@@ -27,10 +27,12 @@ class RGBFromHex(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        h = values[0]['value'].lstrip('#')
+        import datetime
+        h = values[0].lstrip('#')
         try:
             rgb = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
         except ValueError:
+            client.errMsg[guild] = "[RGBFromHex - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color format"
             return super().sendEvent(1)
         rgb = {'r': rgb[0], 'g': rgb[1], 'b': rgb[2]}
         super().setValue(rgb, 0)

@@ -16,3 +16,5 @@ class EventListener(commands.Cog):
         if message.author == self.bot.user:
             return
         BoardManager.sendGlobalEvent(self.bot, "on message received", utils.formatMessage(message, [message.id]), str(message.guild.id))
+
+    # TODO: resto de listenes + scheduled

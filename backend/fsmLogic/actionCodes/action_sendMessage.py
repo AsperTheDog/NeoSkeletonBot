@@ -10,7 +10,7 @@ class SendMessage(Action):
     group = "Interaction"
     templID = 5
     inputs = [
-        ValueInput("Text", ValueType.Any),
+        ValueInput("Content", ValueType.Any),
         ValueInput("Channel", ValueType.Number)
     ]
     outputs = [
@@ -28,10 +28,12 @@ class SendMessage(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        ch = client.get_channel(values[1]['value'])
+        import datetime
+        ch = client.get_channel(values[1])
         if not ch:
+            client.errMsg[guild] = "[SendMessage - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find channel"
             return super().sendEvent(1)
-        msg = await ch.send(str(values[0]['value']))
+        msg = await ch.send(str(values[0]))
         super().setValue(msg.id, 0)
         return super().sendEvent(0)
 

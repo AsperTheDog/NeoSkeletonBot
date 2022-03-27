@@ -5,7 +5,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class extractValue(Action):
+class ExtractValue(Action):
     guildID = -1
     group = "Structure"
     templID = 1
@@ -17,7 +17,8 @@ class extractValue(Action):
         ValueOutput("result", ValueType.Any)
     ]
     outEvents = [
-        EventOutput("Completed")
+        EventOutput("Completed"),
+        EventOutput("Error")
     ]
 
     def __init__(self):
@@ -27,7 +28,11 @@ class extractValue(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        super().setValue(values[1]['value'][values[0]['value']], 0)
+        import datetime
+        try:
+            super().setValue(values[1][values[0]], 0)
+        except KeyError:
+            client.errMsg[guild] = "[ExtractValue - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Key received not included in structure"
         super().sendEvent(0)
 
     @classmethod

@@ -1,0 +1,81 @@
+<div class="prompt">
+    <div class="promptContainer" *ngIf="mainController.showInfoModalType == 'action'">
+        <div class="promptShowCase">
+            <app-phantomActionNode [mainData]="mainController.infoModalActData"></app-phantomActionNode>
+        </div>
+        <div class="promptInfo" [innerHTML]="mainController.infoModalActData.description"></div>
+    </div>
+    <div class="promptContainer" *ngIf="mainController.showInfoModalType == 'variable'">
+        <div class="promptInfo custom">
+            <h2>Variables</h2>
+            Variables are nodes that can store values. They have a simple input to set the value and an output to get it.
+            <br/>
+            Variables need specific types to work. A variable of type Number can only store numbers, for example. This can't be changed on runtime.
+            <br/><br/>
+            Variables can be constants, constant variables a individual nodes that will not share the stored value with any other node.
+            If a variable is not a constant, then a variable name will be requested. Every variable with that name will then have the same value, this means that if one numeric variable node that has the name "X" receives the value 3, every node with the name "X" in the board will have its value changed to 3 too. 
+            <br/><br/>
+            <img width="80%" src="https://i.imgur.com/0zNNTuy.gif"/>
+            <br/><br/>
+            Some value types don't have initial value, like the combo type. Since the combo options are set when connected to an input.
+            <br/><br/>
+            <img width="80%" src="https://i.imgur.com/8ZNThpg.gif"/>
+            <br/><br/>
+        </div>
+    </div>
+    <div class="promptContainer" *ngIf="mainController.showInfoModalType == 'event'">
+        <div class="promptInfo custom">
+            <h2>Events</h2>
+            Events are the foundation of the executions. These nodes will begin executions when the selected event happens.
+            <br/>
+            For example if we have an "on message received" event that executes a program that responds then whenever someone sends a message and the bot detects it, then the bot will answer.
+            <br/><br/>
+            <img width="80%" src="https://i.imgur.com/5snnZ8P.png"/>
+            <br/><br/>
+            <img width="80%" src="https://i.imgur.com/jhiHJDQ.png"/>
+            <br/><br/>
+            Each event node will create an individual execution that will run in parallel with the rest. So if your main has 5 "on message received" nodes then all 5 will execute its respective instruction.
+            <br/><br/>
+            <img width="80%" src="https://i.imgur.com/96TFWDB.png"/>
+            <br/><br/>
+            <img width="80%" src="https://i.imgur.com/9Bwy2iV.png"/>
+            <br/><br/>
+            For more information about what triggers each event look at the <a target="_blank" href="https://docs.disnake.dev/en/latest/api.html?highlight=event#event-reference">disnake documentation</a>
+        </div>
+    </div>
+    <div class="promptContainer" *ngIf="mainController.showInfoModalType == 'pipeline'">
+        <div class="promptInfo custom">
+            <h2>Pipelines</h2>
+            Pipelines are the way you can tell the system what inputs, outputs and events your custom action has.
+            For example, if you add a value input node to the board, then the custom action will have an input with the same characteristics in a different board.
+            <br>
+            We can create a custom action that has two text inputs and one numeric input
+            <br/><br/>
+            <img width="40%" src="https://i.imgur.com/cbiVrBu.png"/>
+            <br/><br/>
+            This is how it will look in the main board
+            <br/><br/>
+            <img width="40%" src="https://i.imgur.com/ccnYFJ3.png"/>
+            <br/><br/>
+            There has to be one input event in every custom action, and it's not possible for a custom action to have more than one input event
+            <br/>
+            Event outputs work in the same way value outputs work. Value outputs will receive data that will be sent as an output in the resulting node, and event outputs will determine the execution flow when the node ends in other boards
+        </div>
+    </div>
+    <div class="promptContainerColorTable" *ngIf="mainController.showInfoModalType == 'colorTable'">
+        <div class="promptInfo custom">
+            <h1>Value Types</h1>
+            These are the values that can be found throughout the project. The color represents a value. You can make connections between compatible values.<br><br><br>
+        </div>
+        <div class="colorTableRow" *ngFor="let valType of mainController.typeValMan.valueTypeMap | keyvalue">
+            <svg style="float: left" height="40" width="40">
+                <polygon points="5,2 35,20 5,38"
+                    [attr.stroke]="valType.value.color" stroke-width="4"
+                    fill="black" />
+            </svg>
+            <h2 class="colorTableText" >{{valType.value.name}}</h2>
+        </div>
+    </div>
+    <button class="promptButton" (click)="mainController.closeInfoModal()">close</button>
+</div>
+<span class="background" (click)="mainController.closeInfoModal()"></span>

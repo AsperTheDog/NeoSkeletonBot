@@ -1,0 +1,108 @@
+.background {
+  opacity: 0.6;
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999998 !important;
+}
+
+.prompt {
+  border: solid 3px rgb(65, 65, 65);
+  border-radius: 20px;
+  background-color: rgb(34, 34, 34);
+  position: fixed;
+  width: 40vw;
+  height: 60vh;
+  z-index: 999999 !important;
+  left: 26vw;
+  top: 16vh;
+  padding: 4vh 3vw;
+}
+
+.promptContainer {
+  display: flex;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 94%;
+}
+
+.promptShowCase {
+  width: 40%;
+  float: left;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.promptInfo {
+  width: 50%;
+  float: left;
+  color: white;
+  font-size: larger;
+}
+
+.custom {
+  width: 90%;
+}
+
+.promptButton {
+  float: right;
+  border: none;
+  border-radius: 7px;
+  width: 20%;
+  padding: 1% 2%;
+  font-size: large;
+  margin: 2%;
+  margin-right: 0;
+  background-color: rgb(117, 117, 117);
+}
+
+.promptButton:hover {
+  background-color: rgb(138, 138, 138);
+}
+
+.promptButton:active {
+  background-color: rgb(179, 179, 179);
+}
+
+.promptContainerColorTable {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 94%;
+  width: 100%;
+}
+
+.colorTableRow {
+  float: left;
+  width: 50%;
+  height: 10vh;
+  color: white;
+}
+
+.colorTableText {
+  float: left;
+  margin-left: 1vw;
+  margin-top: 0.2vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(65, 65, 65);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(128, 128, 128);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(170, 170, 170);
+}

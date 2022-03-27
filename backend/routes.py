@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request, redirect, abort
 from flask_cors import CORS
 import requests
 
-from fsmLogic import serializeManager, actionManager
+from fsmLogic import serializeManager
 from fsmLogic.actionManager import ActionManager
 from fsmLogic.boardManager import BoardManager
 from SessionManager import SessionManager
@@ -21,6 +21,7 @@ CORS(app)
 app.config['SECRET_KEY'] = "8wY7gtqDw8rhhEl4ms89fg"
 
 BoardManager.updateGEvents()
+BoardManager.updateValueTypes()
 
 
 @app.route('/boards', methods=['GET'])
@@ -54,9 +55,14 @@ def getBoard():
     return ret
 
 
-@app.route('/gEvents')
+@app.route('/getGlobalEvents', methods=['GET'])
 def getGlobalEvents():
-    return jsonify(BoardManager.globalEvents)
+    return jsonify({'events': BoardManager.globalEvents, 'customActionEvents': BoardManager.customActionEvents})
+
+
+@app.route('/getValueTypes', methods=['GET'])
+def getValueTypes():
+    return jsonify(BoardManager.valueTypes)
 
 
 @app.route('/saveBoard', methods=['POST'])

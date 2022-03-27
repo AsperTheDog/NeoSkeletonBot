@@ -1,0 +1,21 @@
+<h2>Command</h2>
+<br/>
+This action will parse a string and divide the command and the arguments.<br/>
+For example, given the following string:
+<br/><br/>
+<strong>.ban @user spam</strong>
+<br/><br/>
+The command will output:<br/>
+ - As main command -> ".ban"<br/>
+ - As arguments -> {0: "@user", 1: "spam"}
+<br/><br/>
+The command node will detect everything between quotes as a single argument.<br/>
+That is, given the string
+<br/><br/>
+<strong>.ban @user "you spammed in general"</strong>
+<br/><br/>
+The command will output:<br/>
+ - As main command -> ".ban"<br/>
+ - As arguments -> {0: "@user", 1: "you spammed in general"}
+<br/><br/>
+It detects both simple and double quotes

@@ -35,18 +35,18 @@ class Operation(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        if values[2]['value'] == "add":
-            super().setValue(values[0]['value'] + values[1]['value'], 0)
-        elif values[2]['value'] == "substract":
-            super().setValue(values[0]['value'] - values[1]['value'], 0)
-        elif values[2]['value'] == "multiply":
-            super().setValue(values[0]['value'] * values[1]['value'], 0)
-        elif values[2]['value'] == "divide":
-            super().setValue(values[0]['value'] / values[1]['value'], 0)
-        elif values[2]['value'] == "modulus":
-            super().setValue(values[0]['value'] % values[1]['value'], 0)
-        elif values[2]['value'] == "power":
-            super().setValue(values[0]['value'] ** values[1]['value'], 0)
+        if values[2] == "add":
+            super().setValue(values[0] + values[1], 0)
+        elif values[2] == "substract":
+            super().setValue(values[0] - values[1], 0)
+        elif values[2] == "multiply":
+            super().setValue(values[0] * values[1], 0)
+        elif values[2] == "divide":
+            super().setValue(values[0] / values[1], 0)
+        elif values[2] == "modulus":
+            super().setValue(values[0] % values[1], 0)
+        elif values[2] == "power":
+            super().setValue(values[0] ** values[1], 0)
         return super().sendEvent(0)
 
     @classmethod

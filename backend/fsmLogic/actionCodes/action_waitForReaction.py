@@ -33,10 +33,10 @@ class WaitForReaction(Action):
         super().checkValues(values)
 
         def check(reaction, user):
-            return reaction.message.id == values[0]['value']
+            return reaction.message.id == values[0]
 
         try:
-            reaction, user = await client.wait_for('reaction_add', timeout=values[1]['value'], check=check)
+            reaction, user = await client.wait_for('reaction_add', timeout=values[1] if values[1] > 0 else None, check=check)
         except TimeoutError:
             return super().sendEvent(1)
         super().setValue(user.id, 0)

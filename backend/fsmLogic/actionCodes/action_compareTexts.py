@@ -5,19 +5,18 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class Condition(Action):
+class CompareTexts(Action):
     guildID = -1
-    group = "Math"
-    templID = 0
+    group = "Text"
+    templID = 8
     inputs = [
-        ValueInput("First value", ValueType.Number),
-        ValueInput("Second value", ValueType.Number)
+        ValueInput("text 1", ValueType.Text),
+        ValueInput("text 2", ValueType.Text)
     ]
     outputs = []
     outEvents = [
-        EventOutput("larger"),
         EventOutput("equal"),
-        EventOutput("smaller")
+        EventOutput("not equal")
     ]
 
     def __init__(self):
@@ -27,14 +26,10 @@ class Condition(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        if values[0]['value'] > values[1]['value']:
+        if values[0] == values[1]:
             return super().sendEvent(0)
-        if values[0]['value'] == values[1]['value']:
-            return super().sendEvent(1)
-        else:
-            return super().sendEvent(2)
+        return super().sendEvent(1)
 
     @classmethod
     def getTemplate(cls):
         return super().getTemplate(cls)
-

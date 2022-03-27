@@ -5,7 +5,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class SendMessage(Action):
+class SendError(Action):
     guildID = -1
     group = "Interaction"
     templID = 21
@@ -27,11 +27,13 @@ class SendMessage(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
+        import datetime
         if values[0] == 0:
             ch = client.get_channel(client.get_guild(int(guild)).system_channel)
         else:
             ch = client.get_channel(values[0])
         if not ch:
+            client.errMsg[guild] = "[SendError - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find channel"
             return super().sendEvent(1)
         await ch.send(client.errMsg[guild])
 

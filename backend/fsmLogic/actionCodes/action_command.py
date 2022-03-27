@@ -28,7 +28,7 @@ class Command(Action):
         values = super().getValues()
         super().checkValues(values)
         import shlex
-        cmd = values[0]['value'].split(" ", 1)
+        cmd = values[0].split(" ", 1)
         mainCmd = cmd[0]
         if len(cmd) > 1:
             args = cmd[:1]

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import globalEventList from '../../assets/json/globalEvents.json';
 import valueTypes from '../../assets/json/types.json';
-import { Board } from '../utils/dataTypes/Board';
 import { MouseData } from '../utils/dataTypes/Mouse';
 import { Action } from '../utils/dataTypes/Action';
 import { Variable } from '../utils/dataTypes/Variable';
@@ -10,7 +8,6 @@ import { ValueNode } from '../views/input/value/valueNode';
 import { EventNode } from '../views/input/event/eventNode';
 import { Pipeline } from '../utils/dataTypes/Pipeline';
 import { VarElement } from '../utils/dataTypes/VarElement';
-import { User } from '../utils/dataTypes/User';
 import { SessionManager, TemplateManager, TypeValueManager } from '../utils/StaticDataManager';
 import { BoardManager } from '../utils/BoardManager';
 import { httpService } from './httpService.service';
@@ -26,13 +23,14 @@ export class MainControllerService {
     this.typeValMan = new TypeValueManager();
     this.sessionMan = new SessionManager();
 
-    this.typeValMan.setGlobalEvents(globalEventList.events)
-    this.typeValMan.setPipelineTypes(globalEventList.customActionEvents)
+    this.typeValMan.setValueTypes(valueTypes.types)
+
     this.hoveringDelete = false;
     this.spawnLocation = { x: 0, y: 0 }
     this.mouse = new MouseData()
 
-    this.typeValMan.setValueTypes(valueTypes.types)
+    this.getStaticData()
+
     this.manageInfo("This is the log, info about your actions will be shown here", false)
   }
 
@@ -64,6 +62,9 @@ export class MainControllerService {
   promptDateData: Date = new Date();
   showModal: boolean = false;
   selectedVar: VarElement;
+
+  showInfoModalType: string = "";
+  infoModalActData: Action;
 
   manageInfo(newText: string, isError: boolean) {
     var currentdate = new Date(); 
@@ -273,6 +274,22 @@ export class MainControllerService {
     )
   }
 
+  getStaticData() {
+    this.httpService.getGlobalEvents().subscribe(
+      (globalEvents) => {
+        this.typeValMan.setGlobalEvents(globalEvents.events)
+        this.typeValMan.setPipelineTypes(globalEvents.customActionEvents)
+      },
+      (error) => {console.log(error)}
+    )
+    this.httpService.getValueTypes().subscribe(
+      (valueTypes) => {
+        this.typeValMan.setValueTypes(valueTypes)
+      },
+      (error) => {console.log(error)}
+    )
+  }
+
   revertBoard(name: string) {
     if (!this.sessionMan.sessionIsValid()) return;
     this.httpService.getBoard(this.sessionMan.getGuild()!, name).subscribe(
@@ -298,5 +315,18 @@ export class MainControllerService {
 
   closePrompt() {
     this.showModal = false
+  }
+
+  updateInfoModal(act: Action){
+    this.infoModalActData = act
+    this.showInfoModalType = "action"
+  }
+
+  showInfoModalCustom(type: string){
+    this.showInfoModalType = type
+  }
+
+  closeInfoModal() {
+    this.showInfoModalType = ""
   }
 }

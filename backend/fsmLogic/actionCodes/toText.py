@@ -26,7 +26,7 @@ class ToText(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        super().setValue(str(values[0]['value']), 0)
+        super().setValue(str(values[0]), 0)
         return super().sendEvent(0)
 
     @classmethod

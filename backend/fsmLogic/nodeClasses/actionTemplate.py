@@ -34,9 +34,15 @@ class Action:
 
     @staticmethod
     def getTemplate(obj):
+        try:
+            with open("fsmLogic/actionCodes/descriptions/" + obj.__name__ + ".html", "r") as file:
+                descr = file.read()
+        except FileNotFoundError:
+            descr = "<h2>" + obj.__name__ + "</h2><br>This action is either custom or is missing a description"
         return {
             "type": obj.__name__,
             "id": obj.templID,
+            "description": descr,
             "group": obj.group,
             "position": {
                 "x": 0,

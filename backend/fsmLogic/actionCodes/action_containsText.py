@@ -28,7 +28,7 @@ class ContainsText(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        if values[1]['value'] in values[0]['value']:
+        if values[1] in values[0]:
             return super().sendEvent(0)
         return super().sendEvent(1)
 

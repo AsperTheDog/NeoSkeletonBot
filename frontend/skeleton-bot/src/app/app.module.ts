@@ -25,6 +25,7 @@ import { PipelineNode } from './views/PipelineNode/PipelineNode';
 import { PhantomPipelineNode } from './views/PipelineNode/phantom/phantomPipelineNode';
 import { CookieModule } from 'ngx-cookie';
 import { CustomModal } from './views/customModal/customMoal';
+import { InfoModal } from './views/infoModal/infoModal';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CustomModal } from './views/customModal/customMoal';
     PhantomGEventNode,
     PhantomPipelineNode,
     CustomModal,
+    InfoModal,
   ],
   imports: [
     BrowserModule,

@@ -375,7 +375,23 @@
   border: none;
   background-color: #008600;
   fill: #034e00;
-  border-radius: 20px;
+  border-radius: 5px;
+}
+
+.sideMenuBottomButtonInfo {
+  position: relative;
+  float: left;
+  width: 17%;
+  margin: 5% 3%;
+  height: 90%;
+  border: none;
+  background-color: #236cb1;
+  fill: #193a5c;
+  border-radius: 5px;
+}
+
+.sideMenuBottomButtonInfo:hover {
+  background-color: #2d86da;
 }
 
 .sideMenuBottomButtonAdd:disabled {
@@ -613,4 +629,20 @@
   margin-bottom: 0;
   width: 73%;
   float: left;
+}
+
+.keymapButton {
+  position: fixed;
+  top: 8vh;
+  width: 4vw;
+  height: 7vh;
+  left: 1vw;
+  border-radius: 10px;
+  border: none;
+  background-color: #236cb1;
+  fill: #193a5c;
+}
+
+.keymapButton:hover {
+  background-color: #2d86da;
 }

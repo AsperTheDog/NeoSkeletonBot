@@ -28,8 +28,10 @@ class GetUser(Action):
         values = super().getValues()
         super().checkValues(values)
         from Bot.utils import formatUser
+        import datetime
         usr = client.get_user(values[0])
         if not usr:
+            client.errMsg[guild] = "[GetUser - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find user"
             return super().sendEvent(1)
         super().setValue(formatUser(usr, [usr.id]), 0)
         return super().sendEvent(0)

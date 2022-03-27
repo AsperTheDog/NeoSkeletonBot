@@ -1,0 +1,13 @@
+<h2>ExtractValue</h2>
+<br/>
+This action will receive a structure and a text field and extract the value that has said text as key from the given structure.
+<br/><br/>
+In SkeletonBot, a structure is a composed value that has a list of values where each value is identified with a unique piece of text.<br/>
+For example, the action could receive a structure that has the following values:<br/>
+ - A value 32 asociated with the key "age"<br/>
+ - A value "John" associated with the key "name"<br/>
+ - A value "Man" associated with the key "gender"
+<br/><br/>
+In this case if the action received this structure and the text "age" then the output of the action would be 32
+<br/><br/>
+This action will trigger the "error" event if the text received does not match any key in the structure

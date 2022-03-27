@@ -27,7 +27,7 @@ class GetLetter(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        super().setValue(values[0]['value'][values[1]['value']], 0)
+        super().setValue(values[0][values[1]], 0)
         return super().sendEvent(0)
 
     @classmethod

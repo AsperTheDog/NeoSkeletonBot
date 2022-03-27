@@ -79,7 +79,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   varName: string = "";
   varInitialValue: string = "";
   evTypeInput: string = "0";
-  evType: string = "init";
+  evType: string = "on message received";
   evName: string = "";
   showCaseVar: Variable = new Variable(-1,
     new ValueInput(-1, "set value", -1, "in"),

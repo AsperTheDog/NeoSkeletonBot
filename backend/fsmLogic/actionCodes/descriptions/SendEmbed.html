@@ -1,0 +1,17 @@
+<h2>SendEmbed</h2>
+<br/>
+Given a suitable embed structure (structure generated either by <strong>CreateEmbed</strong> or <strong>AddEmbedField</strong>) and a channel id, this action node will send the embed to the channel.
+<br/><br/>
+Embed structure format:<br/>
+ - <strong>title:</strong> Title of the embed<br/>
+ - <strong>description:</strong> Description of the embed<br/>
+ - <strong>url:</strong> Link attached to the title of the embed<br/>
+ - <strong>color:</strong> Color to use in the embed<br/>
+ - <strong>fields:</strong> List of fields to be displayed in the embed
+<br/><br/>
+It is not recommended to extract the value of this structure since most manage data that is not compatible with SkeletonBot's interface.<br/>
+The commands will simply give an error and refuse to execute until you change it.
+<br/><br/>
+This node will trigger the "error" event if the channel is not found or the structure format is invalid
+
+See <strong>CreateEmbed</strong> or <strong>AddFieldEmbed</strong> for more information about embeds

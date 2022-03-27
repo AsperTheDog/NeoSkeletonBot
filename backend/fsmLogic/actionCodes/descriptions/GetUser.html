@@ -1,0 +1,17 @@
+<h2>GetUser</h2>
+<br/>
+Given a user ID, this action will return the data of the user.
+<br/><br/>
+Structure keys of a user are:<br/>
+- <strong>id(number)</strong>: The id of the user used as input<br/>
+- <strong>avatar(text)</strong>: Link to the profile picture image<br/>
+- <strong>bot(boolean)</strong>: True if the user is a bot, false otherwise<br/>
+- <strong>banner(text)</strong>: Link to the banner if the user has one, otherwise it's an empty text<br/>
+- <strong>created date(datetime)</strong>: Datetime of the moment when the account was created<br/>
+- <strong>name(number)</strong>: Name of the user<br/>
+- <strong>nick(text)</strong>: Nick of the user in the guild<br/>
+- <strong>discriminator(text)</strong>: Discriminator of the user<br/>
+- <strong>identifier(text)</strong>: The full username of the user in the format 'name#discriminator'<br/>
+- <strong>roles(structure)</strong>: A structure containing the list of roles where the id of each role is the key and the value is the name<br/>
+- <strong>mention(text)</strong>: A text piece in the format of a discord mention of this user<br/>
+- <strong>top_role(number)</strong>: The id of the highest role the user has in the guild

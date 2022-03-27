@@ -27,7 +27,7 @@ class TestBool(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        if bool(values[0]['value']):
+        if bool(values[0]):
             return super().sendEvent(0)
         return super().sendEvent(1)
 

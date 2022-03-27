@@ -27,23 +27,25 @@ class SendEmbed(Action):
         values = super().getValues()
         super().checkValues(values)
         import disnake
+        import datetime
         try:
             embed = disnake.Embed()
-            if values[0]['value']["title"] != "":
-                embed.title = values[0]['value']["title"]
-            if values[0]['value']["description"] != "":
-                embed.description = values[0]['value']["description"]
-            if values[0]['value']["color"] != "":
-                embed.colour = values[0]['value']["color"]
-            if values[0]['value']["url"] != "":
-                embed.url = values[0]['value']['url']
-            for field in values[0]['value']['fields']:
+            if values[0]["title"] != "":
+                embed.title = values[0]["title"]
+            if values[0]["description"] != "":
+                embed.description = values[0]["description"]
+            if values[0]["color"] != "":
+                embed.colour = values[0]["color"]
+            if values[0]["url"] != "":
+                embed.url = values[0]['url']
+            for field in values[0]['fields']:
                 embed.add_field(field["name"], field["value"], inline=field["inline"])
-            if "footer" in values[0]['value']:
-                embed.set_footer(text=values[0]['value']["footer"])
+            if "footer" in values[0]:
+                embed.set_footer(text=values[0]["footer"])
         except KeyError:
+            client.errMsg[guild] = "[SendEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid embed structure"
             return super().sendEvent(1)
-        ch = client.get_channel(values[1]['value'])
+        ch = client.get_channel(values[1])
         if not ch:
             return super().sendEvent(1)
         await ch.send(embed=embed)

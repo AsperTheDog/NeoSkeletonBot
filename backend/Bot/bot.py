@@ -15,6 +15,7 @@ client.add_cog(EventListener(client))
 async def on_ready():
     print(f'Logged on as {client.user}!')
     client.errCh = {}
+    client.errMsg = {}
 
 
 if __name__ == "__main__":

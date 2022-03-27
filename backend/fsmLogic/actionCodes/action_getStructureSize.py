@@ -26,7 +26,7 @@ class GetStructureSize(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        super().setValue(len(values[0]['value']), 0)
+        super().setValue(len(values[0]), 0)
         return super().sendEvent(0)
 
     @classmethod

@@ -5,6 +5,7 @@ import { AppComponent } from '../app.component';
 import { Action } from '../utils/dataTypes/Action';
 import { Board } from '../utils/dataTypes/Board';
 import { User } from '../utils/dataTypes/User';
+import { ValueType } from '../utils/dataTypes/ValueType';
 
 @Injectable({
   providedIn: 'root'
@@ -67,5 +68,15 @@ export class httpService {
   deleteBoard(selectedGuild: string, activeBoard: string) {
     const delURL = this.backendURL + "deleteBoard/" + selectedGuild + "/" + activeBoard
     return this.http.delete(delURL)
+  }
+
+  getGlobalEvents() {
+    const delURL = this.backendURL + "getGlobalEvents"
+    return this.http.get<{events:string[], customActionEvents:string[]}>(delURL)
+  }
+
+  getValueTypes() {
+    const delURL = this.backendURL + "getValueTypes"
+    return this.http.get<ValueType[]>(delURL)
   }
 }

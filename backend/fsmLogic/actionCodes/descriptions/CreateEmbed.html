@@ -1,0 +1,69 @@
+<h2>CreateEmbed</h2>
+<br/>
+This action generates a basic embed structure given some basic parameters
+
+This is the basic layout of an embed:
+<br/>
+<br/>
+<img width="80%" src="https://i.imgur.com/RNqAj9u.png">
+<br/>
+<br/>
+The url field will make the embed title be a link if filled. If you don't want the title to be a link, then don't connect this field to anything
+<br/><br/>
+The color field supports two formats:<br/>
+ One is a structure outputted by the actions <strong>createRGB</strong> and <strong>RGBFromHex</strong><br/>
+ The other is a text that has the name of the color. The color name texts supported by the action are:<br/>
+- <font color="#3498db">■</font> blue<br/>
+- <font color="#5865F2">■</font> blurple<br/>
+- <font color="#57F287">■</font> brand_green<br/>
+- <font color="#ED4245">■</font> brand_red<br/>
+- <font color="#206694">■</font> dark_blue<br/>
+- <font color="#c27c0e">■</font> dark_gold<br/>
+- <font color="#607d8b">■</font> dark_gray<br/>
+- <font color="#1f8b4c">■</font> dark_green<br/>
+- <font color="#607d8b">■</font> dark_grey<br/>
+- <font color="#ad1457">■</font> dark_magenta<br/>
+- <font color="#a84300">■</font> dark_orange<br/>
+- <font color="#71368a">■</font> dark_purple<br/>
+- <font color="#992d22">■</font> dark_red<br/>
+- <font color="#11806a">■</font> dark_teal<br/>
+- <font color="#36393F">■</font> dark_theme<br/>
+- <font color="#546e7a">■</font> darker_gray<br/>
+- <font color="#546e7a">■</font> darker_grey<br/>
+- <font color="#000000">■</font> default<br/>
+- <font color="#EB459E">■</font> fuchsia<br/>
+- <font color="#f1c40f">■</font> gold<br/>
+- <font color="#2ecc71">■</font> green<br/>
+- <font color="#99aab5">■</font> greyple<br/>
+- <font color="#979c9f">■</font> light_gray<br/>
+- <font color="#979c9f">■</font> light_grey<br/>
+- <font color="#95a5a6">■</font> lighter_gray<br/>
+- <font color="#95a5a6">■</font> lighter_grey<br/>
+- <font color="#e91e63">■</font> magenta<br/>
+- <font color="#7289da">■</font> og_blurple<br/>
+- <font color="#7289da">■</font> old_blurple<br/>
+- <font color="#e67e22">■</font> orange<br/>
+- <font color="#9b59b6">■</font> purple<br/>
+-   random<br/>
+- <font color="#e74c3c">■</font> red<br/>
+- <font color="#1abc9c">■</font> teal<br/>
+- <font color="#FEE75C">■</font> yellow<br/>
+<br/>
+<br/>
+<img width="80%" src="https://i.imgur.com/kAlPklV.png">
+<br/>
+<br/>
+<img width="80%" src="https://i.imgur.com/6MuGNcB.png">
+<br/>
+<br/>
+
+Embed structure format:<br/>
+ - <strong>title:</strong> Title of the embed<br/>
+ - <strong>description:</strong> Description of the embed<br/>
+ - <strong>url:</strong> Link attached to the title of the embed<br/>
+ - <strong>color:</strong> Color to use in the embed<br/>
+ - <strong>fields:</strong> List of fields to be displayed in the embed
+<br/><br/>
+It is not recommended to extract the value of this structure since most manage data that is not compatible with SkeletonBot's interface.<br/>
+The commands will simply give an error and refuse to execute until you change it.
+
