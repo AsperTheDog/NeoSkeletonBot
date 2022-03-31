@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class ToNumber(Action):
     guildID = -1
     group = "Values"
-    templID = 6
+    templID = 21
     inputs = [
         ValueInput("value", ValueType.Text),
     ]
@@ -31,7 +31,7 @@ class ToNumber(Action):
         try:
             super().setValue(int(values[0]), 0)
         except ValueError:
-            client.errMsg[guild] = "[ToNumber - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Text provided is not a number"
+            client.errMsg[guild.id] = "[ToNumber - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Text provided is not a number"
             return super().sendEvent(1)
         return super().sendEvent(0)
 

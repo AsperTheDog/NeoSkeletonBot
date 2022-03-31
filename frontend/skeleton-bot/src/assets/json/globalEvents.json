@@ -53,9 +53,9 @@
     "on invite created"
   ],
   "customActionEvents": [
-    "actionValueInput",
-    "actionEventInput",
-    "actionValueOutput",
-    "actionEventOutput"
+    "Value Input",
+    "Event Input",
+    "Value Output",
+    "Event Output"
   ]
 }

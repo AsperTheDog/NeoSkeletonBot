@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class CompareNumber(Action):
     guildID = -1
     group = "Math"
-    templID = 0
+    templID = 2
     inputs = [
         ValueInput("First value", ValueType.Number),
         ValueInput("Second value", ValueType.Number)

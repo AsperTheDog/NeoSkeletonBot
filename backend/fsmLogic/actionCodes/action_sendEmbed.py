@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class SendEmbed(Action):
     guildID = -1
     group = "Embed"
-    templID = 12
+    templID = 16
     inputs = [
         ValueInput("embed", ValueType.Structure),
         ValueInput("channel", ValueType.Number)
@@ -43,9 +43,9 @@ class SendEmbed(Action):
             if "footer" in values[0]:
                 embed.set_footer(text=values[0]["footer"])
         except KeyError:
-            client.errMsg[guild] = "[SendEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid embed structure"
+            client.errMsg[guild.id] = "[SendEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid embed structure"
             return super().sendEvent(1)
-        ch = client.get_channel(values[1])
+        ch = guild.get_channel(values[1])
         if not ch:
             return super().sendEvent(1)
         await ch.send(embed=embed)

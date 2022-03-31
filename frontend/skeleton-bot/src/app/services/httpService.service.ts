@@ -23,13 +23,13 @@ export class httpService {
   cookieParam: HttpParams;
 
 
-  getBoards(guild: string){
+  getBoards(guild: number){
     const boardURL = this.backendURL + "boards"
     const payload = this.cookieParam.append('guild', guild)
     return this.http.get<Board[]>(boardURL, {params: payload})
   }
   
-  getActions(guild: string){
+  getActions(guild: number){
     const actURL = this.backendURL + "actions"
     const payload = this.cookieParam.append('guild', guild)
     return this.http.get<Action[]>(actURL, {params: payload})
@@ -37,7 +37,7 @@ export class httpService {
 
   getGuilds(){
     const guildURL = this.backendURL + "getGuilds"
-    return this.http.get<{icon: string, id: string, name: string}[]>(guildURL, {params: this.cookieParam})
+    return this.http.get<{icon: string, id: number, name: string}[]>(guildURL, {params: this.cookieParam})
   }
 
   getCreds(usrCode: string){
@@ -50,7 +50,7 @@ export class httpService {
     return this.http.post<{status: boolean}>(this.backendURL + "saveBoard", activeBoard)
   }
 
-  getBoard(guild: string, name: string){
+  getBoard(guild: number, name: string){
     const payload = this.cookieParam.append('guild', guild).append('name', name)
     const revURL = this.backendURL + "revertBoard"
     return this.http.get<Board>(revURL, {params: payload})
@@ -61,11 +61,11 @@ export class httpService {
     this.cookieParam = new HttpParams().append('token', token)
   }
 
-  removeCookie(name: string) {
+  removeCookie() {
     this.cookieService.remove('token')
   }
 
-  deleteBoard(selectedGuild: string, activeBoard: string) {
+  deleteBoard(selectedGuild: number, activeBoard: string) {
     const delURL = this.backendURL + "deleteBoard/" + selectedGuild + "/" + activeBoard
     return this.http.delete(delURL)
   }

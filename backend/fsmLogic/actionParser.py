@@ -1,6 +1,8 @@
 import importlib
 import inspect
 import os
+import random
+import traceback
 
 import re
 
@@ -113,7 +115,7 @@ def genCodeFuncs(board, guild):
         conns = genCodeConns(action)
         finalCode = ""
         funcRefs.append(str(action['id']))
-        actInstance = ActionManager.getAction(action['type'], guild)()
+        actInstance = ActionManager.getAction(action['type'], int(guild))()
         code = inspect.getsource(actInstance.execute)
         code = code.replace("async def execute(self, client, guild)", "async def act" + str(action['id']) + "(vrs)")
         matches = set(re.findall(r"values\[([0-9])]", code))
@@ -141,9 +143,10 @@ def genCodeFuncs(board, guild):
                     matches = re.findall(r"super\(\)\.setValue\((.+),(.+)\)", line)
                     if len(matches) != 0:
                         outs = action['outputs'][int(matches[0][1])]['hook']
-                        outStr = ""
+                        randID = random.randint(1000, 9999)
+                        outStr = tabs + "_ret_" + str(randID) + " = " + matches[0][0] + "\n"
                         for out in outs:
-                            outStr += tabs + "vrs[" + str(out) + "]['value'] = " + matches[0][0] + "\n"
+                            outStr += tabs + "vrs[" + str(out) + "]['value'] = _ret_" + str(randID) + "\n"
                         outStr = outStr[:-1]
                         if outStr == "":
                             outStr = tabs + "pass"
@@ -151,8 +154,9 @@ def genCodeFuncs(board, guild):
         finalCode += "    " + code.splitlines()[0] + "\n"
         finalCode += conns
         vals = ""
-        for val in usedVals:
+        for val in set(usedVals):
             vals += "vrs[" + val + "], "
+        vals = vals[:-2]
         code = code.replace("super().checkValues(values)", "checkValues([" + vals + "], '" + action['type'] + "')")
         for line in code.splitlines()[1:]:
             finalCode += "    " + line + "\n"
@@ -165,6 +169,7 @@ def genCodeConns(act):
     conns = "            pipes = {\n"
     for count, ev in enumerate(act['events']):
         conns += "                " + str(count) + ": " + str(ev['hook']) + ",\n"
+    conns += "                -1: -1\n"
     conns += "            }\n"
     return conns
 
@@ -178,7 +183,7 @@ def genCodeVars(board):
             initVal = Variable.getInitValue(variable['valueType'], False)
         else:
             initVal = variable['initialValue']
-            if isinstance(initVal, str):
+            if ValueType.isStr(variable['valueType']):
                 initVal = initVal.replace("'", "\\'")
                 initVal = initVal.replace('"', '\\"')
                 initVal = "'" + initVal + "'"
@@ -193,13 +198,13 @@ def genCodeVars(board):
 def genCodePipelines(board):
     pipelines = {'in': [], 'out': [], 'inEvent': None, 'outEvent': []}
     for pipe in board['pipelines']:
-        if pipe['type'] == "actionValueInput":
+        if pipe['type'] == "Value Input":
             pipelines['in'].append({'name': pipe['name'], 'valueType': pipe['point']['valueType'], 'hook': pipe['point']['hook']})
-        elif pipe['type'] == "actionValueOutput":
+        elif pipe['type'] == "Value Output":
             pipelines['out'].append({'name': pipe['name'], 'valueType': pipe['point']['valueType'], 'hook': pipe['point']['hook']})
-        elif pipe['type'] == "actionEventInput":
+        elif pipe['type'] == "Event Input":
             pipelines['inEvent'] = {'id': pipe['id'], 'name': pipe['name'], 'hook': pipe['eventPoint']['hook']}
-        elif pipe['type'] == "actionEventOutput":
+        elif pipe['type'] == "Event Output":
             pipelines['outEvent'].append({'id': pipe['id'], 'name': pipe['name'], 'hook': pipe['eventPoint']['hook']})
     return pipelines
 
@@ -227,12 +232,11 @@ def genCodeAction(board, guild, actID=None):
     finalCode += "from fsmLogic.nodeClasses.inputs import ValueInput, ValueOutput, EventOutput\n"
     finalCode += "from fsmLogic.nodeClasses.valueTypes import ValueType\n"
     finalCode += "from fsmLogic.nodeClasses.variable import Variable\n"
-    finalCode += "import asyncio\n"
     finalCode += "\n\n"
     finalCode += "def checkValues(vrs, action):\n"
     finalCode += "    for vr in vrs:\n"
     finalCode += "        if not Variable.checkValueType(vr):\n"
-    finalCode += "            raise ValueError('[' + action + ']: Invalid variable value <' + vr['value'] + '> which should be of type ' + ValueType(vr['type']).name)\n"
+    finalCode += "            raise ValueError('[' + action + ']: Invalid variable value <' + str(vr['value']) + '> which should be of type ' + ValueType(vr['type']).name)\n"
     finalCode += "\n\n"
     finalCode += "class " + bName + "(Action):\n"
     if not actID:
@@ -240,7 +244,7 @@ def genCodeAction(board, guild, actID=None):
     else:
         finalCode += "    templID = " + str(actID) + "\n"
     finalCode += "    group = 'Custom'\n"
-    finalCode += "    guildID = '" + guild + "'\n"
+    finalCode += "    guildID = " + guild + "\n"
     finalCode += "    inputs = [\n"
     for inPipe in pipelines['in']:
         finalCode += "        ValueInput('" + inPipe['name'] + "', ValueType." + ValueType(inPipe['valueType']).name + "),\n"
@@ -258,14 +262,14 @@ def genCodeAction(board, guild, actID=None):
     finalCode += "        super().__init__()\n"
     finalCode += "        super().addConnections(self.__class__.inputs, self.__class__.outputs, self.__class__.outEvents)\n"
     finalCode += "\n"
-    finalCode += "    async def execute(self, client):\n"
+    finalCode += "    async def execute(self, client, guild):\n"
     finalCode += "        values = super().getValues()\n"
     finalCode += "\n"
     for func in functions:
         finalCode += func
         finalCode += "\n"
     finalCode += variables
-    finalCode += "        checkValues(vrs_" + bName + ", '" + bName + "')\n"
+    finalCode += "        checkValues(vrs_" + bName + ".values(), '" + bName + "')\n"
     finalCode += "        actions_" + bName + " = {\n"
     for func in funcRefs:
         finalCode += "            " + func + ": act" + func + ",\n"
@@ -274,10 +278,11 @@ def genCodeAction(board, guild, actID=None):
     finalCode += "        events_" + bName + " = {\n"
     for count, evOutPipe in enumerate(pipelines['outEvent']):
         finalCode += "            " + str(evOutPipe['id']) + ": " + str(count) + ",\n"
+    finalCode += "            -1: -1\n"
     finalCode += "        }\n"
     for count, inPipe in enumerate(pipelines['in']):
         for hook in inPipe['hook']:
-            finalCode += "        vrs_" + bName + "[" + str(hook) + "] = values[" + str(count) + "]\n"
+            finalCode += "        vrs_" + bName + "[" + str(hook) + "]['value'] = values[" + str(count) + "]\n"
     finalCode += "        while nxt_" + bName + " in actions_" + bName + ":\n"
     finalCode += "            nxt_" + bName + " = await actions_" + bName + "[nxt_" + bName + "](vrs_" + bName + ")\n"
     for count, outPipe in enumerate(pipelines['out']):
@@ -322,11 +327,13 @@ def genCodeMain(board, guild):
     finalCode += "            raise ValueError('[' + action + ']: Invalid variable value <' + vr['value'] + '> which should be of type ' + ValueType(vr['type']).name)\n"
     finalCode += "\n\n"
     finalCode += "class MainBoard_" + guild + ":\n"
-    finalCode += "    guildID = '" + guild + "'\n"
+    finalCode += "    guildID = " + guild + "\n"
     finalCode += gEvs
     finalCode += "\n"
     finalCode += "    @classmethod\n"
     finalCode += "    def processEvent(cls, client, event, initVal, guild):\n"
+    finalCode += "        if event not in cls.gEvents:\n"
+    finalCode += "            return\n"
     finalCode += "        for ev in cls.gEvents[event]:\n"
     finalCode += "            asyncio.get_event_loop().create_task(cls.execute(client, ev[1], ev[0], initVal, guild))\n"
     finalCode += "\n"
@@ -363,14 +370,16 @@ def compileMain(board, guild):
         processConnections(board)
         genCodeMain(board, guild)
 
-        newMod = importlib.import_module("fsmLogic.mains.mainBoard_" + guild)
+        newMod = importlib.import_module("fsmLogic.mains.mainBoard_" + str(guild))
         importlib.reload(newMod)
     except (AttributeError, SyntaxError, ImportError, TypeError) as err:
-        print(err)
+        traceback.print_last()
         return False
         if os.path.isfile("fsmLogic/mains/mainBoard_" + guild + ".py"):
             os.remove("fsmLogic/mains/mainBoard_" + guild + ".py")
         return False
+    finally:
+        elements.clear()
     return True
 
 
@@ -387,10 +396,13 @@ def compileAction(board, guild):
         newMod = importlib.import_module("fsmLogic.actionCodes.custom." + hashGuildID(guild) + ".action_" + board['name'])
         importlib.reload(newMod)
     except (AttributeError, SyntaxError, ImportError, TypeError) as err:
-        print(err)
+        traceback.print_last()
+        return False
         if os.path.isfile("fsmLogic/actionCodes/custom/" + hashGuildID(guild) + "/action_" + board['name'] + ".py"):
             os.remove("fsmLogic/actionCodes/custom/" + hashGuildID(guild) + "/action_" + board['name'] + ".py")
             if len(os.listdir("fsmLogic/actionCodes/custom/" + hashGuildID(guild))) == 0:
                 os.rmdir("fsmLogic/actionCodes/custom/" + hashGuildID(guild))
         return False
+    finally:
+        elements.clear()
     return True

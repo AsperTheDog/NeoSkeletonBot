@@ -6,6 +6,7 @@ from disnake.ext.commands import Bot
 from Bot.listener import EventListener
 import yaml
 
+from database.dbManager import SkeletonDB
 
 client = Bot(intents=Intents.all())
 client.add_cog(EventListener(client))
@@ -16,6 +17,7 @@ async def on_ready():
     print(f'Logged on as {client.user}!')
     client.errCh = {}
     client.errMsg = {}
+    client.db = SkeletonDB()
 
 
 if __name__ == "__main__":

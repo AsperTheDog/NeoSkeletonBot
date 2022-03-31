@@ -8,9 +8,9 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class SendMessage(Action):
     guildID = -1
     group = "Interaction"
-    templID = 5
+    templID = 18
     inputs = [
-        ValueInput("Content", ValueType.Any),
+        ValueInput("Content", ValueType.Text),
         ValueInput("Channel", ValueType.Number)
     ]
     outputs = [
@@ -31,9 +31,9 @@ class SendMessage(Action):
         import datetime
         ch = client.get_channel(values[1])
         if not ch:
-            client.errMsg[guild] = "[SendMessage - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find channel"
+            client.errMsg[guild.id] = "[SendMessage - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find channel"
             return super().sendEvent(1)
-        msg = await ch.send(str(values[0]))
+        msg = await ch.send(values[0])
         super().setValue(msg.id, 0)
         return super().sendEvent(0)
 

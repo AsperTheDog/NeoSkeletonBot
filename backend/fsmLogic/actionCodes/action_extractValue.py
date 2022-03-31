@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class ExtractValue(Action):
     guildID = -1
     group = "Structure"
-    templID = 1
+    templID = 8
     inputs = [
         ValueInput("Extract tag", ValueType.Text),
         ValueInput("Structure", ValueType.Structure)
@@ -32,7 +32,7 @@ class ExtractValue(Action):
         try:
             super().setValue(values[1][values[0]], 0)
         except KeyError:
-            client.errMsg[guild] = "[ExtractValue - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Key received not included in structure"
+            client.errMsg[guild.id] = "[ExtractValue - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Key received not included in structure"
         super().sendEvent(0)
 
     @classmethod

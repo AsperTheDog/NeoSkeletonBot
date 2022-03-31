@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class Operation(Action):
     guildID = -1
     group = "Math"
-    templID = 3
+    templID = 12
     inputs = [
         ValueInput("First value", ValueType.Number),
         ValueInput("Second value", ValueType.Number),

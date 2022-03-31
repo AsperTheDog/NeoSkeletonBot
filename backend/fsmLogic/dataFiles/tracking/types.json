@@ -92,5 +92,21 @@
     ],
     "hasInitial": true,
     "initial": "false"
+  },
+  {
+    "id": 6,
+    "name": "Datetime",
+    "color": "yellow",
+    "compatible": [
+      4,
+      6
+    ],
+    "canBeVar": true,
+    "varInOut": [
+      6,
+      6
+    ],
+    "hasInitial": false,
+    "initial": ""
   }
 ]

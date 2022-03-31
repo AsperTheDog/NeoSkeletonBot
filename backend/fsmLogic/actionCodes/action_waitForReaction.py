@@ -10,7 +10,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class WaitForReaction(Action):
     guildID = -1
     group = "Interaction"
-    templID = 15
+    templID = 24
     inputs = [
         ValueInput("Message", ValueType.Number),
         ValueInput("Timeout", ValueType.Number)

@@ -10,7 +10,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class ContainsText(Action):
     guildID = -1
     group = "Text"
-    templID = 17
+    templID = 4
     inputs = [
         ValueInput("Text", ValueType.Text),
         ValueInput("Subtext", ValueType.Text)

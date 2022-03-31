@@ -5,18 +5,17 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class ToText(Action):
+class CancelDBProcess(Action):
     guildID = -1
-    group = "Values"
-    templID = 7
+    group = "Database"
+    templID = 39
     inputs = [
-        ValueInput("value", ValueType.Any),
+        ValueInput("code", ValueType.Number)
     ]
-    outputs = [
-        ValueOutput("result", ValueType.Text)
-    ]
+    outputs = []
     outEvents = [
-        EventOutput("completed")
+        EventOutput("completed"),
+        EventOutput("Error")
     ]
 
     def __init__(self):
@@ -26,7 +25,12 @@ class ToText(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        super().setValue(str(values[0]), 0)
+        import datetime
+        try:
+            await client.db.cancel(values[0])
+        except ValueError:
+            client.errMsg[guild.id] = "[CancelDBProcess - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"
+            return super().sendEvent(1)
         return super().sendEvent(0)
 
     @classmethod

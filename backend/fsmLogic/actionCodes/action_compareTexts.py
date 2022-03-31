@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class CompareTexts(Action):
     guildID = -1
     group = "Text"
-    templID = 8
+    templID = 3
     inputs = [
         ValueInput("text 1", ValueType.Text),
         ValueInput("text 2", ValueType.Text)

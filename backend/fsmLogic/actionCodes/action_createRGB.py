@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class CreateRGB(Action):
     guildID = -1
     group = "Values"
-    templID = 18
+    templID = 7
     inputs = [
         ValueInput("Red", ValueType.Number),
         ValueInput("Blue", ValueType.Number),

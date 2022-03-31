@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class GetUser(Action):
     guildID = -1
     group = "Values"
-    templID = 16
+    templID = 11
     inputs = [
         ValueInput("User ID", ValueType.Number)
     ]
@@ -27,13 +27,13 @@ class GetUser(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        from Bot.utils import formatUser
+        from Bot.utils import formatMember
         import datetime
-        usr = client.get_user(values[0])
+        usr = guild.get_member(values[0])
         if not usr:
-            client.errMsg[guild] = "[GetUser - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find user"
+            client.errMsg[guild.id] = "[GetUser - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find user"
             return super().sendEvent(1)
-        super().setValue(formatUser(usr, [usr.id]), 0)
+        super().setValue(formatMember(usr), 0)
         return super().sendEvent(0)
 
     @classmethod

@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class AddEmbedField(Action):
     guildID = -1
     group = "Embed"
-    templID = 13
+    templID = 0
     inputs = [
         ValueInput("embed", ValueType.Structure),
         ValueInput("title", ValueType.Text),
@@ -33,7 +33,7 @@ class AddEmbedField(Action):
         import datetime
         embed = values[0]
         if 'fields' not in embed or not isinstance(embed['fields'], list):
-            client.errMsg[guild] = "[AddEmbedField - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid Embed structure"
+            client.errMsg[guild.id] = "[AddEmbedField - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid Embed structure"
             return super().sendEvent(1)
         embed['fields'].append({'name': values[1], 'value': values[2], 'inline': bool(values[3])})
         super().setValue(embed, 0)

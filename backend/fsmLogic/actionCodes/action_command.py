@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class Command(Action):
     guildID = -1
     group = "Command"
-    templID = 9
+    templID = 1
     inputs = [
         ValueInput("raw text", ValueType.Text)
     ]
@@ -31,7 +31,7 @@ class Command(Action):
         cmd = values[0].split(" ", 1)
         mainCmd = cmd[0]
         if len(cmd) > 1:
-            args = cmd[:1]
+            args = cmd[1]
             try:
                 args = shlex.split(args)
             except ValueError:

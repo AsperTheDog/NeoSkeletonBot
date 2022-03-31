@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class GetLetter(Action):
     guildID = -1
     group = "Text"
-    templID = 2
+    templID = 9
     inputs = [
         ValueInput("text", ValueType.Text),
         ValueInput("index", ValueType.Number),

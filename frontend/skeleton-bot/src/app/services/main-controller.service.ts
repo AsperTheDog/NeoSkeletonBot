@@ -250,7 +250,7 @@ export class MainControllerService {
   }
 
   logout() {
-    this.httpService.removeCookie('token')
+    this.httpService.removeCookie()
     this.sessionMan.removeSession()
   }
 

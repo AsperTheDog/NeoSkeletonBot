@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class CreateEmbed(Action):
     guildID = -1
     group = "Embed"
-    templID = 11
+    templID = 6
     inputs = [
         ValueInput("title", ValueType.Text),
         ValueInput("description", ValueType.Text),
@@ -41,10 +41,10 @@ class CreateEmbed(Action):
                 try:
                     color = eval("disnake.Color." + values[2] + "()")
                 except AttributeError:
-                    client.errMsg[guild] = "[CreateEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color"
+                    client.errMsg[guild.id] = "[CreateEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color"
                     return super().sendEvent(1)
             else:
-                client.errMsg[guild] = "[CreateEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color type"
+                client.errMsg[guild.id] = "[CreateEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color type"
                 return super().sendEvent(1)
         else:
             color = ""

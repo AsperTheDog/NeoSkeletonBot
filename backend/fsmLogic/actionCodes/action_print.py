@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class Print(Action):
     guildID = -1
     group = "Debug"
-    templID = 4
+    templID = 13
     inputs = [
         ValueInput("value", ValueType.Any),
     ]

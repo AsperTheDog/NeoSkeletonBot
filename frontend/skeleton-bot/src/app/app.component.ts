@@ -183,24 +183,24 @@ export class AppComponent implements OnInit, AfterViewInit {
   updateShowcasePipeline() {
     this.showCasePipeline.type = this.evType
     this.showCasePipeline.name = this.evName
-    if (this.evType == 'actionValueInput' || this.evType == 'actionValueOutput') {
+    if (this.evType == 'Value Input' || this.evType == 'Value Output') {
       if (!this.showCasePipeline.point) {
-        this.showCasePipeline.point = new ValueInput(-1, this.evName, parseInt(this.evTypeInput), this.evType == 'actionValueInput' ? "out" : "in")
+        this.showCasePipeline.point = new ValueInput(-1, this.evName, parseInt(this.evTypeInput), this.evType == 'Value Input' ? "out" : "in")
       }
       else {
         this.showCasePipeline.point.name = this.evName
         this.showCasePipeline.point.valueType = parseInt(this.evTypeInput)
-        this.showCasePipeline.point.nature = this.evType == 'actionValueInput' ? "out" : "in"
+        this.showCasePipeline.point.nature = this.evType == 'Value Input' ? "out" : "in"
       }
       this.showCasePipeline.eventPoint = null
     }
     else {
       if (!this.showCasePipeline.eventPoint) {
-        this.showCasePipeline.eventPoint = new EventInput(-1, this.evName, this.evType == 'actionEventInput' ? "out" : "in")
+        this.showCasePipeline.eventPoint = new EventInput(-1, this.evName, this.evType == 'Event Input' ? "out" : "in")
       }
       else {
         this.showCasePipeline.eventPoint.name = this.evName
-        this.showCasePipeline.eventPoint.nature = this.evType == 'actionEventInput' ? "out" : "in"
+        this.showCasePipeline.eventPoint.nature = this.evType == 'Event Input' ? "out" : "in"
       }
       this.showCasePipeline.point = null
     }
@@ -234,7 +234,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   changeBoard() {
     if (this.mainController.requestedBoard != "Main") {
       this.varIsConstant = true
-      this.evType = "actionValueInput"
+      this.evType = "Value Input"
       this.updateShowcasePipeline()
     }
     else {

@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class RGBFromHex(Action):
     guildID = -1
     group = "Values"
-    templID = 19
+    templID = 15
     inputs = [
         ValueInput("Hex", ValueType.Text)
     ]
@@ -32,7 +32,7 @@ class RGBFromHex(Action):
         try:
             rgb = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
         except ValueError:
-            client.errMsg[guild] = "[RGBFromHex - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color format"
+            client.errMsg[guild.id] = "[RGBFromHex - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color format"
             return super().sendEvent(1)
         rgb = {'r': rgb[0], 'g': rgb[1], 'b': rgb[2]}
         super().setValue(rgb, 0)

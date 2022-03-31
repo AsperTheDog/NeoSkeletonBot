@@ -6,7 +6,7 @@ import { VarElement } from "./VarElement";
 import { Variable } from "./Variable";
 
 export class Board {
-  constructor(name: string, guild: string, actions: Action[], variables: VarElement[], varInstances: Variable[], transitions: Transition[], globalEvents: GlobalEvent[], pipelines: Pipeline[]) {
+  constructor(name: string, guild: number, actions: Action[], variables: VarElement[], varInstances: Variable[], transitions: Transition[], globalEvents: GlobalEvent[], pipelines: Pipeline[]) {
     this.name = name;
     this.guild = guild;
     this.actions = actions;
@@ -19,7 +19,7 @@ export class Board {
   }
 
   name: string;
-  guild: string;
+  guild: number;
   actions: Action[];
   variables: VarElement[];
   varInstances: Variable[];

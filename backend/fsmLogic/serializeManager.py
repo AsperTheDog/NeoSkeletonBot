@@ -6,7 +6,7 @@ import json
 
 from flask import jsonify
 
-from fsmLogic.actionManager import ActionManager
+from fsmLogic.boardManager import BoardManager
 
 
 def loadBoards(guild):
@@ -40,6 +40,7 @@ def loadBoards(guild):
 
 
 def removeMain(guild):
+    BoardManager.removeMain(int(guild))
     if os.path.isfile("fsmLogic/mains/mainBoard_" + guild + ".py"):
         os.remove("fsmLogic/mains/mainBoard_" + guild + ".py")
     if os.path.isfile("fsmLogic/dataFiles/front/" + guild + "/Main.json"):

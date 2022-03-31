@@ -175,8 +175,8 @@ export class BoardManager {
 
   createPipeline(ge: Pipeline, mouse: MouseData) {
     this.idMan.getID(ge)
-    if (ge.type == "actionEventInput" || ge.type == "actionEventOutput") {
-      if (ge.type == "actionEventInput") {
+    if (ge.type == "Event Input" || ge.type == "Event Output") {
+      if (ge.type == "Event Input") {
         this.activeBoard.hasEvInput = true
       }
       this.idMan.getID(ge.eventPoint!)
@@ -278,14 +278,14 @@ export class BoardManager {
     if (node.eventPoint) {
       this.idMan.delete(node.eventPoint.id)
     }
-    if (node.type == "actionEventInput") {
+    if (node.type == "Event Input") {
       this.activeBoard.hasEvInput = false;
     }
     if (spl)
       this.activeBoard.pipelines.splice(this.activeBoard.pipelines.indexOf(node), 1)
   }
 
-  changeBoard(loadBoard: string, isNew: boolean, guild: string) {
+  changeBoard(loadBoard: string, isNew: boolean, guild: number) {
     if (isNew) {
       this.boards.set(loadBoard, new Board(loadBoard, guild, [], [], [], [], [], []))
       this.boardList[this.boardList.length - 1] = loadBoard

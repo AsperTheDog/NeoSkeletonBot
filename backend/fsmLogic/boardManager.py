@@ -27,9 +27,12 @@ class BoardManager:
     @staticmethod
     def sendGlobalEvent(client, event, value, guild):
         print("broadcasting event", event, "for guild", guild)
-        if guild not in BoardManager._mains:
+        if guild.id not in BoardManager._mains:
             return
-        if guild not in client.errCh:
-            client.errCh[guild] = client.get_guild(int(guild)).system_channel
-        BoardManager._mains[guild].processEvent(client, event, value, guild)
+        if guild.id not in client.errCh:
+            client.errCh[guild.id] = client.get_guild(guild.id).system_channel
+        BoardManager._mains[guild.id].processEvent(client, event, value, guild)
 
+    @staticmethod
+    def removeMain(guild):
+        BoardManager._mains.pop(guild)

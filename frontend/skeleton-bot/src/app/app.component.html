@@ -169,9 +169,7 @@
             <span class="varSelectorText">Constant </span>
           </div>
           <div class="varSelectRight">
-            <input class="varSelectInput" *ngIf="this.mainController.boardMan.activeBoard && this.mainController.boardMan.activeBoard.name == 'Main'" type="checkbox" [(ngModel)]="varIsConstant"
-              (change)="updateShowcaseVariable()" />
-            <input class="varSelectInput" disabled="true" *ngIf="this.mainController.boardMan.activeBoard && this.mainController.boardMan.activeBoard.name != 'Main'" type="checkbox" [(ngModel)]="varIsConstant"
+            <input class="varSelectInput" *ngIf="this.mainController.boardMan.activeBoard" type="checkbox" [(ngModel)]="varIsConstant"
               (change)="updateShowcaseVariable()" />
           </div>
           <hr class="varSelectorSep" />
@@ -220,7 +218,7 @@
         <div class="eventShowcase" [ngStyle]="{height: (2 * 40 + 200) + 'px'}">
           <app-phantomGEventNode [mainData]="showCaseEvent"></app-phantomGEventNode>
         </div>
-        <button [disabled]="!dragged || (evType == 'actionEventInput' && mainController.boardMan.activeBoard.hasEvInput)" class="sideMenuBottomButtonAdd" style="height: auto;"
+        <button [disabled]="!dragged || (evType == 'Event Input' && mainController.boardMan.activeBoard.hasEvInput)" class="sideMenuBottomButtonAdd" style="height: auto;"
           (click)="mainController.getNewGEvent(showCaseEvent); resetShowCase('event')">
           <svg class="sideMenuBottomSVG" width="100%" height="100%"
             viewBox="0 0 16 16">
@@ -251,7 +249,7 @@
           <hr class="varSelectorSep" />
         </div>
         <div class="varSelectInputContainer">
-          <div class="varSelectRight" *ngIf="evType != 'actionEventInput' && evType != 'actionEventOutput'">
+          <div class="varSelectRight" *ngIf="evType != 'Event Input' && evType != 'Event Output'">
             <select class="varSelectInput" [(ngModel)]="evTypeInput" (change)="updateShowcasePipeline()">
               <option *ngFor="let valType of mainController.typeValMan.allowedValues" [label]="valType[1]">{{valType[0]}}</option>
             </select>
@@ -260,7 +258,7 @@
         <div class="eventShowcase" [ngStyle]="{height: (2 * 40 + 200) + 'px'}">
           <app-phantomPipelineNode #phantomPipe [mainData]="showCasePipeline"></app-phantomPipelineNode>
         </div>
-        <button [disabled]="!dragged || (evType == 'actionEventInput' && mainController.boardMan.activeBoard.hasEvInput) || evName == ''" class="sideMenuBottomButtonAdd" style="height: auto;"
+        <button [disabled]="!dragged || (evType == 'Event Input' && mainController.boardMan.activeBoard.hasEvInput) || evName == ''" class="sideMenuBottomButtonAdd" style="height: auto;"
           (click)="mainController.getNewPipeline(showCasePipeline); resetShowCase('pipeline')">
           <svg class="sideMenuBottomSVG" width="100%" height="100%"
             viewBox="0 0 16 16">

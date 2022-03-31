@@ -39,7 +39,7 @@ def getActions():
     if not exists:
         return jsonify([])
     acts = []
-    for act in ActionManager.getActionList(request.args.get('guild')):
+    for act in ActionManager.getActionList(int(request.args.get('guild'))):
         acts.append(act[1].getTemplate())
 
     return jsonify(acts)

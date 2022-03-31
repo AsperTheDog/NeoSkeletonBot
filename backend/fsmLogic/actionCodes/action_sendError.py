@@ -8,7 +8,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class SendError(Action):
     guildID = -1
     group = "Interaction"
-    templID = 21
+    templID = 17
     inputs = [
         ValueInput("Channel", ValueType.Number)
     ]
@@ -33,9 +33,9 @@ class SendError(Action):
         else:
             ch = client.get_channel(values[0])
         if not ch:
-            client.errMsg[guild] = "[SendError - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find channel"
+            client.errMsg[guild.id] = "[SendError - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find channel"
             return super().sendEvent(1)
-        await ch.send(client.errMsg[guild])
+        await ch.send(client.errMsg[guild.id])
 
 
     @classmethod

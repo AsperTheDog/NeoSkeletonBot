@@ -89,8 +89,8 @@ export class SessionManager {
   
   usr: User | undefined;
   usrCode: string;
-  guilds: {icon: string, id: string, name: string}[] = []
-  selectedGuild: string | undefined;
+  guilds: {icon: string, id: number, name: string}[] = []
+  selectedGuild: number | undefined;
 
   sessionIsValid() {
     return this.usr && this.selectedGuild
@@ -108,7 +108,7 @@ export class SessionManager {
     return this.selectedGuild
   }
 
-  insertGuilds(guilds: {icon: string, id: string, name: string}[]) {
+  insertGuilds(guilds: {icon: string, id: number, name: string}[]) {
     this.guilds = guilds
     if (this.guilds.length != 0)
       this.selectedGuild = this.guilds[0].id

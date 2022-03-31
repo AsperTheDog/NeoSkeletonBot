@@ -1,0 +1,16 @@
+<h2>WaitFor</h2>
+<br/>
+When the program reaches this action it will stop its execution for the inserted amount of time.
+<br/><br/>
+The format for the time is the following:<br/>
+The text must have a set of numbers followed each by a letter representing the unit of time representing them.<br/>
+The possible letters are w(weeks), d(days), h(hours), m(minutes), s(seconds)<br/>
+Examples are:<br/>
+- "11w 3d 32m 45s" meaning <strong>11 weeks + 3 days + 32 minutes + 45 seconds</strong><br/>
+- "6d 2s" meaning <strong>6 days + 2 seconds</strong><br/>
+- "4s 8w" meaning <strong>8 weeks + 4 seconds</strong>
+<br/><br/>
+Take into account the system will ignore unrecognized patterns or characters, for example:<br/>
+ - "wer2fewfwfok 34w" will be interpreted as 34 weeks only
+<br/><br/>
+The action will return an error if no element is recognized and the time to wait is equal to 0s

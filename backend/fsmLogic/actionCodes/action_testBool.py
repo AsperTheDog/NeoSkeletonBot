@@ -10,7 +10,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 class TestBool(Action):
     guildID = -1
     group = "Math"
-    templID = 16
+    templID = 20
     inputs = [
         ValueInput("Bool", ValueType.Boolean)
     ]

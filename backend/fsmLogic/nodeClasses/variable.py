@@ -55,7 +55,7 @@ class Variable:
         elif param == 5:
             return False
         elif param == 6:
-            return datetime.datetime.now().timestamp()
+            return "ValueType.getNow()"
 
     @staticmethod
     def checkValueType(param):
