@@ -112,6 +112,7 @@ export class BoardManager {
           var newVal: ValueInput;
           newVal = new ValueInput(0, templInput.name, (templInput as ValueInput).valueType, templInput.nature);
           newVal.comboValues = (templInput as ValueInput).comboValues
+          newVal.preview = (templInput as ValueInput).preview
           this.idMan.getID(newVal)
           lst.push(newVal)
         }

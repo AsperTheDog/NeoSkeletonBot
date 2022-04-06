@@ -12,11 +12,11 @@ class CreateEmbed(Action):
     inputs = [
         ValueInput("title", ValueType.Text),
         ValueInput("description", ValueType.Text),
-        ValueInput("color", ValueType.Any),
+        ValueInput("color", ValueType.Structure),
         ValueInput("url", ValueType.Text)
     ]
     outputs = [
-        ValueOutput("embed", ValueType.Structure)
+        ValueOutput("embed", ValueType.Structure, "HIDDEN")
     ]
     outEvents = [
         EventOutput("completed"),
@@ -33,19 +33,10 @@ class CreateEmbed(Action):
         import disnake
         import datetime
         if values[2] is not None:
-            if isinstance(values[2], dict):
-                if ["r", "g", "b"] != list(values[2].keys()):
-                    return super().sendEvent(1)
-                color = disnake.Color.from_rgb(values[2]["r"], values[2]["g"], values[2]["b"])
-            elif isinstance(values[2], str):
-                try:
-                    color = eval("disnake.Color." + values[2] + "()")
-                except AttributeError:
-                    client.errMsg[guild.id] = "[CreateEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color"
-                    return super().sendEvent(1)
-            else:
-                client.errMsg[guild.id] = "[CreateEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color type"
+            if ["r", "g", "b"] != list(values[2].keys()):
+                client.errMsg[guild.id] = "[CreateEmbed - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid color format"
                 return super().sendEvent(1)
+            color = disnake.Color.from_rgb(values[2]["r"], values[2]["g"], values[2]["b"])
         else:
             color = ""
         embed = {

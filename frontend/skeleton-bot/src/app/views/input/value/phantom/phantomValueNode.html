@@ -3,7 +3,7 @@
         'nodeValue': true, 
         'nodeBoxLeft': ((valData.nature == 'in') && !valData.flipped) || ((valData.nature == 'out') && valData.flipped), 
         'nodeBoxRight': (valData.nature == 'out') && !valData.flipped || ((valData.nature == 'in') && valData.flipped)
-    }">
+    }" title={{valData.preview}}>
         <div>
             <svg height="40" width="40">
                 <polygon  (mouseenter)="documentEnter()" (mouseleave)="documentLeave()" [attr.points]="valData.flipped ? '35,2 5,20 35,38' : '5,2 35,20 5,38'"

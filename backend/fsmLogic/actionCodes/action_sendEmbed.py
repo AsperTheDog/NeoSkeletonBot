@@ -10,7 +10,7 @@ class SendEmbed(Action):
     group = "Embed"
     templID = 16
     inputs = [
-        ValueInput("embed", ValueType.Structure),
+        ValueInput("embed", ValueType.Structure, "HIDDEN"),
         ValueInput("channel", ValueType.Number)
     ]
     outputs = []

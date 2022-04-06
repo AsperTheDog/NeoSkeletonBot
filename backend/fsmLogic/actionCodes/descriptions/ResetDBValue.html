@@ -1,0 +1,15 @@
+<h2>ResetDBValue</h2>
+<br/>
+
+This action will reset a specific value from a table back to its initial value. This means every "row" will now have this "column" with the initial value assigned to that "column" on creation.
+<br/><br/><br/>
+<strong>Databases</strong>
+<br/><br/>
+Tables in SkeletonBot work like big spreadsheets: you have rows and columns. There is always one column called "identifier" that, as the name suggests, will identify the row so it can be fetched.<br/>
+For example, if you have a table called "users" where you want to store different things about the members of the guild, then what you do is use their discord ID as identifier. That way each user will have its own row and you will be able to easily fetch it since a user's ID is the most basic piece of data you get from someone
+<br/><br/>
+Each row can have different columns in a spreadsheet, this is no different. When you add a value to a table you're defining a new column that every row will use. This will allow you to define different fields for your rows and use them as you please.
+<br/><br/>
+Since the data in databases is persistant and will not reset, it can be very easy to mess up something. This is why SkeletonBot will write databases in safe copies until the user ultimately decides to either save the changes or cancel them.<br/>
+Whenever a change is to be done to any table. The user must first start a database process. This will give the user a code that will be needed to make sure the system knows which process is the one being used. Once everything has been done then the user can either save or cancel the process. Saving it will upload the changes to the database ultimately. Cancel will discard everything changed during the process as it had never happened.<br/>
+Obviously, two processes cannot change the same table at the same time. This is not a problem for the user as the "turns" are managed internally, but it's important to understand that if a process tries to access a table that is being already used by another process, this one will stop and wait for the other one to finish and either save or cancel.

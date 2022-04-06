@@ -11,7 +11,7 @@ class AddTillWeekday(Action):
     templID = 26
     inputs = [
         ValueInput("datetime", ValueType.Datetime),
-        ValueInput("weekday", ValueType.Combo, [
+        ValueInput("weekday", ValueType.Combo, "Monday", [
             "Monday",
             "Tuesday",
             "Wednesday",

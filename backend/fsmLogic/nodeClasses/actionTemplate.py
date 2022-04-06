@@ -1,4 +1,6 @@
 from copy import deepcopy
+from disnake.ext.commands import Bot
+from disnake import Guild
 
 from fsmLogic.boardManager import BoardManager
 from fsmLogic.nodeClasses.inputs import EventInput, ValueInput, ValueOutput, EventOutput
@@ -15,7 +17,7 @@ class Action:
         self.outputs = []
         self.outEvents = []
 
-    def execute(self, client, guild):
+    def execute(self, client: Bot, guild: Guild):
         raise NotImplementedError("Please override function execute() in your action")
 
     def getValues(self):
@@ -52,9 +54,9 @@ class Action:
                 "x": 0,
                 "y": 0
             },
-            "inputs": [ValueInput.getTemplate(iv.name, iv.valType, iv.combo) for iv in obj.inputs],
-            "outputs": [ValueOutput.getTemplate(ov.name, ov.valType) for ov in obj.outputs],
-            "events": [EventOutput.getTemplate(oe.name) for oe in obj.outEvents],
+            "inputs": [iv.getTemplate() for iv in obj.inputs],
+            "outputs": [ov.getTemplate() for ov in obj.outputs],
+            "events": [oe.getTemplate() for oe in obj.outEvents],
             "inputEvent": EventInput.getTemplate()
         }
 

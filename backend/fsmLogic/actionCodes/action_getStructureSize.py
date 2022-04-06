@@ -10,7 +10,7 @@ class GetStructureSize(Action):
     group = "Structure"
     templID = 10
     inputs = [
-        ValueInput("structure", ValueType.Structure)
+        ValueInput("structure", ValueType.Structure, "UNKNOWN")
     ]
     outputs = [
         ValueOutput("size", ValueType.Number)

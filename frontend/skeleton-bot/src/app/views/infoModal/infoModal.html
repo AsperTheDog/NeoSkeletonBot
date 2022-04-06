@@ -1,6 +1,6 @@
 <div class="prompt">
     <div class="promptContainer" *ngIf="mainController.showInfoModalType == 'action'">
-        <div class="promptShowCase">
+        <div class="promptShowCase" *ngIf="((mainController.infoModalActData.inputs.length + mainController.infoModalActData.outputs.length + mainController.infoModalActData.events.length) * 45 + 200) < 640">
             <app-phantomActionNode [mainData]="mainController.infoModalActData"></app-phantomActionNode>
         </div>
         <div class="promptInfo" [innerHTML]="mainController.infoModalActData.description"></div>

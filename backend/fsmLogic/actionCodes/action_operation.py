@@ -12,7 +12,7 @@ class Operation(Action):
     inputs = [
         ValueInput("First value", ValueType.Number),
         ValueInput("Second value", ValueType.Number),
-        ValueInput("Operator", ValueType.Combo, [
+        ValueInput("Operator", ValueType.Combo, "add", [
             "add",
             "substract",
             "multiply",

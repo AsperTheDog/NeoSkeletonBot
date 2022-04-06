@@ -1,3 +1,5 @@
+import disnake
+
 from fsmLogic.nodeClasses.actionTemplate import Action
 from fsmLogic.actionManager import ActionManager
 from fsmLogic.nodeClasses.inputs import ValueInput, EventOutput, ValueOutput
@@ -10,10 +12,10 @@ class GetUser(Action):
     group = "Values"
     templID = 11
     inputs = [
-        ValueInput("User ID", ValueType.Number)
+        ValueInput("user ID", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("User", ValueType.Structure)
+        ValueOutput("user", ValueType.Structure, "'id' (Number), 'avatar' (Text), 'bot' (Boolean), 'banner' (Text), 'created date' (Datetime), 'name' (Text), 'nick' (Text), 'discriminator' (Text), 'fullUsername' (Text), 'mention' (Text), 'top role ID' (Number)")
     ]
     outEvents = [
         EventOutput("completed"),
@@ -29,7 +31,7 @@ class GetUser(Action):
         super().checkValues(values)
         from Bot.utils import formatMember
         import datetime
-        usr = guild.get_member(values[0])
+        usr = await guild.getch_member(values[0])
         if not usr:
             client.errMsg[guild.id] = "[GetUser - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find user"
             return super().sendEvent(1)

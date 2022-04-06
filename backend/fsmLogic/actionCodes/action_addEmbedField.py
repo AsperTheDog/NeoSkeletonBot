@@ -16,7 +16,7 @@ class AddEmbedField(Action):
         ValueInput("inline", ValueType.Boolean)
     ]
     outputs = [
-        ValueOutput("result", ValueType.Structure)
+        ValueOutput("result", ValueType.Structure, "HIDDEN")
     ]
     outEvents = [
         EventOutput("completed"),

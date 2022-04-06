@@ -11,6 +11,7 @@ class SkeletonDB:
         self.access = {}
         self.locks = {'lock': asyncio.Lock(), 'tables': {}, 'gvars': {}}
         self.sendToDel = set()
+        self.globals = {}
 
     def _getNewCode(self):
         code = random.randint(0, 9999999999)
@@ -51,7 +52,7 @@ class SkeletonDB:
         guild = self.access[code]['guild']
         await self._lockTable(table, guild)
         try:
-            with open(self.root + str(guild) + "/" + table, "rb") as file:
+            with open(self.root + str(guild) + "/_" + table, "rb") as file:
                 data = pickle.load(file)
         except FileNotFoundError:
             data = {'table': {}, 'template': {}}
@@ -81,15 +82,15 @@ class SkeletonDB:
         path = self.root + str(guild)
         for name, table in self.access[code]['tables'].items():
             if name in self.sendToDel:
-                if os.path.isfile(path + "/" + name):
-                    os.remove(path + "/" + name)
+                if os.path.isfile(path + "/_" + name):
+                    os.remove(path + "/_" + name)
                     if len(os.listdir(path)) == 0:
                         os.rmdir(path)
                 self.sendToDel.remove(name)
             else:
                 if not os.path.isdir(path):
                     os.mkdir(path)
-                with open(path + "/" + name, "wb") as db:
+                with open(path + "/_" + name, "wb") as db:
                     pickle.dump(table, db)
             await self._releaseTable(name, code)
         self.access.pop(code)
@@ -155,4 +156,28 @@ class SkeletonDB:
         return self._exists(code=code, table=table)
 
     def setGlobalVariable(self, guild, var, value):
-        key = (guild, var)
+        path = self.root + str(guild)
+        data = {}
+        if not os.path.isdir(path):
+            os.mkdir(path)
+        elif os.path.isfile(path + "/globals"):
+            with open(path + "/globals", "rb") as file:
+                data = pickle.load(file)
+        self.globals[guild] = data
+        self.globals[guild][var] = value
+        with open(path + "/globals", "wb") as db:
+            pickle.dump(self.globals[guild], db)
+
+    def getGlobalVariable(self, guild, var):
+        path = self.root + str(guild)
+        data = {}
+        if not os.path.isdir(path):
+            os.mkdir(path)
+        elif os.path.isfile(path + "/globals"):
+            with open(path + "/globals", "rb") as file:
+                data = pickle.load(file)
+        self.globals[guild] = data
+        try:
+            return self.globals[guild][var]
+        except KeyError:
+            raise ValueError

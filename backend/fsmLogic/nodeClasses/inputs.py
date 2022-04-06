@@ -1,8 +1,12 @@
+from fsmLogic.nodeClasses.variable import Variable
+
+
 class ValueInput:
-    def __init__(self, name, valueType, combo=None):
+    def __init__(self, name, valueType, preview=None, combo=None):
         self.inpID = 0
         self.valType = valueType
         self.name = name
+        self.preview = preview if preview is not None else str(Variable.getInitValue(valueType))
         if self.valType == 2:
             self.combo = combo
         else:
@@ -11,17 +15,17 @@ class ValueInput:
     def __str__(self):
         raise NotImplementedError("Please override function __str__() in your action")
 
-    @staticmethod
-    def getTemplate(name, valType, combo):
+    def getTemplate(self):
         return {
             "id": 0,
-            "name": name,
+            "name": self.name,
             "nature": "in",
-            "valueType": valType,
+            "preview": self.preview,
+            "valueType": self.valType,
             "inColor": "black",
             "fromVariable": False,
             "flipped": False,
-            "comboValues": combo,
+            "comboValues": self.combo,
             "transitionNumber": 0,
             "offset": {
                 "x": 0,
@@ -31,30 +35,31 @@ class ValueInput:
 
 
 class ValueOutput:
-    def __init__(self, name, valueType):
+    def __init__(self, name, valueType, preview=None):
         self.inpID = 0
         self.valType = valueType
+        self.preview = preview if preview is not None else str(Variable.getInitValue(valueType))
         self.name = name
 
     def __str__(self):
         raise NotImplementedError("Please override function __str__() in your action")
 
-    @staticmethod
-    def getTemplate(name, valType):
+    def getTemplate(self):
         return {
-          "id": 0,
-          "name": name,
-          "nature": "out",
-          "valueType": valType,
-          "inColor": "black",
-          "fromVariable": False,
-          "flipped": False,
-          "comboValues": None,
-          "transitionNumber": 0,
-          "offset": {
-            "x": 0,
-            "y": 0
-          }
+            "id": 0,
+            "name": self.name,
+            "nature": "out",
+            "preview": self.preview,
+            "valueType": self.valType,
+            "inColor": "black",
+            "fromVariable": False,
+            "flipped": False,
+            "comboValues": None,
+            "transitionNumber": 0,
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
         }
 
 
@@ -88,11 +93,10 @@ class EventOutput:
     def __str__(self):
         raise NotImplementedError("Please override function __str__() in your action")
 
-    @staticmethod
-    def getTemplate(name):
+    def getTemplate(self):
         return {
             "id": 0,
-            "name": name,
+            "name": self.name,
             "nature": "out",
             "flipped": False,
             "transitionNumber": 0,

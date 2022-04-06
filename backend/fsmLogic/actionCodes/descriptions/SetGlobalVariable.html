@@ -1,0 +1,10 @@
+<h2>SetGlobalVariable</h2>
+<br/>
+This action will store the given value into the given global variable
+<br/><br/><br/>
+<strong>Global variables</strong>
+<br/><br/>
+Sometimes you don't always want to go through the whole process of the database system to just store one single item. You would have to create a table, get a code and use that to store different values that don't really work well with the way data is organized.<br/>
+This is why SkeletonBot has functionality to make this much easier for your executions. If you just need a variable that is remembered accross executions and even boards then you can simply define a global variable. These variables work like a simple variable but the assigned value will never reset.<br/>
+Global variables are shared everywhere, which means that if a global variable is changed in one board then any other board that reads it will receive the updated value.<br/>
+It's important to note that database storage in general is isolated per guild for security and functionality reasons. You cannot share a variable between guilds.

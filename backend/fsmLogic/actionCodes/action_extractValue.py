@@ -11,7 +11,7 @@ class ExtractValue(Action):
     templID = 8
     inputs = [
         ValueInput("Extract tag", ValueType.Text),
-        ValueInput("Structure", ValueType.Structure)
+        ValueInput("Structure", ValueType.Structure, "UNKNOWN")
     ]
     outputs = [
         ValueOutput("result", ValueType.Any)

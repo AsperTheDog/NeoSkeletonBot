@@ -14,7 +14,7 @@ class Command(Action):
     ]
     outputs = [
         ValueOutput("command", ValueType.Text),
-        ValueOutput("arguments", ValueType.Structure)
+        ValueOutput("arguments", ValueType.Structure, "'0' (Text), '1' (Text), '2' (Text)...")
     ]
     outEvents = [
         EventOutput("completed")

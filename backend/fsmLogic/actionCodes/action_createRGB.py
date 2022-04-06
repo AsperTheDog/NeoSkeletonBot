@@ -15,7 +15,7 @@ class CreateRGB(Action):
         ValueInput("Green", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("RBG", ValueType.Structure)
+        ValueOutput("RBG", ValueType.Structure, "'r' (Number), 'g' (Number), 'b' (Number)")
     ]
     outEvents = [
         EventOutput("Completed")

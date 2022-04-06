@@ -12,11 +12,13 @@ export class ValueInput {
         this.nature = nature;
         this.offset = {x: 0, y: 0};
         this.transitionNumber = 0;
+        this.preview = ""
     }
 
     id: number;
     name: string;
     valueType: number;
+    preview: string;
     nature: string;
     inColor: string;
     fromVariable: boolean;

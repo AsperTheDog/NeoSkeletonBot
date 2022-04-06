@@ -15,7 +15,7 @@ class GetDBData(Action):
         ValueInput("identifier", ValueType.Any)
     ]
     outputs = [
-        ValueOutput("row", ValueType.Structure)
+        ValueOutput("row", ValueType.Structure, "UNKNOWN")
     ]
     outEvents = [
         EventOutput("completed"),
