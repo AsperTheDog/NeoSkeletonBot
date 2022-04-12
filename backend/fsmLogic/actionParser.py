@@ -188,7 +188,7 @@ def genCodeVars(board):
                 initVal = initVal.replace('"', '\\"')
                 initVal = "'" + initVal + "'"
             if variable['valueType'] == ValueType.Boolean:
-                initVal = bool(initVal)
+                initVal = initVal.lower() == "true"
         variables += tabs + "    " + str(variable['id']) + ": {'value': " + str(initVal) + ", 'type': ValueType." + ValueType(
             variable['valueType']).name + "},\n"
     variables += tabs + "}\n"

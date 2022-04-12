@@ -9,9 +9,11 @@ class ActionManager:
     def actionclass(cls):
         if cls.guildID not in ActionManager._actions:
             ActionManager._actions[cls.guildID] = {}
-        ActionManager._actions[cls.guildID][cls.__name__] = cls
-        if cls.templID not in ActionManager._actionIDs:
+        if cls.__name__ not in ActionManager._actions[cls.guildID]:
             ActionManager._actionIDs.append(cls.templID)
+        ActionManager._actions[cls.guildID][cls.__name__] = cls
+        with open("fsmLogic/dataFiles/tracking/actions.json", "w") as file:
+            json.dump(sorted(ActionManager._actionIDs), file, indent=4)
 
     @staticmethod
     def getAction(action, guild):

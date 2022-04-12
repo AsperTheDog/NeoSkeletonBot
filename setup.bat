@@ -1,5 +1,6 @@
 cd \D "%~dp0"
 
+python certsGenerator.py
 cd backend
 pip install virtualenv
 virtualenv venv

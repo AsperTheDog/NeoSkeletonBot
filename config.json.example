@@ -1,0 +1,6 @@
+{
+  "rootAddr": "YOUR IP HERE",
+  "backListen": "0.0.0.0",
+  "frontPort": 12547,
+  "backPort": 12546
+}

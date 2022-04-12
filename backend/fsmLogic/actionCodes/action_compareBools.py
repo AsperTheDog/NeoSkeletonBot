@@ -28,7 +28,7 @@ class CompareBools(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        if bool(values[0]) == bool(values[1]):
+        if values[0] == values[1]:
             return super().sendEvent(0)
         return super().sendEvent(1)
 

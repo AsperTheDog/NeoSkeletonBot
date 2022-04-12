@@ -1,3 +1,4 @@
+import json
 import os
 
 from flask import Flask, jsonify, request, redirect, abort
@@ -15,6 +16,9 @@ actionPaths = os.listdir("fsmLogic/actionCodes/custom")
 for pth in actionPaths:
     if pth != ".gitkeep":
         exec("from fsmLogic.actionCodes.custom." + pth + " import *")
+
+frontURL = ""
+backURL = ""
 
 app = Flask(__name__)
 CORS(app)
@@ -76,14 +80,14 @@ def getValueTypes():
 @app.route('/login', methods=['GET'])
 def login():
     if 'code' not in request.args:
-        return redirect("https://freechmod.ddns.net:12547")
+        return redirect(frontURL)
     app.logger.info(request.args['code'])
     data = {
         'client_id': 682744116143980699,
         'client_secret': 'rp4y3LhAvPg-spKrqlmWo82CrNNU1eP7',
         'grant_type': 'authorization_code',
         'code': request.args['code'],
-        'redirect_uri': "https://freechmod.ddns.net:12546/login"
+        'redirect_uri': backURL + "/login"
     }
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -91,12 +95,12 @@ def login():
     r = requests.post("https://discord.com/api/oauth2/token", data=data, headers=headers)
     r.raise_for_status()
     SessionManager.setCode(request.args['code'], {'usr': r.json(), 'guilds': []})
-    return redirect("https://freechmod.ddns.net:12547?usrCode=" + request.args['code'])
+    return redirect(frontURL + "?usrCode=" + request.args['code'])
 
 
 @app.route('/token', methods=['GET', 'POST'])
 def getToken():
-    return redirect("https://freechmod.ddns.net:12547")
+    return redirect(frontURL)
 
 
 @app.route('/credentials', methods=['GET'])
@@ -107,8 +111,8 @@ def checkCreds():
         return jsonify({"token": token, "usr": {'id': None}})
     ident = requests.get("https://discord.com/api/v9/users/@me", headers={'Authorization': "Bearer " + cde["usr"]['access_token']})
     ident.raise_for_status()
-    guilds = requests.get("https://discord.com/api/v9/users/@me/guilds", headers={'Authorization': "Bearer " + cde["usr"]['access_token']}).json()
-    SessionManager.setCookie(token, {'usr': cde["usr"], 'guilds': guilds})
+    guildList = requests.get("https://discord.com/api/v9/users/@me/guilds", headers={'Authorization': "Bearer " + cde["usr"]['access_token']}).json()
+    SessionManager.setCookie(token, {'usr': cde["usr"], 'guilds': guildList})
     return jsonify({"token": token, "usr": ident.json()})
 
 
@@ -121,5 +125,16 @@ def guilds():
     return jsonify([{'name': elem['name'], 'id': elem['id'], 'icon': elem['icon'], 'permissions': elem['permissions']} for elem in data['guilds'] if elem['owner']])
 
 
-def runFlask():
-    app.run(debug=False, host="0.0.0.0", port=12546, ssl_context=('cert/cert.pem', 'cert/key.pem'))
+def runFlask(firstArg):
+    global frontURL, backURL
+
+    isHttps = True if firstArg == "https" else False
+    with open("../config.json", "r") as file:
+        configs = json.load(file)
+    frontURL = ("https://" if isHttps else "http://") + configs['rootAddr'] + ":" + str(configs['frontPort'])
+    backURL = ("https://" if isHttps else "http://") + configs['rootAddr'] + ":" + str(configs['backPort'])
+
+    if firstArg == "https":
+        app.run(debug=False, host=configs['backListen'], port=12546, ssl_context=('cert/cert.pem', 'cert/key.pem'))
+    else:
+        app.run(debug=False, host=configs['backListen'], port=12546)

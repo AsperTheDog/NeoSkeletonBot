@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
-import { AppComponent } from '../app.component';
 import { Action } from '../utils/dataTypes/Action';
 import { Board } from '../utils/dataTypes/Board';
 import { User } from '../utils/dataTypes/User';
 import { ValueType } from '../utils/dataTypes/ValueType';
+import projConfig from '../../../../../config.json';
+import extraConfs from 'extraConfigs.json';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,12 @@ export class httpService {
     if (cookieToken){
       this.cookieParam = this.cookieParam.append('token', cookieToken)
     }
+    this.backendURL = (extraConfs.https ? "https://" : "http://") + projConfig.rootAddr + ":" + projConfig.backPort.toString() + "/"
+    this.loginRef = encodeURIComponent(this.backendURL + "login");
   }
 
-  backendURL: string = "https://freechmod.ddns.net:12546/";
+  loginRef: string;
+  backendURL: string;
   cookieParam: HttpParams;
 
 

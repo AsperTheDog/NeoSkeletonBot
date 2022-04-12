@@ -9,15 +9,15 @@ from database.dbManager import SkeletonDB
 
 client = Bot(intents=Intents.all())
 client.add_cog(EventListener(client))
+client.errCh = {}
+client.errMsg = {}
+client.db = SkeletonDB()
+client.debug = True
 
 
 @client.event
 async def on_ready():
     print(f'Logged on as {client.user}!')
-    client.errCh = {}
-    client.errMsg = {}
-    client.db = SkeletonDB()
-    client.debug = True
 
 
 if __name__ == "__main__":
