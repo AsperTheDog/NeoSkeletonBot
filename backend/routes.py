@@ -1,5 +1,6 @@
 import json
 import os
+import yaml
 
 from flask import Flask, jsonify, request, redirect, abort
 from flask_cors import CORS
@@ -16,6 +17,9 @@ actionPaths = os.listdir("fsmLogic/actionCodes/custom")
 for pth in actionPaths:
     if pth != ".gitkeep":
         exec("from fsmLogic.actionCodes.custom." + pth + " import *")
+
+with open('Bot/bot.yaml') as f:
+    botCreds = yaml.load(f, Loader=yaml.FullLoader)
 
 frontURL = ""
 backURL = ""
@@ -83,8 +87,8 @@ def login():
         return redirect(frontURL)
     app.logger.info(request.args['code'])
     data = {
-        'client_id': 682744116143980699,
-        'client_secret': 'rp4y3LhAvPg-spKrqlmWo82CrNNU1eP7',
+        'client_id': botCreds['clientID'],
+        'client_secret': botCreds['clientSecret'],
         'grant_type': 'authorization_code',
         'code': request.args['code'],
         'redirect_uri': backURL + "/login"

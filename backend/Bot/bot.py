@@ -20,22 +20,19 @@ async def on_ready():
     print(f'Logged on as {client.user}!')
 
 
-if __name__ == "__main__":
-    os.chdir(os.path.dirname(os.getcwd()))
-    exec("from fsmLogic.mains import *")
-    exec("from fsmLogic.actionCodes import *")
-    actionPaths = os.listdir("fsmLogic/actionCodes/custom")
-    for pth in actionPaths:
-        if pth != ".gitkeep":
-            exec("from fsmLogic.actionCodes.custom." + pth + " import *")
-
-
 with open('Bot/bot.yaml') as f:
     data = yaml.load(f, Loader=yaml.FullLoader)
 
 
-def runBot():
+def runBot(standalone=False):
     print("starting client")
+    if standalone:
+        exec("from fsmLogic.mains import *")
+        exec("from fsmLogic.actionCodes import *")
+        actionPaths = os.listdir("fsmLogic/actionCodes/custom")
+        for pth in actionPaths:
+            if pth != ".gitkeep":
+                exec("from fsmLogic.actionCodes.custom." + pth + " import *")
     client.run(data['token'])
 
 
