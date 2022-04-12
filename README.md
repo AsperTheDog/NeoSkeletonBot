@@ -30,10 +30,12 @@ Once that has been dealt with, simply run the file *setup.bat* you will find ins
 ## Configuration
 
 In order to get the bot working a discord bot must be made. Follow these instructions to create a bot.
-Once you have installed everything correctly and you have your bot created. Get your bot Token from the webpage (under the bot section of your application in the Discord Developer Portal) you just have to create a file in *backend/Bot* called *Bot.yaml*. You should see a file called *Bot.yaml.example* in there, you can just go ahead and remove the *.example* from it and open it. Inside you will have to put the token as the example indicates. In the end, if your code was *BcQp2WlVivPlWQU4x4wnZg* your file should look like this:
+Once you have installed everything correctly and you have your bot created. Get your bot Token from the webpage (under the bot section of your application in the Discord Developer Portal) you just have to create a file in *backend/Bot* called *Bot.yaml*. You should see a file called *Bot.yaml.example* in there, you can just go ahead and remove the *.example* from it and open it. Inside you will have to go to your Discord Developer Portal and look up the **bot token** (bot -> token), the **client ID** (oauth2 -> CLIENT ID) and client secret (oauth2 -> CLIENT SECRET). Place them all in the yaml file as below.
 
 ```
-TOKEN: BcQp2WlVivPlWQU4x4wnZg
+token: BcQp2WlVivPlWQU4x4wnZg
+clientID: 123123123123123123
+clientSecret: BcVivPlWQpQU4x4wnZ2WlVivPlWVi
 ```
 
 Now you have to create the file called *config.json*. In the downloaded folder, you will find a file called *config.json.example*, as with the *bot.yaml* process, simply remove the *.example* part of the name and open it. Once inside you will see there's a field called **rootAddr**, this is what you have to change.
@@ -72,3 +74,5 @@ Next, we have to tell discord we trust this URL. In the Discord Developer Portal
 Make sure you've gone through intallation and configuration sections before trying to run anything!!
 
 Just run the file *runHTTPS.bat* inside the downloaded folder if you want the webpage to work over HTTPS or *runHTTP.bat* if you want it to work over HTTP (you can change at any time, just make sure you reconfigure the Discord Developer Portal accordingly). It will open two terminals: One for the webpage, and the other one for the bot.
+
+If you don't want to start any process regarding the webpage and just execute the discord bot run the file *runBot.bat*, this will not start the webserver. This could be useful if you no longer have to make any changes to your custom scripts and just want the bot to work as it is. Take into account the webpage is the only way of customizing the behaviour of the bot, so you will have to restart the bot and reload the program with the web if you want to change anything.
