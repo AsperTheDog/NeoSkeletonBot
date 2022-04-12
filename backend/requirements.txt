@@ -1,0 +1,5 @@
+disnake==2.4.0
+Flask==2.1.1
+Flask-Cors==3.0.10
+PyYAML==6.0
+requests==2.27.1
