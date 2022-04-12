@@ -5,15 +5,17 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class ToText(Action):
+class ReplaceMatch(Action):
     guildID = -1
-    group = "Values"
-    templID = 22
+    group = "Text"
+    templID = 72
     inputs = [
-        ValueInput("value", ValueType.Any),
+        ValueInput("text", ValueType.Text),
+        ValueInput("original subtext", ValueType.Text),
+        ValueInput("new subtext", ValueType.Text)
     ]
     outputs = [
-        ValueOutput("result", ValueType.Text)
+        ValueOutput("text", ValueType.Text)
     ]
     outEvents = [
         EventOutput("completed")
@@ -26,14 +28,7 @@ class ToText(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        import json
-        if isinstance(values[0], dict):
-            try:
-                super().setValue(json.dumps(values[0], indent=4), 0)
-            except TypeError:
-                super().setValue(values[0], 0)
-        else:
-            super().setValue(str(values[0]), 0)
+        super().setValue(values[0].replace(values[1], values[2]), 0)
         return super().sendEvent(0)
 
     @classmethod

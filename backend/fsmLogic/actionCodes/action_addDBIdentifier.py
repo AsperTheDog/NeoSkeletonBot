@@ -17,7 +17,7 @@ class AddDBIdentifier(Action):
     outputs = []
     outEvents = [
         EventOutput("completed"),
-        EventOutput("Error")
+        EventOutput("error")
     ]
 
     def __init__(self):
@@ -29,8 +29,7 @@ class AddDBIdentifier(Action):
         super().checkValues(values)
         import datetime
         try:
-            if not client.db.tableIsLoaded(values[0], values[1]):
-                await client.db.accessTable(values[0], values[1])
+            await client.db.accessTable(values[0], values[1])
             client.db.addRow(values[0], values[1], values[2])
         except ValueError:
             client.errMsg[guild.id] = "[AddDBIdentifier - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"

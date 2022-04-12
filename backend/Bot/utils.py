@@ -40,6 +40,7 @@ def formatMember(usr):
         'bot': usr.bot,
         'banner': usr.banner.url if usr.banner else "",
         'created date': usr.created_at.timestamp,
+        'activity': usr.activity.name if usr.activity else "",
         'name': usr.name,
         'nick': usr.nick if usr.nick else usr.name,
         'discriminator': usr.discriminator,

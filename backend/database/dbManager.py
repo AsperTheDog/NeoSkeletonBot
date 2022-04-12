@@ -49,6 +49,10 @@ class SkeletonDB:
     async def accessTable(self, code, table):
         if not self._exists(code=code):
             raise ValueError()
+        if table in self.access[code]['tables']:
+            if table in self.sendToDel:
+                self.sendToDel.remove(table)
+            return
         guild = self.access[code]['guild']
         await self._lockTable(table, guild)
         try:
@@ -141,6 +145,11 @@ class SkeletonDB:
             return self.access[code]['tables'][table]['table'][row]
         else:
             return self.access[code]['tables'][table]['table'][row][element]
+
+    def getTable(self, code, table):
+        if not self._exists(code=code, table=table):
+            raise ValueError()
+        return self.access[code]['tables'][table]['table']
 
     def removeRow(self, code, table, row):
         if not self._exists(code=code, table=table, row=row):

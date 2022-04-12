@@ -28,7 +28,7 @@ export class PipelineNode implements OnInit, AfterViewInit {
   mainData: Pipeline;
 
   ngOnInit(): void {
-    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID)
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID, this.mainController.sessionMan.getGuild()!)
     this.position = this.mainData.cdkPos
   }
 

@@ -24,13 +24,31 @@ BoardManager.updateGEvents()
 BoardManager.updateValueTypes()
 
 
-@app.route('/boards', methods=['GET'])
+@app.route('/boards', methods=['POST', 'GET'])
 def getBoards():
+    if request.method == "POST":
+        data = request.get_json()
+        ret = serializeManager.saveBoard(data)
+        print(ret)
+        return jsonify({'status': ret})
     exists = SessionManager.existsCookie(request.args.get('token'))
     if not exists:
         return jsonify([])
 
     return serializeManager.loadBoards(request.args.get('guild'))
+
+
+@app.route('/boards/<guild>/<board>', methods=['GET', 'DELETE'])
+def boards(guild=None, board=None):
+    if request.method == "DELETE":
+        serializeManager.deleteFiles(guild, board)
+        ActionManager.removeAction(guild, board)
+        return jsonify({'status': 'OK'})
+    elif request.method == "GET":
+        ret = serializeManager.getBoard(guild, board)
+        if not ret:
+            return abort(400, 'Board not found')
+        return ret
 
 
 @app.route('/actions', methods=['GET'])
@@ -45,39 +63,14 @@ def getActions():
     return jsonify(acts)
 
 
-@app.route('/revertBoard', methods=['GET'])
-def getBoard():
-    guild = request.args.get('guild')
-    name = request.args.get('name')
-    ret = serializeManager.getBoard(guild, name)
-    if not ret:
-        return abort(400, 'Board not found')
-    return ret
-
-
-@app.route('/getGlobalEvents', methods=['GET'])
+@app.route('/globalEvents', methods=['GET'])
 def getGlobalEvents():
     return jsonify({'events': BoardManager.globalEvents, 'customActionEvents': BoardManager.customActionEvents})
 
 
-@app.route('/getValueTypes', methods=['GET'])
+@app.route('/valueTypes', methods=['GET'])
 def getValueTypes():
     return jsonify(BoardManager.valueTypes)
-
-
-@app.route('/saveBoard', methods=['POST'])
-def saveBoard():
-    data = request.get_json()
-    ret = serializeManager.saveBoard(data)
-    print(ret)
-    return jsonify({'status': ret})
-
-
-@app.route("/deleteBoard/<guild>/<board>", methods=['DELETE'])
-def deleteBoard(guild=None, board=None):
-    serializeManager.deleteFiles(guild, board)
-    ActionManager.removeAction(guild, board)
-    return jsonify({'status': 'OK'})
 
 
 @app.route('/login', methods=['GET'])
@@ -101,12 +94,12 @@ def login():
     return redirect("https://freechmod.ddns.net:12547?usrCode=" + request.args['code'])
 
 
-@app.route('/getToken', methods=['GET', 'POST'])
+@app.route('/token', methods=['GET', 'POST'])
 def getToken():
     return redirect("https://freechmod.ddns.net:12547")
 
 
-@app.route('/checkCreds', methods=['GET'])
+@app.route('/credentials', methods=['GET'])
 def checkCreds():
     token = SessionManager.checkCookie(request.args.get('token'))
     cde = SessionManager.get(token, request.args.get('code'))
@@ -119,8 +112,8 @@ def checkCreds():
     return jsonify({"token": token, "usr": ident.json()})
 
 
-@app.route('/getGuilds', methods=['GET'])
-def getGuilds():
+@app.route('/guilds', methods=['GET'])
+def guilds():
     exists = SessionManager.existsCookie(request.args.get('token'))
     if not exists:
         return jsonify({'guilds': [{'name': 'login to get guilds', 'id': None}]})

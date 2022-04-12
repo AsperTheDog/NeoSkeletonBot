@@ -28,8 +28,7 @@ class EmptyDBTable(Action):
         super().checkValues(values)
         import datetime
         try:
-            if not client.db.tableIsLoaded(values[0], values[1]):
-                await client.db.accessTable(values[0], values[1])
+            await client.db.accessTable(values[0], values[1])
             client.db.emptyTable(values[0], values[1])
         except ValueError:
             client.errMsg[guild.id] = "[EmptyDBTable - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"

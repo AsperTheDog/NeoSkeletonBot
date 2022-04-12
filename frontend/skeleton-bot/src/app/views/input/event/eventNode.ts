@@ -30,7 +30,7 @@ export class EventNode implements OnInit {
   valData: EventInput;
 
   ngOnInit(): void {
-    this.valData = this.mainController.boardMan.idMan.get(this.valDataID)
+    this.valData = this.mainController.boardMan.idMan.get(this.valDataID, this.mainController.sessionMan.getGuild()!)
   }
 
   public documentEnter(): void {
@@ -62,7 +62,7 @@ export class EventNode implements OnInit {
       this.valData.nature == "out" ? [] : [this.parentNode.mainData.id, this.valData.id],
       'gray'
     )
-    this.mainController.boardMan.addTransition(trns)
+    this.mainController.boardMan.addTransition(trns, this.mainController.sessionMan.getGuild()!)
     this.mainController.transStartInput = this
     this.activeTransition = trns;
   }
@@ -77,16 +77,20 @@ export class EventNode implements OnInit {
 
     this.dragShield.enableDrag();
 
+    
+    const guild = this.mainController.sessionMan.getGuild()
+    if (!guild) return;
+
     if (this.mainController.hovering == null) {
       this.mainController.manageInfo("Transition canceled: no destination", true)
-      this.mainController.boardMan.removeTransition();
+      this.mainController.boardMan.removeTransition(guild);
       this.activeTransition = null;
       return;
     }
 
     if (this.mainController.hovering instanceof ValueNode) {
       this.mainController.manageInfo("Transition canceled: cannot connect event to value", true)
-      this.mainController.boardMan.removeTransition();
+      this.mainController.boardMan.removeTransition(guild);
       this.activeTransition = null;
       return;
     }
@@ -104,14 +108,14 @@ export class EventNode implements OnInit {
     }
 
     if (origNode == destNode) {
-      this.mainController.boardMan.removeTransition();
+      this.mainController.boardMan.removeTransition(guild);
       this.activeTransition = null;
       return;
     }
 
     if (origNode.valData.nature == destNode.valData.nature) {
       this.mainController.manageInfo("Transition cancelled: must be made between an input and an output", true)
-      this.mainController.boardMan.removeTransition();
+      this.mainController.boardMan.removeTransition(guild);
       this.activeTransition = null;
       return;
     }
@@ -139,6 +143,6 @@ export class EventNode implements OnInit {
 
   removeAllTrans() {
     this.mainController.manageInfo("Removed all transitions for node '" + this.valData.name + "'", false)
-    this.mainController.boardMan.cleanTransitions(this.parentNode.mainData.id, this.valData)
+    this.mainController.boardMan.cleanTransitions(this.parentNode.mainData.id, this.mainController.sessionMan.getGuild()!, this.valData)
   }
 }

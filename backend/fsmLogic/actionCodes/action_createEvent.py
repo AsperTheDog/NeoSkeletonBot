@@ -12,7 +12,7 @@ class CreateEvent(Action):
     inputs = [
         ValueInput("name", ValueType.Text),
         ValueInput("description", ValueType.Text),
-        ValueInput("start_time", ValueType.Datetime),
+        ValueInput("start time", ValueType.Datetime),
         ValueInput("end time", ValueType.Datetime),
         ValueInput("event type", ValueType.Combo, "stage", combo=[
             "stage",

@@ -29,8 +29,7 @@ class RemoveDBValue(Action):
         super().checkValues(values)
         import datetime
         try:
-            if not client.db.tableIsLoaded(values[0], values[1]):
-                await client.db.accessTable(values[0], values[1])
+            await client.db.accessTable(values[0], values[1])
             client.db.removeProperty(values[0], values[1], values[2])
         except ValueError:
             client.errMsg[guild.id] = "[RemoveDBValue - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"

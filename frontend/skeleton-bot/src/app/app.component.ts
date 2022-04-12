@@ -107,6 +107,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   public documentMouseUp(event: MouseEvent): void {
     if (this.mainController.transStartInput) {
       this.mainController.transStartInput.finishTransition();
+      this.mainController.transStartInput = null
     }
   }
 
@@ -167,9 +168,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.varType = this.mainController.typeValMan.getType(varTypeID)
     this.showCaseVar.input.valueType = this.varType.varInOut[0];
     this.showCaseVar.output.valueType = this.varType.varInOut[1];
+    if (this.showCaseVarElem.valueType != varTypeID){
+      this.varInitialValue = ""
+    }
     this.showCaseVarElem.valueType = varTypeID;
     this.showCaseVarElem.initialValue = this.varInitialValue;
-    this.showCaseVarElem.constant = this.varIsConstant;
+    this.showCaseVarElem.constant = this.varIsConstant || this.varType.mustBeConst;
     this.showCaseVarElem.name = this.varIsConstant ? "" : this.varName;
     if (this.phantomVar) {
       this.phantomVar.updateType()

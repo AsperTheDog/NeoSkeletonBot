@@ -48,7 +48,7 @@
   <div class="headerLogin" *ngIf="mainController.sessionMan.usr">
     <img class="headerLoginAvatar" src={{mainController.sessionMan.usr.avatar}}/>
     <h3 class="headerLoginName">{{mainController.sessionMan.usr.username}}</h3>
-    <button class="headerLoginLogout" (click)="mainController.logout()">logout</button>
+    <button class="headerLoginLogout" (click)="mainController.logout(true)">logout</button>
     <select *ngIf="mainController.sessionMan.guilds.length != 0" class="headerLoginSelect" [(ngModel)]="mainController.sessionMan.selectedGuild" (change)="mainController.changeGuilds()">
       <option *ngFor="let guild of mainController.sessionMan.guilds" [label]="guild.name">{{guild.id}}</option>
     </select>
@@ -164,7 +164,7 @@
           </div>
           <hr class="varSelectorSep" />
         </div>
-        <div class="varSelectInputContainer">
+        <div *ngIf="!varType.mustBeConst" class="varSelectInputContainer">
           <div class="varSelectLeft">
             <span class="varSelectorText">Constant </span>
           </div>
@@ -174,7 +174,7 @@
           </div>
           <hr class="varSelectorSep" />
         </div>
-        <div *ngIf="!varIsConstant" class="varSelectInputContainer">
+        <div *ngIf="!varIsConstant && !varType.mustBeConst" class="varSelectInputContainer">
           <div class="varSelectLeft">
             <span class="varSelectorText">Name </span>
           </div>

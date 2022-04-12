@@ -13,20 +13,33 @@ class IDManager {
     this.usedIDs = new Map<number, any>();
   }
 
-  usedIDs: Map<number, any>;
+  usedIDs: Map<number, Map<number, any>>;
 
-  getID(elem: {id: number}) {
+  getID(elem: {id: number}, guild: number) {
     let count = 0;
-    while (this.usedIDs.has(count)) {
+    if (!this.usedIDs.has(guild)){
+      this.usedIDs.set(guild, new Map<number, any>())
+    }
+    while (this.usedIDs.get(guild)?.has(count)) {
       count++;
     }
     elem.id = count;
-    this.usedIDs.set(count, elem)
+    this.usedIDs.get(guild)!.set(count, elem)
   }
 
-  get(id: number | null) {
+  get(id: number | null, guild: number) {
     if (id == null) return;
-    return this.usedIDs.get(id)
+    if (!this.usedIDs.has(guild)){
+      return;
+    }
+    return this.usedIDs.get(guild)!.get(id)
+  }
+
+  set(id: number, guild: number, elem: any){
+    if (!this.usedIDs.has(guild)){
+      this.usedIDs.set(guild, new Map<number, any>())
+    }
+    this.usedIDs.get(guild)!.set(id, elem)
   }
 
   clear() {
@@ -35,41 +48,41 @@ class IDManager {
 
   includeIDs(bd: Board) {
     for (let action of bd.actions) {
-      this.usedIDs.set(action.id, action)
+      this.set(action.id, bd.guild, action)
       for (let input of action.inputs) {
-        this.usedIDs.set(input.id, input)
+        this.set(input.id, bd.guild, input)
       }
       for (let output of action.outputs) {
-        this.usedIDs.set(output.id, output)
+        this.set(output.id, bd.guild, output)
       }
       for (let event of action.events) {
-        this.usedIDs.set(event.id, event)
+        this.set(event.id, bd.guild, event)
       }
-      this.usedIDs.set(action.inputEvent.id, action.inputEvent)
+      this.set(action.inputEvent.id, bd.guild, action.inputEvent)
     }
     for (let variable of bd.varInstances) {
-      this.usedIDs.set(variable.id, variable)
-      this.usedIDs.set(variable.input.id, variable.input)
-      this.usedIDs.set(variable.output.id, variable.output)
+      this.set(variable.id, bd.guild, variable)
+      this.set(variable.input.id, bd.guild, variable.input)
+      this.set(variable.output.id, bd.guild, variable.output)
     }
     for (let variable of bd.variables) {
-      this.usedIDs.set(variable.id, variable)
+      this.set(variable.id, bd.guild, variable)
     }
     for (let transition of bd.transitions) {
-      this.usedIDs.set(transition.id, transition)
+      this.set(transition.id, bd.guild, transition)
     }
     for (let gEvent of bd.globalEvents) {
-      this.usedIDs.set(gEvent.id, gEvent)
-      this.usedIDs.set(gEvent.output.id, gEvent.output)
-      this.usedIDs.set(gEvent.eventOutput.id, gEvent.eventOutput)
+      this.set(gEvent.id, bd.guild, gEvent)
+      this.set(gEvent.output.id, bd.guild, gEvent.output)
+      this.set(gEvent.eventOutput.id, bd.guild, gEvent.eventOutput)
     }
     for (let pipe of bd.pipelines) {
-      this.usedIDs.set(pipe.id, pipe)
+      this.set(pipe.id, bd.guild, pipe)
       if (pipe.point) {
-        this.usedIDs.set(pipe.point.id, pipe.point)
+        this.set(pipe.point.id, bd.guild, pipe.point)
       }
       if (pipe.eventPoint) {
-        this.usedIDs.set(pipe.eventPoint.id, pipe.eventPoint)
+        this.set(pipe.eventPoint.id, bd.guild, pipe.eventPoint)
       }
     }
   }
@@ -104,7 +117,7 @@ export class BoardManager {
     }
   }
 
-  createAction(templ: Action, mouse: MouseData) {
+  createAction(templ: Action, mouse: MouseData, guild: number) {
     const getNewInputs = (templInputs: ValueInput[] | EventInput[], tp: string) => {
       var lst: any[] = [];
       for (let templInput of templInputs) {
@@ -113,13 +126,13 @@ export class BoardManager {
           newVal = new ValueInput(0, templInput.name, (templInput as ValueInput).valueType, templInput.nature);
           newVal.comboValues = (templInput as ValueInput).comboValues
           newVal.preview = (templInput as ValueInput).preview
-          this.idMan.getID(newVal)
+          this.idMan.getID(newVal, guild)
           lst.push(newVal)
         }
         else {
           var newEv: EventInput;
           newEv = new EventInput(0, templInput.name, templInput.nature);
-          this.idMan.getID(newEv)
+          this.idMan.getID(newEv, guild)
           lst.push(newEv)
         }
       }
@@ -133,7 +146,7 @@ export class BoardManager {
       getNewInputs(templ.events, "event"),
       getNewInputs([templ.inputEvent], "event")[0]
     )
-    this.idMan.getID(newAct)
+    this.idMan.getID(newAct, guild)
     this.activeBoard.actions.push(newAct)
     newAct.cdkPos = {
       x: mouse.offset.x - 300,
@@ -141,17 +154,17 @@ export class BoardManager {
     }
   }
 
-  createVariable(vr: Variable, vrElem: VarElement, mouse: MouseData) {
+  createVariable(vr: Variable, vrElem: VarElement, mouse: MouseData, guild: number) {
     const prevVar = vrElem.constant ? undefined : this.activeBoard.variables.find((elem) => (vrElem.name == elem.name))
-    this.idMan.getID(vr)
-    this.idMan.getID(vr.input)
-    this.idMan.getID(vr.output)
+    this.idMan.getID(vr, guild)
+    this.idMan.getID(vr.input, guild)
+    this.idMan.getID(vr.output, guild)
     if (prevVar) {
       prevVar.references++;
       vr.varAttr = prevVar.id
     }
     else {
-      this.idMan.getID(vrElem)
+      this.idMan.getID(vrElem, guild)
       this.activeBoard.variables.push(vrElem)
       vrElem.references++;
       vr.varAttr = vrElem.id
@@ -163,10 +176,10 @@ export class BoardManager {
     }
   }
 
-  createGlobalEvent(ge: GlobalEvent, mouse: MouseData) {
-    this.idMan.getID(ge)
-    this.idMan.getID(ge.output)
-    this.idMan.getID(ge.eventOutput)
+  createGlobalEvent(ge: GlobalEvent, mouse: MouseData, guild: number) {
+    this.idMan.getID(ge, guild)
+    this.idMan.getID(ge.output, guild)
+    this.idMan.getID(ge.eventOutput, guild)
     this.activeBoard.globalEvents.push(ge)
     ge.cdkPos = {
       x: mouse.offset.x - 300,
@@ -174,16 +187,16 @@ export class BoardManager {
     }
   }
 
-  createPipeline(ge: Pipeline, mouse: MouseData) {
-    this.idMan.getID(ge)
+  createPipeline(ge: Pipeline, mouse: MouseData, guild: number) {
+    this.idMan.getID(ge, guild)
     if (ge.type == "Event Input" || ge.type == "Event Output") {
       if (ge.type == "Event Input") {
         this.activeBoard.hasEvInput = true
       }
-      this.idMan.getID(ge.eventPoint!)
+      this.idMan.getID(ge.eventPoint!, guild)
     }
     else {
-      this.idMan.getID(ge.point!)
+      this.idMan.getID(ge.point!, guild)
     }
     this.activeBoard.pipelines.push(ge)
     ge.cdkPos = {
@@ -192,19 +205,27 @@ export class BoardManager {
     }
   }
 
-  addTransition(data: Transition) {
-    this.idMan.getID(data)
+  addTransition(data: Transition, guild: number) {
+    this.idMan.getID(data, guild)
     this.activeBoard.transitions.push(data)
-    const orig = this.idMan.get(data.origin[1])
+    const orig = this.idMan.get(data.origin[1], guild)
     if (orig) orig.transitionNumber++;
-    const dest = this.idMan.get(data.destination[1])
+    const dest = this.idMan.get(data.destination[1], guild)
     if (dest) dest.transitionNumber++;
   }
 
-  private deleteTransitionPresence(data: Transition) {
-    const orig = this.idMan.get(data.origin[1])
-    if (orig) orig.transitionNumber--;
-    const dest = this.idMan.get(data.destination[1])
+  private deleteTransitionPresence(data: Transition, guild: number) {
+    const orig = this.idMan.get(data.origin[1], guild)
+    if (orig){
+      orig.transitionNumber--;
+      const origNode = this.idMan.get(data.origin[0], guild)
+      if (orig.transitionNumber == 0 && origNode && origNode instanceof Variable){
+        var varElem = this.idMan.get(origNode.varAttr, guild)
+        origNode.comboTag = null
+        varElem.possibleValues = null
+      }
+    }
+    const dest = this.idMan.get(data.destination[1], guild)
     if (dest){
       dest.transitionNumber--;
       if (dest.transitionNumber == 0) {
@@ -214,7 +235,7 @@ export class BoardManager {
     this.idMan.delete(data.id)
   }
 
-  removeTransition(data: Transition | null = null) {
+  removeTransition(guild: number, data: Transition | null = null) {
     let idx: number;
     if (!data) {
       idx = this.activeBoard.transitions.length - 1
@@ -223,10 +244,10 @@ export class BoardManager {
       idx = this.activeBoard.transitions.indexOf(data)
     }
     const elem = this.activeBoard.transitions.splice(idx, 1)[0]
-    this.deleteTransitionPresence(elem)
+    this.deleteTransitionPresence(elem, guild)
   }
 
-  cleanTransitions(node: number, data: ValueInput | EventInput | null = null) {
+  cleanTransitions(node: number, guild: number, data: ValueInput | EventInput | null = null) {
     let check: { (trans: Transition): boolean; };
     if (data) {
       if (data.nature == "in") {
@@ -242,7 +263,7 @@ export class BoardManager {
 
     this.activeBoard.transitions = this.activeBoard.transitions.filter((trans) => {
       if (check(trans)) {
-        this.deleteTransitionPresence(trans)
+        this.deleteTransitionPresence(trans, guild)
         return false;
       }
       return true;
@@ -328,7 +349,7 @@ export class BoardManager {
     bd.transitions = []
   }
 
-  changeVarElems(oldName: string, newName: string) {
+  changeVarElems(oldName: string, newName: string, guild: number) {
     const prevVar = this.activeBoard.variables.find((elem) => (oldName == elem.name))!
     this.updateVarInstanceRefs(prevVar.id)
     const newVar = this.activeBoard.variables.find((elem) => (newName == elem.name))!
@@ -337,7 +358,7 @@ export class BoardManager {
       return newVar
     }
     const newVInst = new VarElement(newName, prevVar.valueType, prevVar.initialValue)
-    this.idMan.getID(newVInst)
+    this.idMan.getID(newVInst, guild)
     this.activeBoard.variables.push(newVInst)
     newVInst.references++;
     return newVInst

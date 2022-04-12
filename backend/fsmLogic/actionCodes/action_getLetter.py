@@ -17,7 +17,8 @@ class GetLetter(Action):
         ValueOutput("letter", ValueType.Text)
     ]
     outEvents = [
-        EventOutput("completed")
+        EventOutput("completed"),
+        EventOutput("error")
     ]
 
     def __init__(self):
@@ -27,7 +28,12 @@ class GetLetter(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        super().setValue(values[0][values[1]], 0)
+        import datetime
+        try:
+            super().setValue(values[0][values[1]], 0)
+        except IndexError:
+            client.errMsg[guild.id] = "[GetLetter - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Letter index is bigger than text length"
+            return super().sendEvent(1)
         return super().sendEvent(0)
 
     @classmethod

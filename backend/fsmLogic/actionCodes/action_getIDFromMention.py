@@ -34,8 +34,8 @@ class GetIDFromMention(Action):
             client.errMsg[guild.id] = "[GetIDFromMention - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid mention"
             return super().sendEvent(1)
         try:
-            idNum = int(idStr)
-        except ValueError:
+            idNum = int(idStr.groups()[0])
+        except (ValueError, IndexError):
             client.errMsg[guild.id] = "[GetIDFromMention - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid mention"
             return super().sendEvent(1)
         super().setValue(idNum, 0)

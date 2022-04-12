@@ -16,7 +16,8 @@ class GetGlobalVariable(Action):
         ValueOutput("value", ValueType.Any)
     ]
     outEvents = [
-        EventOutput("completed")
+        EventOutput("completed"),
+        EventOutput("error")
     ]
 
     def __init__(self):
@@ -26,7 +27,12 @@ class GetGlobalVariable(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        client.db.getGlobalVariable(guild.id, values[0])
+        import datetime
+        try:
+            super().setValue(client.db.getGlobalVariable(guild.id, values[0]), 0)
+        except ValueError:
+            client.errMsg[guild.id] = "[GetGlobalVariable - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Global variable not found"
+            return super().sendEvent(1)
         return super().sendEvent(0)
 
     @classmethod

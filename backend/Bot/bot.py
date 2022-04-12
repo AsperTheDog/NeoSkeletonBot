@@ -18,6 +18,7 @@ async def on_ready():
     client.errCh = {}
     client.errMsg = {}
     client.db = SkeletonDB()
+    client.debug = True
 
 
 if __name__ == "__main__":

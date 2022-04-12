@@ -5,18 +5,21 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class ToText(Action):
+class ReplaceCharacter(Action):
     guildID = -1
-    group = "Values"
-    templID = 22
+    group = "Text"
+    templID = 71
     inputs = [
-        ValueInput("value", ValueType.Any),
+        ValueInput("text", ValueType.Text),
+        ValueInput("char", ValueType.Text),
+        ValueInput("index", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("result", ValueType.Text)
+        ValueOutput("text", ValueType.Text)
     ]
     outEvents = [
-        EventOutput("completed")
+        EventOutput("completed"),
+        EventOutput("error")
     ]
 
     def __init__(self):
@@ -26,14 +29,12 @@ class ToText(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        import json
-        if isinstance(values[0], dict):
-            try:
-                super().setValue(json.dumps(values[0], indent=4), 0)
-            except TypeError:
-                super().setValue(values[0], 0)
-        else:
-            super().setValue(str(values[0]), 0)
+        import datetime
+        try:
+            super().setValue(values[0][:values[2]] + values[1] + values[0][values[2] + 1:], 0)
+        except KeyError:
+            client.errMsg[guild.id] = "[ReplaceCharacter - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Index is bigger than text length"
+            return super().sendEvent(1)
         return super().sendEvent(0)
 
     @classmethod

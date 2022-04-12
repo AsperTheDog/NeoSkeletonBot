@@ -64,9 +64,11 @@ class GetColor(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
+        import disnake
         color = eval("disnake.Color." + values[0] + "()")
         color = {'r': color.r, 'g': color.g, 'b': color.b}
         super().setValue(color, 0)
+        return super().sendEvent(0)
 
     @classmethod
     def getTemplate(cls):

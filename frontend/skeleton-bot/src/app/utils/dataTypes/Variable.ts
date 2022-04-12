@@ -9,6 +9,7 @@ export class Variable {
     this.output = output;
     this.cdkPos = {x: 0, y: 0}
     this.position = {x: 0, y: 0}
+    this.comboTag = null;
   }
 
   id: number;
@@ -17,4 +18,5 @@ export class Variable {
   output: ValueInput;
   cdkPos: {x: number, y: number}
   position: {x: number, y: number}
+  comboTag: string | null
 }

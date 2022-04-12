@@ -5,16 +5,17 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class RemoveDBIdentifier(Action):
+class GetDBTable(Action):
     guildID = -1
     group = "Database"
-    templID = 31
+    templID = 73
     inputs = [
         ValueInput("code", ValueType.Number),
-        ValueInput("table", ValueType.Text),
-        ValueInput("identifier", ValueType.Any)
+        ValueInput("table", ValueType.Text)
     ]
-    outputs = []
+    outputs = [
+        ValueOutput("table", ValueType.Structure, "UNKNOWN")
+    ]
     outEvents = [
         EventOutput("completed"),
         EventOutput("Error")
@@ -30,9 +31,13 @@ class RemoveDBIdentifier(Action):
         import datetime
         try:
             await client.db.accessTable(values[0], values[1])
-            client.db.removeRow(values[0], values[1], values[2])
         except ValueError:
-            client.errMsg[guild.id] = "[RemoveDBIdentifier - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"
+            client.errMsg[guild.id] = "[GetDBTable - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"
+            return super().sendEvent(1)
+        try:
+            super().setValue(client.db.getTable(values[0], values[1]), 0)
+        except ValueError:
+            client.errMsg[guild.id] = "[GetDBTable - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Data requested does not exist"
             return super().sendEvent(1)
         return super().sendEvent(0)
 

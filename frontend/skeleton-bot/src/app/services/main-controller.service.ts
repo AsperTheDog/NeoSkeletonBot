@@ -88,6 +88,10 @@ export class MainControllerService {
       
       this.httpService.getActions(this.sessionMan.getGuild()!).subscribe(
         (response) => {
+          if (response.length == 0){
+            this.logout(false)
+            return;
+          }
           this.templateMan.insertActions(response)
         },
         (error) => {
@@ -104,7 +108,7 @@ export class MainControllerService {
   }
 
   deleteElem(node: Action | Variable | GlobalEvent | Pipeline, type: string, spl:boolean = true) {
-    this.boardMan.cleanTransitions(node.id)
+    this.boardMan.cleanTransitions(node.id, this.sessionMan.getGuild()!)
     if (type == 'var') {
       this.boardMan.deleteVar(node as Variable, spl)
       this.manageInfo("Deleted variable node", false)
@@ -130,32 +134,34 @@ export class MainControllerService {
 
   getNewAction(templateID: number) {
     const templ = this.templateMan.getTemplate(templateID)
-    this.boardMan.createAction(templ, this.mouse)
+    this.boardMan.createAction(templ, this.mouse, this.sessionMan.getGuild()!)
     this.manageInfo("Created new Action Node of type '" + templ.type + "'", false)
   }
 
   getNewVariable(vr: Variable, vrElem: VarElement) {
-    this.boardMan.createVariable(vr, vrElem, this.mouse)
+    this.boardMan.createVariable(vr, vrElem, this.mouse, this.sessionMan.getGuild()!)
     this.manageInfo("Created new Variable Node", false)
   }
 
   getNewGEvent(ge: GlobalEvent) {
-    this.boardMan.createGlobalEvent(ge, this.mouse)
+    this.boardMan.createGlobalEvent(ge, this.mouse, this.sessionMan.getGuild()!)
     this.manageInfo("Created new Global Event Node '" + ge.name + "'", false)
   }
 
   getNewPipeline(ge: Pipeline) {
-    this.boardMan.createPipeline(ge, this.mouse)
+    this.boardMan.createPipeline(ge, this.mouse, this.sessionMan.getGuild()!)
     this.manageInfo("Created new Pipeline Node '" + ge.name + "'", false)
   }
 
   changeBoard = (loadBoard: string, isNew: boolean, savePrev=true) => {
     if (!this.sessionMan.sessionIsValid()) return;
+    this.loaded = false;
     const active = this.boardMan.getActive().name
     if (!savePrev){
       this.boardMan.changeBoard(loadBoard, isNew, this.sessionMan.getGuild()!)
       this.requestedBoard = loadBoard
       this.manageInfo("Loaded new schematic " + active, false)
+      this.loaded = true;
       return;
     }
 
@@ -165,6 +171,7 @@ export class MainControllerService {
         const confr = confirm("The board could not be saved, do you want to undo changes?")
         if (!confr){
           this.requestedBoard = active
+          this.loaded = true;
           return;
         }
         this.revertBoard(active)
@@ -172,6 +179,7 @@ export class MainControllerService {
       this.boardMan.changeBoard(loadBoard, isNew, this.sessionMan.getGuild()!)
       this.requestedBoard = loadBoard
       this.manageInfo("Loaded new schematic " + loadBoard, false)
+      this.loaded = true;
     })
   }
 
@@ -213,6 +221,7 @@ export class MainControllerService {
           )
         }
         else{
+          this.logout(false)
           this.loaded = true
         }
       },
@@ -249,7 +258,11 @@ export class MainControllerService {
     )
   }
 
-  logout() {
+  logout(doConf: boolean) {
+    if (doConf){
+      const conf = confirm("Are you sure you want to log out? Unsaved progress will be lost")
+      if (!conf) return;
+    }
     this.httpService.removeCookie()
     this.sessionMan.removeSession()
   }

@@ -29,8 +29,7 @@ class ResetDBValue(Action):
         super().checkValues(values)
         import datetime
         try:
-            if not client.db.tableIsLoaded(values[0], values[1]):
-                await client.db.accessTable(values[0], values[1])
+            await client.db.accessTable(values[0], values[1])
         except ValueError:
             client.errMsg[guild.id] = "[ResetDBValue - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"
             return super().sendEvent(1)

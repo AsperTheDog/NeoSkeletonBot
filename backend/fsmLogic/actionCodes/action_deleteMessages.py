@@ -5,13 +5,15 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class DeleteSticker(Action):
+class DeleteMessages(Action):
     guildID = -1
     group = "Interaction"
-    templID = 56
+    templID = 69
     inputs = [
-        ValueInput("sticker", ValueType.Text),
-        ValueInput("reason", ValueType.Text)
+        ValueInput("channel ID", ValueType.Number),
+        ValueInput("maximum seconds old", ValueType.Number),
+        ValueInput("limit", ValueType.Number),
+        ValueInput("author ID", ValueType.Number)
     ]
     outputs = []
     outEvents = [
@@ -26,28 +28,21 @@ class DeleteSticker(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
-        import datetime
         from http.client import HTTPException
-        stickers = guild.stickers
-        sticker = None
-        try:
-            idSt = int(values[0])
-        except ValueError:
-            idSt = None
-        for st in stickers:
-            if idSt and st.id == idSt:
-                sticker = st
-                break
-            elif st.name == values[0]:
-                sticker = st
-                break
-        if not sticker:
-            client.errMsg[guild.id] = "[DeleteSticker - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find the sticker"
+        import datetime
+
+        def check(msg):
+            return values[3] == 0 or msg.author.id == values[3]
+
+        ch = guild.get_channel(values[0])
+        if not ch:
+            client.errMsg[guild.id] = "[DeleteMessages - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find channel"
             return super().sendEvent(1)
+        dt = datetime.datetime.now() - datetime.timedelta(seconds=values[1])
         try:
-            await guild.delete_sticker(sticker, reason=values[1] if values[1] != "" else None)
+            await ch.purge(limit=values[2], oldest_first=True, after=dt, check=check)
         except HTTPException:
-            client.errMsg[guild.id] = "[DeleteSticker - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Discord could not delete the sticker"
+            client.errMsg[guild.id] = "[DeleteMessages - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Discord servers returned an error"
             return super().sendEvent(1)
         return super().sendEvent(0)
 

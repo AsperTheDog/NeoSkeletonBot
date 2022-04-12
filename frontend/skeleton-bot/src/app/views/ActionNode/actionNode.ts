@@ -29,7 +29,7 @@ export class ActionNode implements OnInit, AfterViewInit {
   position = { x: 0, y: 0 }
 
   ngOnInit(): void {
-    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID)
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID, this.mainController.sessionMan.getGuild()!)
     this.position = this.mainData.cdkPos
   }
 

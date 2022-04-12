@@ -30,13 +30,14 @@ export class Arrow implements OnChanges {
   Math = Math;
 
   ngOnChanges(changes: SimpleChanges): void {
+    const guild = this.mainController.sessionMan.getGuild()!
     if (!this.data){
-      this.data = this.mainController.boardMan.idMan.get(this.dataID)
+      this.data = this.mainController.boardMan.idMan.get(this.dataID, guild)
     }
     if ("destAddress" in changes) {
       if (this.data.destination.length != 0) {
-        this.destParent = this.mainController.boardMan.idMan.get(this.data.destination[0])!
-        this.dest = this.mainController.boardMan.idMan.get(this.data.destination[1])!
+        this.destParent = this.mainController.boardMan.idMan.get(this.data.destination[0], guild)!
+        this.dest = this.mainController.boardMan.idMan.get(this.data.destination[1], guild)!
         this.destIsMouse = false;
       }
       else{
@@ -46,8 +47,8 @@ export class Arrow implements OnChanges {
     }
     if ("origAddress" in changes) {
       if (this.data.origin.length != 0) {
-        this.origParent = this.mainController.boardMan.idMan.get(this.data.origin[0])!
-        this.orig = this.mainController.boardMan.idMan.get(this.data.origin[1])!
+        this.origParent = this.mainController.boardMan.idMan.get(this.data.origin[0], guild)!
+        this.orig = this.mainController.boardMan.idMan.get(this.data.origin[1], guild)!
         this.origIsMouse = false;
       }
       else{
@@ -58,7 +59,7 @@ export class Arrow implements OnChanges {
   }
 
   removeTrans = () => {
-    this.mainController.boardMan.removeTransition(this.data)
+    this.mainController.boardMan.removeTransition(this.mainController.sessionMan.getGuild()!, this.data)
   }
   
   getDirs = () => {

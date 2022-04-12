@@ -35,4 +35,5 @@ class BoardManager:
 
     @staticmethod
     def removeMain(guild):
-        BoardManager._mains.pop(guild)
+        if guild in BoardManager._mains:
+            BoardManager._mains.pop(guild)

@@ -36,23 +36,24 @@ export class httpService {
   }
 
   getGuilds(){
-    const guildURL = this.backendURL + "getGuilds"
+    const guildURL = this.backendURL + "guilds"
     return this.http.get<{icon: string, id: number, name: string}[]>(guildURL, {params: this.cookieParam})
   }
 
   getCreds(usrCode: string){
-    const actURL = this.backendURL + "checkCreds"
+    const actURL = this.backendURL + "credentials"
     const payload = this.cookieParam.append('code', usrCode)
     return this.http.get<{token: string, usr: User}>(actURL, {params: payload})
   }
 
   saveBoard(activeBoard: Board){
-    return this.http.post<{status: boolean}>(this.backendURL + "saveBoard", activeBoard)
+    const delURL = this.backendURL + "boards"
+    return this.http.post<{status: boolean}>(delURL, activeBoard)
   }
 
   getBoard(guild: number, name: string){
-    const payload = this.cookieParam.append('guild', guild).append('name', name)
-    const revURL = this.backendURL + "revertBoard"
+    const payload = this.cookieParam
+    const revURL = this.backendURL + "boards/" + guild + "/" + name
     return this.http.get<Board>(revURL, {params: payload})
   }
 
@@ -66,17 +67,17 @@ export class httpService {
   }
 
   deleteBoard(selectedGuild: number, activeBoard: string) {
-    const delURL = this.backendURL + "deleteBoard/" + selectedGuild + "/" + activeBoard
+    const delURL = this.backendURL + "boards/" + selectedGuild + "/" + activeBoard
     return this.http.delete(delURL)
   }
 
   getGlobalEvents() {
-    const delURL = this.backendURL + "getGlobalEvents"
+    const delURL = this.backendURL + "globalEvents"
     return this.http.get<{events:string[], customActionEvents:string[]}>(delURL)
   }
 
   getValueTypes() {
-    const delURL = this.backendURL + "getValueTypes"
+    const delURL = this.backendURL + "valueTypes"
     return this.http.get<ValueType[]>(delURL)
   }
 }

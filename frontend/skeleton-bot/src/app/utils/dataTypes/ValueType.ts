@@ -21,6 +21,7 @@ export class ValueType {
   canBeVar: boolean;
   canExpand: boolean;
   varInOut: number[];
+  mustBeConst: boolean;
   hasInitial: boolean;
   initial: string;
 }

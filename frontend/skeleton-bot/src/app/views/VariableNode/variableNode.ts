@@ -41,8 +41,8 @@ export class VariableNode implements OnInit, AfterViewInit {
   initBool: boolean = false;
 
   ngOnInit(): void {
-    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID)
-    this.varAttr = this.mainController.boardMan.idMan.get(this.mainData.varAttr)
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID, this.mainController.sessionMan.getGuild()!)
+    this.varAttr = this.mainController.boardMan.idMan.get(this.mainData.varAttr, this.mainController.sessionMan.getGuild()!)
     this.valueType = this.mainController.typeValMan.getType(this.varAttr.valueType)
     this.mainData.input.valueType = this.valueType.varInOut[0]
     this.mainData.output.valueType = this.valueType.varInOut[1]
@@ -95,7 +95,7 @@ export class VariableNode implements OnInit, AfterViewInit {
       return;
     }
     if (this.varAttr.name == this.varName) return;
-    var newVar = this.mainController.boardMan.changeVarElems(this.varAttr.name, this.varName)
+    var newVar = this.mainController.boardMan.changeVarElems(this.varAttr.name, this.varName, this.mainController.sessionMan.getGuild()!)
     this.mainData.varAttr = newVar.id
     this.varAttr = newVar
   }

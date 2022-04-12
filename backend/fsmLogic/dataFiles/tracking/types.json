@@ -13,7 +13,9 @@
       0
     ],
     "hasInitial": true,
-    "initial": "0"
+    "mustBeConst": false,
+    "initial": "0",
+    "input": "number"
   },
   {
     "id": 1,
@@ -29,7 +31,10 @@
       1
     ],
     "hasInitial": true,
-    "initial": "null"
+    "mustBeConst": false,
+    "initial": "null",
+    "input": "text",
+    "canExpand": true
   },
   {
     "id": 2,
@@ -46,6 +51,7 @@
       2
     ],
     "hasInitial": false,
+    "mustBeConst": true,
     "initial": ""
   },
   {
@@ -57,8 +63,12 @@
       4
     ],
     "canBeVar": true,
-    "varInOut": [],
-    "hasInitial": true,
+    "varInOut": [
+      3,
+      3
+    ],
+    "hasInitial": false,
+    "mustBeConst": false,
     "initial": "{}"
   },
   {
@@ -70,11 +80,14 @@
       1,
       2,
       3,
-      4
+      4,
+      5,
+      6
     ],
     "canBeVar": false,
     "varInOut": [],
     "hasInitial": false,
+    "mustBeConst": false,
     "initial": ""
   },
   {
@@ -90,7 +103,8 @@
       5,
       5
     ],
-    "hasInitial": true,
+    "hasInitial": false,
+    "mustBeConst": false,
     "initial": "false"
   },
   {
@@ -107,6 +121,7 @@
       6
     ],
     "hasInitial": false,
+    "mustBeConst": false,
     "initial": ""
   }
 ]

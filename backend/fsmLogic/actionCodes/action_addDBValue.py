@@ -30,8 +30,7 @@ class AddDBValue(Action):
         super().checkValues(values)
         import datetime
         try:
-            if not client.db.tableIsLoaded(values[0], values[1]):
-                await client.db.accessTable(values[0], values[1])
+            await client.db.accessTable(values[0], values[1])
             client.db.defineProperty(values[0], values[1], values[2], values[3])
         except ValueError:
             client.errMsg[guild.id] = "[AddDBValue - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"

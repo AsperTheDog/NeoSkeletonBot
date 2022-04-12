@@ -28,14 +28,16 @@ class SendError(Action):
         values = super().getValues()
         super().checkValues(values)
         import datetime
+        import disnake
         if values[0] == 0:
-            ch = client.get_channel(client.get_guild(int(guild)).system_channel)
+            ch = client.get_channel(guild.system_channel)
         else:
             ch = client.get_channel(values[0])
         if not ch:
             client.errMsg[guild.id] = "[SendError - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find channel"
             return super().sendEvent(1)
-        await ch.send(client.errMsg[guild.id])
+        embed = disnake.Embed(title=client.errMsg[guild.id], colour=disnake.Colour.red())
+        await ch.send(embed=embed)
 
 
     @classmethod

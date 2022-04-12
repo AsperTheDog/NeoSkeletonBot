@@ -284,6 +284,8 @@ def genCodeAction(board, guild, actID=None):
         for hook in inPipe['hook']:
             finalCode += "        vrs_" + bName + "[" + str(hook) + "]['value'] = values[" + str(count) + "]\n"
     finalCode += "        while nxt_" + bName + " in actions_" + bName + ":\n"
+    finalCode += "            if client.debug:\n"
+    finalCode += "                print('executing action', nxt_" + bName + ")\n"
     finalCode += "            nxt_" + bName + " = await actions_" + bName + "[nxt_" + bName + "](vrs_" + bName + ")\n"
     for count, outPipe in enumerate(pipelines['out']):
         finalCode += "        super().setValue(vrs_" + bName + "[" + str(outPipe['hook']) + "], " + str(count) + ")\n"
@@ -353,6 +355,8 @@ def genCodeMain(board, guild):
     finalCode += "            vrs_Main[initVar]['value'] = initValue\n"
     finalCode += "        try:\n"
     finalCode += "            while nxt_Main in actions_Main:\n"
+    finalCode += "                if client.debug:\n"
+    finalCode += "                    print('executing action', nxt_Main)\n"
     finalCode += "                nxt_Main = await actions_Main[nxt_Main](vrs_Main)\n"
     finalCode += "        except ValueError as e:\n"
     finalCode += "            await client.errCh['" + board['guild'] + "'].send(str(e))\n"
@@ -373,8 +377,7 @@ def compileMain(board, guild):
         newMod = importlib.import_module("fsmLogic.mains.mainBoard_" + str(guild))
         importlib.reload(newMod)
     except (AttributeError, SyntaxError, ImportError, TypeError) as err:
-        traceback.print_last()
-        return False
+        traceback.print_exc()
         if os.path.isfile("fsmLogic/mains/mainBoard_" + guild + ".py"):
             os.remove("fsmLogic/mains/mainBoard_" + guild + ".py")
         return False
@@ -396,8 +399,7 @@ def compileAction(board, guild):
         newMod = importlib.import_module("fsmLogic.actionCodes.custom." + hashGuildID(guild) + ".action_" + board['name'])
         importlib.reload(newMod)
     except (AttributeError, SyntaxError, ImportError, TypeError) as err:
-        traceback.print_last()
-        return False
+        traceback.print_exc()
         if os.path.isfile("fsmLogic/actionCodes/custom/" + hashGuildID(guild) + "/action_" + board['name'] + ".py"):
             os.remove("fsmLogic/actionCodes/custom/" + hashGuildID(guild) + "/action_" + board['name'] + ".py")
             if len(os.listdir("fsmLogic/actionCodes/custom/" + hashGuildID(guild))) == 0:

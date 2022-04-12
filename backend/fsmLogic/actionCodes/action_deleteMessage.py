@@ -5,19 +5,17 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 
 
 @ActionManager.actionclass
-class RemoveDBIdentifier(Action):
+class DeleteMessage(Action):
     guildID = -1
-    group = "Database"
-    templID = 31
+    group = "Interaction"
+    templID = 68
     inputs = [
-        ValueInput("code", ValueType.Number),
-        ValueInput("table", ValueType.Text),
-        ValueInput("identifier", ValueType.Any)
+        ValueInput("message ID", ValueType.Number)
     ]
     outputs = []
     outEvents = [
         EventOutput("completed"),
-        EventOutput("Error")
+        EventOutput("error")
     ]
 
     def __init__(self):
@@ -27,12 +25,17 @@ class RemoveDBIdentifier(Action):
     async def execute(self, client, guild):
         values = super().getValues()
         super().checkValues(values)
+        from http.client import HTTPException
         import datetime
+        import disnake
+        msg = client.get_message(values[0])
+        if not msg:
+            client.errMsg[guild.id] = "[DeleteMessage - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Could not find message"
+            return super().sendEvent(1)
         try:
-            await client.db.accessTable(values[0], values[1])
-            client.db.removeRow(values[0], values[1], values[2])
-        except ValueError:
-            client.errMsg[guild.id] = "[RemoveDBIdentifier - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Invalid code"
+            await msg.delete()
+        except (HTTPException | disnake.NotFound):
+            client.errMsg[guild.id] = "[DeleteMessage - " + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "] Discord could not delete the message"
             return super().sendEvent(1)
         return super().sendEvent(0)
 
