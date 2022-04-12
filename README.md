@@ -74,3 +74,5 @@ Next, we have to tell discord we trust this URL. In the Discord Developer Portal
 Make sure you've gone through intallation and configuration sections before trying to run anything!!
 
 Just run the file *runHTTPS.bat* inside the downloaded folder if you want the webpage to work over HTTPS or *runHTTP.bat* if you want it to work over HTTP (you can change at any time, just make sure you reconfigure the Discord Developer Portal accordingly). It will open two terminals: One for the webpage, and the other one for the bot.
+
+If you don't want to start any process regarding the webpage and just execute the discord bot run the file *runBot.bat*, this will not start the webserver. This could be useful if you no longer have to make any changes to your custom scripts and just want the bot to work as it is. Take into account the webpage is the only way of customizing the behaviour of the bot, so you will have to restart the bot and reload the program with the web if you want to change anything.
