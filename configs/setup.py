@@ -9,6 +9,7 @@ while True:
   backport = input("Enter the port for the bot server (default: 12546)")
   if backport == "":
     backport = 12546
+    break
   else:
     try:
       backport = int(backport)
@@ -19,9 +20,10 @@ while True:
     except ValueError:
       print("Ports must be numbers between 1024 and 49151 (not included)")
 while True:
-  frontport = input("Enter the port for the webpage (default: 12546)")
+  frontport = input("Enter the port for the webpage (default: 12547)")
   if frontport == "":
-    frontport = 12546
+    frontport = 12547
+    break
   else:
     try:
       frontport = int(frontport)
