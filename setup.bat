@@ -3,8 +3,8 @@ python configs/setup.py
 cd backend
 pip install virtualenv
 virtualenv venv
-venv\Scripts\pip3.exe install -r ..\backend\requirements.txt
-venv\Scripts\python.exe configs\certsGenerator.py
+venv\Scripts\pip3.exe install -r requirements.txt
+venv\Scripts\python.exe ..\configs\certsGenerator.py
 cd ../frontend/skeleton-bot
 call npm install -g @angular/cli
 call npm install

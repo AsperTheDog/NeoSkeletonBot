@@ -11,8 +11,8 @@ def cert_gen(
         organizationUnitName="organizationUnitName",
         serialNumber=0,
         validityEndInSeconds=10 * 365 * 24 * 60 * 60,
-        KEY_FILE="backend/cert/key.pem",
-        CERT_FILE="backend/cert/cert.pem"):
+        KEY_FILE="../backend/cert/key.pem",
+        CERT_FILE="../backend/cert/cert.pem"):
     k = crypto.PKey()
     k.generate_key(crypto.TYPE_RSA, 4096)
     cert = crypto.X509()

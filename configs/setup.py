@@ -41,7 +41,7 @@ with open("configs/config.json", "w") as file:
     "backListen": listen,
     "frontPort": frontport,
     "backPort": backport
-  }, file)
+  }, file, indent=4)
 
 secret = input("Enter the client secret of your oauth2 app (found in the Discord Developer Portal -> your app -> oauth2 -> general): ")
 ID = input("Enter the client ID of your oauth2 app (found in the Discord Developer Portal -> your app -> OAuth2 -> General): ")
