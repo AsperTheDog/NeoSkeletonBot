@@ -40,11 +40,16 @@ export class GEventNode implements OnInit, AfterViewInit {
   }
 
   onDragStart() {
+    this.mainController.boardMan.updateBuffer();
     this.dragShield.canvas.draggingNode = true;
   }
 
   onDragMove() {
     this.updateCoords()
+  }
+
+  onDragEnd(event: CdkDragEnd) {
+    this.getVarCoords(event)
   }
 
   updateCoords() {
@@ -58,5 +63,12 @@ export class GEventNode implements OnInit, AfterViewInit {
     this.dragShield.canvas.draggingNode = false;
     this.mainData.cdkPos = event.source.getFreeDragPosition()
     this.mainController.checkIfDelete(this.mainData, "event")
+  }
+
+  reload() {
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID, this.mainController.sessionMan.getGuild()!)
+    this.position = this.mainData.cdkPos
+    this.eventOutput.reload()
+    this.valueOutput.reload()
   }
 }

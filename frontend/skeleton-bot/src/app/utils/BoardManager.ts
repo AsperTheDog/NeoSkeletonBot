@@ -96,6 +96,8 @@ export class BoardManager {
   constructor () {
     this.idMan = new IDManager();
     this.boards = new Map<string, Board>();
+    this.undoBuffer = []
+    this.redoBuffer = []
   }
   
   idMan: IDManager;
@@ -103,6 +105,8 @@ export class BoardManager {
   boards: Map<string, Board>
   boardList: string[];
   activeBoard: Board;
+  undoBuffer: string[];
+  redoBuffer: string[];
 
   getActive(): any {
     return this.activeBoard
@@ -238,6 +242,7 @@ export class BoardManager {
   removeTransition(guild: number, data: Transition | null = null) {
     let idx: number;
     if (!data) {
+      this.cancelBufferUpdate()
       idx = this.activeBoard.transitions.length - 1
     }
     else {
@@ -317,6 +322,7 @@ export class BoardManager {
   }
 
   clearBoard(name: string) {
+    this.emptyBuffer()
     const bd = this.getBoard(name)
     let elemProcess = (iter: any[], lst: any[]) => {
       for (let elem of lst){
@@ -384,5 +390,42 @@ export class BoardManager {
     this.clearBoard(name)
     this.idMan.includeIDs(response)
     this.boards.set(name, response)
+  }
+
+  updateBuffer() {
+    this.undoBuffer.push(JSON.stringify(this.activeBoard))
+    if (this.undoBuffer.length > 10){
+      this.undoBuffer.splice(0, 1)
+    }
+    this.redoBuffer = []
+  }
+
+  cancelBufferUpdate() {
+    this.undoBuffer.splice(this.undoBuffer.length - 1, 1)
+  }
+
+  emptyBuffer() {
+    this.undoBuffer = []
+    this.redoBuffer = []
+  }
+
+  undo() {
+    const undo = this.undoBuffer.pop()
+    if (!undo){
+      return
+    }
+    this.redoBuffer.push(JSON.stringify(this.activeBoard))
+    this.activeBoard = JSON.parse(undo)
+    this.idMan.includeIDs(this.activeBoard)
+  }
+
+  redo() {
+    const redo = this.redoBuffer.pop()
+    if (!redo){
+      return
+    }
+    this.undoBuffer.push(JSON.stringify(this.activeBoard))
+    this.activeBoard = JSON.parse(redo)
+    this.idMan.includeIDs(this.activeBoard)
   }
 }

@@ -55,6 +55,9 @@ export class EventNode implements OnInit {
     if (sel != null) {
       sel.removeAllRanges();
     }
+
+    this.mainController.boardMan.updateBuffer()
+
     this.dragShield.disableDrag();
     const trns = new Transition(
       0,
@@ -142,7 +145,12 @@ export class EventNode implements OnInit {
   }
 
   removeAllTrans() {
+    this.mainController.boardMan.updateBuffer()
     this.mainController.manageInfo("Removed all transitions for node '" + this.valData.name + "'", false)
     this.mainController.boardMan.cleanTransitions(this.parentNode.mainData.id, this.mainController.sessionMan.getGuild()!, this.valData)
+  }
+
+  reload() {
+    this.valData = this.mainController.boardMan.idMan.get(this.valDataID, this.mainController.sessionMan.getGuild()!)
   }
 }

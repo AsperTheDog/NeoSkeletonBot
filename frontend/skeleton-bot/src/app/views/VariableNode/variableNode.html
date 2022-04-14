@@ -1,5 +1,5 @@
 <div #mainRef class="nodeBox" cdkDrag [cdkDragDisabled]="dragDisabled" (cdkDragMoved)="onDragMove()"
-    (cdkDragStarted)="onDragStart()" name="Test" (cdkDragEnded)="getVarCoords($event)"
+    (cdkDragStarted)="onDragStart()" name="Test" (cdkDragEnded)="onDragEnd($event)"
     [cdkDragFreeDragPosition]="position">
     <div class="nodeBoxHead" cdkDragHandle>
         {{varAttr.constant ? 'value' : 'variable'}}

@@ -1,5 +1,5 @@
 <div #mainRef class="nodeBox" cdkDrag (cdkDragMoved)="onDragMove()" (cdkDragStarted)="onDragStart()"
-    (cdkDragEnded)="getActionCoords($event)" name="Test" [cdkDragFreeDragPosition]="position">
+    (cdkDragEnded)="onDragEnd($event)" name="Test" [cdkDragFreeDragPosition]="position">
     <div class="nodeBoxHead" cdkDragHandle>
         {{ mainData.type }}
     </div>

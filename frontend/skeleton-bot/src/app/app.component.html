@@ -60,15 +60,15 @@
   <div #board class="board" role="main" [cdkDragDisabled]="dragDisabled" [cdkDragFreeDragPosition]="dragPos"
     (cdkDragStarted)="dragEvent()" (cdkDragMoved)="updateDragPos()" cdkDrag wheel>
     <span *ngIf="dragged && mainController.sessionMan.usr" [@inAnimation]>
-      <app-actionNode #NodeRef *ngFor="let node of mainController.boardMan.activeBoard.actions" [mainDataID]="node.id">
+      <app-actionNode #nodeRef *ngFor="let node of mainController.boardMan.activeBoard.actions" [mainDataID]="node.id">
       </app-actionNode>
-      <app-variableNode #NodeRef *ngFor="let node of mainController.boardMan.activeBoard.varInstances" [mainDataID]="node.id">
+      <app-variableNode #nodeRef *ngFor="let node of mainController.boardMan.activeBoard.varInstances" [mainDataID]="node.id">
       </app-variableNode>
-      <app-GEventNode #NodeRef *ngFor="let node of mainController.boardMan.activeBoard.globalEvents" [mainDataID]="node.id">
+      <app-GEventNode #nodeRef *ngFor="let node of mainController.boardMan.activeBoard.globalEvents" [mainDataID]="node.id">
       </app-GEventNode>
-      <app-pipelineNode #NodeRef *ngFor="let node of mainController.boardMan.activeBoard.pipelines" [mainDataID]="node.id">
+      <app-pipelineNode #nodeRef *ngFor="let node of mainController.boardMan.activeBoard.pipelines" [mainDataID]="node.id">
       </app-pipelineNode>
-      <app-arrow *ngFor="let transition of mainController.boardMan.activeBoard.transitions" [dataID]="transition.id"
+      <app-arrow #arrowRef *ngFor="let transition of mainController.boardMan.activeBoard.transitions" [dataID]="transition.id"
         [destAddress]="transition.destination[1]" [origAddress]="transition.origin[1]"></app-arrow>
     </span>
   </div>

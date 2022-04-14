@@ -59,6 +59,7 @@ export class Arrow implements OnChanges {
   }
 
   removeTrans = () => {
+    this.mainController.boardMan.updateBuffer()
     this.mainController.boardMan.removeTransition(this.mainController.sessionMan.getGuild()!, this.data)
   }
   
@@ -109,5 +110,18 @@ export class Arrow implements OnChanges {
           ' C' + origDir + ',' + origPos.y + 
            ' ' + destDir + ',' + destPos.y + 
            ' ' + destPos.x + ',' +  destPos.y
+  }
+
+  reload() {
+    const guild = this.mainController.sessionMan.getGuild()!
+    this.data = this.mainController.boardMan.idMan.get(this.dataID, guild)
+    if (!this.destIsMouse){
+      this.destParent = this.mainController.boardMan.idMan.get(this.data.destination[0], guild)!
+      this.dest = this.mainController.boardMan.idMan.get(this.data.destination[1], guild)!
+    }
+    if (!this.origIsMouse){
+      this.origParent = this.mainController.boardMan.idMan.get(this.data.origin[0], guild)!
+      this.orig = this.mainController.boardMan.idMan.get(this.data.origin[1], guild)!
+    }
   }
 }

@@ -170,6 +170,7 @@ export class ValueNode implements OnInit {
       }
     }
 
+    this.mainController.boardMan.updateBuffer()
     if (this.activeTransition.destination.length == 0) {
       this.activeTransition.destination = [destNode.parentNode.mainData.id, destNode.valData.id]
       destNode.valData.transitionNumber++;
@@ -202,6 +203,12 @@ export class ValueNode implements OnInit {
   }
 
   removeAllTrans() {
+    this.mainController.boardMan.updateBuffer()
+    this.mainController.manageInfo("Removed all transitions for node '" + this.valData.name + "'", false)
     this.mainController.boardMan.cleanTransitions(this.parentNode.mainData.id, this.mainController.sessionMan.getGuild()!, this.valData)
+  }
+
+  reload() {
+    this.valData = this.mainController.boardMan.idMan.get(this.valDataID, this.mainController.sessionMan.getGuild()!)
   }
 }

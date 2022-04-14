@@ -14,6 +14,8 @@ import { Pipeline } from './utils/dataTypes/Pipeline';
 import { PhantomPipelineNode } from './views/PipelineNode/phantom/phantomPipelineNode';
 import { VarElement } from './utils/dataTypes/VarElement';
 import { ActivatedRoute } from '@angular/router';
+import { PipelineNode } from './views/PipelineNode/PipelineNode';
+import { Arrow } from './views/Transition/arrow';
 
 @Component({
   selector: 'app-root',
@@ -55,7 +57,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.dragShield.canvas = this;
   }
 
-  @ViewChildren("nodeRef") nodeRefs: QueryList<ActionNode | VariableNode | GEventNode>;
+  @ViewChildren("nodeRef") nodeRefs: QueryList<ActionNode | VariableNode | GEventNode | PipelineNode>;
+  @ViewChildren("arrowRef") arrowRefs: QueryList<Arrow>;
   @ViewChild("board") boardRef: ElementRef;
   @ViewChild("sideBar") sideBar: ElementRef;
   @ViewChild("phantomVar") phantomVar: PhantomVariableNode;
@@ -108,6 +111,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (this.mainController.transStartInput) {
       this.mainController.transStartInput.finishTransition();
       this.mainController.transStartInput = null
+    }
+  }
+
+  @HostListener('window:keydown',['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    if(($event.ctrlKey || $event.metaKey) && $event.key == 'z'){
+      this.mainController.boardMan.undo()
+      this.nodeRefs.forEach(c => c.reload());
+      this.arrowRefs.forEach(c => c.reload());
+    }
+    if(($event.ctrlKey || $event.metaKey) && $event.key == 'y'){
+      this.mainController.boardMan.redo()
+      this.nodeRefs.forEach(c => c.reload());
+      this.arrowRefs.forEach(c => c.reload());
     }
   }
 
@@ -270,6 +287,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.mainController.saveProcess(data)
     })
   }
+
+
 }
 
 

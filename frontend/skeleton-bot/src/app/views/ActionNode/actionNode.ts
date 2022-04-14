@@ -45,11 +45,17 @@ export class ActionNode implements OnInit, AfterViewInit {
   }
 
   onDragStart() {
+    this.mainController.boardMan.updateBuffer();
     this.dragShield.canvas.draggingNode = true;
   }
 
   onDragMove() {
     this.updateCoords()
+  }
+
+
+  onDragEnd(event: CdkDragEnd) {
+    this.getActionCoords(event)
   }
 
   updateCoords() {
@@ -63,5 +69,16 @@ export class ActionNode implements OnInit, AfterViewInit {
     this.dragShield.canvas.draggingNode = false
     this.mainData.cdkPos = event.source.getFreeDragPosition()
     this.mainController.checkIfDelete(this.mainData, "action")
+  }
+
+  reload() {
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID, this.mainController.sessionMan.getGuild()!)
+    this.position = this.mainData.cdkPos
+    this.valueInOut.forEach((inOut) => {
+      inOut.reload()
+    })
+    this.eventInOut.forEach((inOut) => {
+      inOut.reload()
+    })
   }
 }

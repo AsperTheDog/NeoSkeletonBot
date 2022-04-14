@@ -133,22 +133,26 @@ export class MainControllerService {
   }
 
   getNewAction(templateID: number) {
+    this.boardMan.updateBuffer()
     const templ = this.templateMan.getTemplate(templateID)
     this.boardMan.createAction(templ, this.mouse, this.sessionMan.getGuild()!)
     this.manageInfo("Created new Action Node of type '" + templ.type + "'", false)
   }
 
   getNewVariable(vr: Variable, vrElem: VarElement) {
+    this.boardMan.updateBuffer()
     this.boardMan.createVariable(vr, vrElem, this.mouse, this.sessionMan.getGuild()!)
     this.manageInfo("Created new Variable Node", false)
   }
 
   getNewGEvent(ge: GlobalEvent) {
+    this.boardMan.updateBuffer()
     this.boardMan.createGlobalEvent(ge, this.mouse, this.sessionMan.getGuild()!)
     this.manageInfo("Created new Global Event Node '" + ge.name + "'", false)
   }
 
   getNewPipeline(ge: Pipeline) {
+    this.boardMan.updateBuffer()
     this.boardMan.createPipeline(ge, this.mouse, this.sessionMan.getGuild()!)
     this.manageInfo("Created new Pipeline Node '" + ge.name + "'", false)
   }
@@ -184,6 +188,7 @@ export class MainControllerService {
   }
 
   clearBoard() {
+    this.boardMan.updateBuffer()
     if (!this.sessionMan.sessionIsValid()) return;
     const conf = confirm("Are you sure you want to clear the board?")
     if (!conf) return;

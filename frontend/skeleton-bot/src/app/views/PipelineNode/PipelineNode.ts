@@ -44,11 +44,16 @@ export class PipelineNode implements OnInit, AfterViewInit {
   }
 
   onDragStart() {
+    this.mainController.boardMan.updateBuffer();
     this.dragShield.canvas.draggingNode = true;
   }
 
   onDragMove() {
     this.updateCoords()
+  }
+
+  onDragEnd(event: CdkDragEnd) {
+    this.getVarCoords(event)
   }
 
   updateCoords() {
@@ -62,5 +67,16 @@ export class PipelineNode implements OnInit, AfterViewInit {
     this.dragShield.canvas.draggingNode = false;
     this.mainData.cdkPos = event.source.getFreeDragPosition()
     this.mainController.checkIfDelete(this.mainData, "pipeline")
+  }
+
+  reload() {
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID, this.mainController.sessionMan.getGuild()!)
+    this.position = this.mainData.cdkPos
+    if (this.eventOutput) {
+      this.eventOutput.reload()
+    }
+    if (this.valueOutput) {
+      this.valueOutput.reload()
+    }
   }
 }

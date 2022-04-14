@@ -59,11 +59,16 @@ export class VariableNode implements OnInit, AfterViewInit {
   }
 
   onDragStart() {
+    this.mainController.boardMan.updateBuffer();
     this.dragShield.canvas.draggingNode = true;
   }
 
   onDragMove() {
     this.updateCoords()
+  }
+
+  onDragEnd(event: CdkDragEnd) {
+    this.getVarCoords(event)
   }
 
   disableDrag() {
@@ -102,5 +107,12 @@ export class VariableNode implements OnInit, AfterViewInit {
 
   initBoolChange() {
     this.varAttr.initialValue = this.initBool ? "true" : "false";
+  }
+
+  reload() {
+    this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID, this.mainController.sessionMan.getGuild()!)
+    this.position = this.mainData.cdkPos
+    this.input.reload()
+    this.output.reload()
   }
 }
