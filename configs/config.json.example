@@ -1,5 +1,5 @@
 {
-  "rootAddr": "YOUR IP HERE",
+  "rootAddr": "localhost",
   "backListen": "0.0.0.0",
   "frontPort": 12547,
   "backPort": 12546

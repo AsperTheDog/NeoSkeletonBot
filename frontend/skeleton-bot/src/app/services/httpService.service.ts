@@ -5,7 +5,7 @@ import { Action } from '../utils/dataTypes/Action';
 import { Board } from '../utils/dataTypes/Board';
 import { User } from '../utils/dataTypes/User';
 import { ValueType } from '../utils/dataTypes/ValueType';
-import projConfig from '../../../../../config.json';
+import projConfig from '../../../../../configs/config.json';
 import extraConfs from 'extraConfigs.json';
 
 @Injectable({

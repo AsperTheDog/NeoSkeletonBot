@@ -143,12 +143,12 @@ def runFlask(firstArg):
     global frontURL, backURL
 
     isHttps = True if firstArg == "https" else False
-    with open("../config.json", "r") as file:
+    with open("../configs/config.json", "r") as file:
         configs = json.load(file)
     frontURL = ("https://" if isHttps else "http://") + configs['rootAddr'] + ":" + str(configs['frontPort'])
     backURL = ("https://" if isHttps else "http://") + configs['rootAddr'] + ":" + str(configs['backPort'])
 
     if firstArg == "https":
-        app.run(debug=False, host=configs['backListen'], port=12546, ssl_context=('cert/cert.pem', 'cert/key.pem'))
+        app.run(debug=False, host=configs['backListen'], port=configs['backPort'], ssl_context=('cert/cert.pem', 'cert/key.pem'))
     else:
-        app.run(debug=False, host=configs['backListen'], port=12546)
+        app.run(debug=False, host=configs['backListen'], port=configs['backPort'])
