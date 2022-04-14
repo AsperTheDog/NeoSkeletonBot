@@ -1,5 +1,6 @@
 cd \D "%~dp0"
 
+pip install openssl
 python certsGenerator.py
 cd backend
 pip install virtualenv
