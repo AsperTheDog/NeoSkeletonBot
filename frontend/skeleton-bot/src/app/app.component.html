@@ -274,9 +274,13 @@
       </mat-tab>
     </mat-tab-group>
   </div>
-  <div class="sideDisclaimer" *ngIf="!mainController.sessionMan.usr || !mainController.sessionMan.selectedGuild">
+  <div class="sideDisclaimer" *ngIf="!mainController.sessionMan.usr">
     log in to configure the bot
   </div>
+  <div class="sideDisclaimer" *ngIf="mainController.sessionMan.usr && !mainController.sessionMan.selectedGuild">
+    no suitable guild found
+  </div>
+  
 </div>
 
 <router-outlet></router-outlet>

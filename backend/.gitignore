@@ -155,9 +155,12 @@ Bot/bot.yaml
 cert/cert.pem
 cert/key.pem
 
+test.py
+
 fsmLogic/mains/*
 !fsmLogic/mains/__init__.py
 fsmLogic/actionCodes/custom/*
 !fsmLogic/actionCodes/custom/.gitkeep
 fsmLogic/dataFiles/front/*
 !fsmLogic/dataFiles/front/.gitkeep
+fsmLogic/dataFiles/tracking/botGuilds.json

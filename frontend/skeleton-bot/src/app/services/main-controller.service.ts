@@ -203,24 +203,29 @@ export class MainControllerService {
         if (creds.usr.id){
           this.httpService.getGuilds().subscribe(
             (guilds) => {
-              this.sessionMan.insertGuilds(guilds)
+              if (guilds.length != 0){
+                this.sessionMan.insertGuilds(guilds)
 
-              this.httpService.getBoards(this.sessionMan.getGuild()!).subscribe(
-                (boards) => {
-                  this.boardMan.insertBoards(boards)
-
-                  this.httpService.getActions(this.sessionMan.getGuild()!).subscribe(
-                    (actions) => {
-                      this.templateMan.insertActions(actions)
-                      this.loaded = true;
-                    },
-                    (error) => {
-                      console.log(error);
-                    }
-                  )
-                },
-                (error) => {console.log(error)}
-              )
+                this.httpService.getBoards(this.sessionMan.getGuild()!).subscribe(
+                  (boards) => {
+                    this.boardMan.insertBoards(boards)
+  
+                    this.httpService.getActions(this.sessionMan.getGuild()!).subscribe(
+                      (actions) => {
+                        this.templateMan.insertActions(actions)
+                        this.loaded = true;
+                      },
+                      (error) => {
+                        console.log(error);
+                      }
+                    )
+                  },
+                  (error) => {console.log(error)}
+                )
+              }
+              else{
+                this.loaded = true;
+              }
             },
             (error) => {console.log(error)}
           )

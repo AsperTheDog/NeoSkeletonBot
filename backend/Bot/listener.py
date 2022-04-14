@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 import disnake
@@ -272,5 +273,10 @@ class EventListener(commands.Cog):
     @commands.Cog.listener()
     async def on_invite_delete(self, invite):
         BoardManager.sendGlobalEvent(self.bot, "on invite deleted", utils.formatInvite(invite), invite.guild)
+
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        with open("fsmLogic/dataFiles/tracking/botGuilds.json", "w") as file:
+            json.dump([guild.id for guild in self.bot.guilds], file)
 
 # TODO: scheduled

@@ -1,3 +1,4 @@
+import json
 import os
 
 from disnake import Intents
@@ -18,6 +19,8 @@ client.debug = True
 @client.event
 async def on_ready():
     print(f'Logged on as {client.user}!')
+    with open("fsmLogic/dataFiles/tracking/botGuilds.json", "w") as file:
+        json.dump([guild.id for guild in client.guilds], file)
 
 
 with open('Bot/bot.yaml') as f:

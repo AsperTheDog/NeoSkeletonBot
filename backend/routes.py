@@ -1,5 +1,7 @@
 import json
 import os
+
+import disnake
 import yaml
 
 from flask import Flask, jsonify, request, redirect, abort
@@ -126,7 +128,15 @@ def guilds():
     if not exists:
         return jsonify({'guilds': [{'name': 'login to get guilds', 'id': None}]})
     data = SessionManager.get(request.args.get('token'))
-    return jsonify([{'name': elem['name'], 'id': elem['id'], 'icon': elem['icon'], 'permissions': elem['permissions']} for elem in data['guilds'] if elem['owner']])
+    glds = []
+    with open("fsmLogic/dataFiles/tracking/botGuilds.json", "r") as file:
+        botGuilds = json.load(file)
+    for guild in data['guilds']:
+        perms = disnake.Permissions(int(guild['permissions']))
+        print(guild['id'], perms.administrator)
+        if perms.administrator and int(guild['id']) in botGuilds:
+            glds.append({'name': guild['name'], 'id': guild['id'], 'icon': guild['icon'], 'permissions': guild['permissions']})
+    return jsonify(glds)
 
 
 def runFlask(firstArg):
