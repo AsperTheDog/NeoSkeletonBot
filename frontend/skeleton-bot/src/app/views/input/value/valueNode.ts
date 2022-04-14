@@ -66,6 +66,8 @@ export class ValueNode implements OnInit {
       sel.removeAllRanges();
     }
 
+    this.mainController.boardMan.updateBuffer()
+    
     this.dragShield.disableDrag();
     const trns = new Transition(
       0,
@@ -170,7 +172,6 @@ export class ValueNode implements OnInit {
       }
     }
 
-    this.mainController.boardMan.updateBuffer()
     if (this.activeTransition.destination.length == 0) {
       this.activeTransition.destination = [destNode.parentNode.mainData.id, destNode.valData.id]
       destNode.valData.transitionNumber++;
