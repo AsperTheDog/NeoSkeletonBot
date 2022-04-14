@@ -35,7 +35,7 @@ while True:
       print("Ports must be numbers between 1024 and 49151 (not included) and must be different from the bot server port")
 listen = "Which IPs do you want the bot server to listen to? (Default: 0.0.0.0)"
 
-with open("config.json", "w") as file:
+with open("configs/config.json", "w") as file:
   json.dump({
     "rootAddr": host,
     "backListen": listen,
@@ -49,5 +49,5 @@ token = input("Enter the token of your bot (found in the Discord Developer Porta
 
 yml = "token: '{}'\nclientID: {}\nclientSecret: '{}'".format(token, ID, secret)
 
-with open("../backend/Bot/bot.yaml", "w") as file:
+with open("backend/Bot/bot.yaml", "w") as file:
   file.write(yml)
