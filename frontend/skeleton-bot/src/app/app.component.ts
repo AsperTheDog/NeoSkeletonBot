@@ -279,7 +279,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   invite() {
-    window.open("https://discord.com/api/oauth2/authorize?client_id=682744116143980699&permissions=8&scope=bot", '_blank')!.focus();
+    window.open(this.mainController.httpService.inviteRef, '_blank')!.focus();
   }
 
   save() {

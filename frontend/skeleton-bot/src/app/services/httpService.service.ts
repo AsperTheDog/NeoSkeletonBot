@@ -19,10 +19,12 @@ export class httpService {
       this.cookieParam = this.cookieParam.append('token', cookieToken)
     }
     this.backendURL = (extraConfs.https ? "https://" : "http://") + projConfig.rootAddr + ":" + projConfig.backPort.toString() + "/"
-    this.loginRef = encodeURIComponent(this.backendURL + "login");
+    this.loginRef = projConfig.oauth2URL;
+    this.inviteRef = projConfig.inviteURL;
   }
 
   loginRef: string;
+  inviteRef: string;
   backendURL: string;
   cookieParam: HttpParams;
 

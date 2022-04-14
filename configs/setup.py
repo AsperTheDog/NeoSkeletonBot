@@ -1,5 +1,5 @@
 import json
-
+from urllib.parse import quote_plus
 
 print("Hello! We are now going to configure some basic settings. If you want to leave the default option just press enter\n")
 host = input("Enter your IP address or NDS route (default: localhost): ")
@@ -37,14 +37,6 @@ listen = input("Which IPs do you want the bot server to listen to? (Default: 0.0
 if listen == "":
   listen = "0.0.0.0"
 
-with open("configs/config.json", "w") as file:
-  json.dump({
-    "rootAddr": host,
-    "backListen": listen,
-    "frontPort": frontport,
-    "backPort": backport
-  }, file, indent=4)
-
 while True:
   https = input("Do you want to use HTTPS? [y/n]: ")
   if https.lower() == "y":
@@ -61,9 +53,19 @@ ID = input("Enter the client ID of your oauth2 app (found in the Discord Develop
 token = input("Enter the token of your bot (found in the Discord Developer Portal -> your app -> Bot): ")
 
 yml = "token: '{}'\nclientID: {}\nclientSecret: '{}'".format(token, ID, secret)
+oauth2URL = "http{}://{}:{}/login".format("s" if https else "", host, backport)
 
 with open("backend/Bot/bot.yaml", "w") as file:
   file.write(yml)
 
+with open("configs/config.json", "w") as file:
+  json.dump({
+    "rootAddr": host,
+    "backListen": listen,
+    "frontPort": frontport,
+    "backPort": backport,
+    "inviteURL": "https://discord.com/api/oauth2/authorize?client_id={}&permissions=8&scope=bot".format(ID),
+    "oauth2URL": "https://discord.com/api/oauth2/authorize?client_id={}&redirect_uri={}&response_type=code&scope=identify%20guilds%20guilds.join".format(ID, quote_plus(oauth2URL))
+  }, file, indent=4)
 
 print("\n\nThis is the URL you will have to provide to the Discord Developer Portal, make sure to copy it before continuing:\n http{}://{}:{}/login\n\n".format("s" if https else "", host, backport))
