@@ -2,11 +2,11 @@ import json
 
 
 print("Hello! We are now going to configure some basic settings. If you want to leave the default option just press enter\n")
-host = input("Enter your IP address or NDS route (default: localhost)")
+host = input("Enter your IP address or NDS route (default: localhost): ")
 if host == "":
   host = "localhost"
 while True:
-  backport = input("Enter the port for the bot server (default: 12546)")
+  backport = input("Enter the port for the bot server (default: 12546): ")
   if backport == "":
     backport = 12546
     break
@@ -20,7 +20,7 @@ while True:
     except ValueError:
       print("Ports must be numbers between 1024 and 49151 (not included)")
 while True:
-  frontport = input("Enter the port for the webpage (default: 12547)")
+  frontport = input("Enter the port for the webpage (default: 12547): ")
   if frontport == "":
     frontport = 12547
     break
@@ -43,11 +43,11 @@ with open("config.json", "w") as file:
     "backPort": backport
   }, file)
 
-secret = input("Enter the client secret of your oauth2 app (found in the Discord Developer Portal -> your app -> oauth2 -> general)")
-ID = input("Enter the client ID of your oauth2 app (found in the Discord Developer Portal -> your app -> OAuth2 -> General)")
-token = input("Enter the token of your bot (found in the Discord Developer Portal -> your app -> Bot)")
+secret = input("Enter the client secret of your oauth2 app (found in the Discord Developer Portal -> your app -> oauth2 -> general): ")
+ID = input("Enter the client ID of your oauth2 app (found in the Discord Developer Portal -> your app -> OAuth2 -> General): ")
+token = input("Enter the token of your bot (found in the Discord Developer Portal -> your app -> Bot): ")
 
 yml = "token: '{}'\nclientID: {}\nclientSecret: '{}'".format(token, ID, secret)
 
-with open("Bot/bot.yaml", "w") as file:
+with open("../backend/Bot/bot.yaml", "w") as file:
   file.write(yml)
