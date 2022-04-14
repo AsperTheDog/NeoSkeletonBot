@@ -23,55 +23,44 @@ Before doing anything. Make sure you install these two programs:
  - [Node.js](https://nodejs.org/en/download/)  
 > Simply select the correct operating system in the **LTS** tab  
 
----
-
-Once that has been dealt with, simply run the file *setup.bat* you will find inside the downloaded folder.
 
 ## Configuration
 
-In order to get the bot working a discord bot must be made. Follow these instructions to create a bot.
-Once you have installed everything correctly and you have your bot created. Get your bot Token from the webpage (under the bot section of your application in the Discord Developer Portal) you just have to create a file in *backend/Bot* called *Bot.yaml*. You should see a file called *Bot.yaml.example* in there, you can just go ahead and remove the *.example* from it and open it. Inside you will have to go to your Discord Developer Portal and look up the **bot token** (bot -> token), the **client ID** (oauth2 -> CLIENT ID) and client secret (oauth2 -> CLIENT SECRET). Place them all in the yaml file as below.
-
-```
-token: BcQp2WlVivPlWQU4x4wnZg
-clientID: 123123123123123123
-clientSecret: BcVivPlWQpQU4x4wnZ2WlVivPlWVi
-```
-
-Now you have to create the file called *config.json*. In the downloaded folder, you will find a file called *config.json.example*, as with the *bot.yaml* process, simply remove the *.example* part of the name and open it. Once inside you will see there's a field called **rootAddr**, this is what you have to change.
-You will have to put your public IP in there. If you don't know how to get your public IP, just look up in google "what is my IP" and you'll be shown a code in the format **x.x.x.x**. That is what you want.
-Imagining your IP is **123.456.78.9** our file should ultimately look like this:
-
-```
-{
-  "rootAddr": "123.456.78.9",
-  "backListen": "0.0.0.0",
-  "frontPort": 12547,
-  "backPort": 12546
-}
-```
+In order to get the bot working a discord bot must be made. Follow [these](https://dsharpplus.github.io/articles/basics/bot_account.html) instructions to create a bot.
 
 <ins>NOTE: You may want to setup a [ddns](https://www.noip.com) if you plan on allowing other people to access from their homes<ins>
 
-Before moving on, you have to open the ports shown in the fields **frontPort** and **backPort**, by default these are 12547 and 12546 respectively. Opening ports may be different depending on your ISP, but [this guide](https://nordvpn.com/es/blog/open-ports-on-router/) should work as a general guideline. **(hint: your router's IP is the IP we just looked for before)**
-
-Then, we have to figure out what the URL of the future page login is. If we look at the fields in the config.json found above we can easily figure it out.
-What we want to do is pick this template and substitute the values with the corresponding fields:
-
-> `https://<rootAddr>:<backPort>/login`
-
-In the case of our example, this would be
-
-> `https://123.456.78.9:12546/login`
-
-**IMPORTANT** If you plan to run this over http instead, then change the *https* part into *http*. Otherwise the process is exactly the same
-
-The /login part is not part of the actual URL we will be using but is necessary for the next step, so just bear with me.
-Next, we have to tell discord we trust this URL. In the Discord Developer Portal move to your application and go to the section called **oauth2 -> general**. There you should see a button called *add redirect*. Click in there and add the URL we just figured out. Then make sure to save.
+First, simply run the file *setup.bat* you will find inside the downloaded folder.  
+ 
+ <details>
+  <summary>You will have to fill out some data</summary>
+   - Your IP or DNS route will be the main body of the url (it's basically the "something.com" part of a URL), most likely you won't have any. If you plan to use this locally then "localhost" will do the trick just fine, but if you plan on having this publicly then you will either need a ddns (noted before) or your public IP (most IPs change from time to time, so if you choose this then it will probably break eventually). To get your IP simply look up in google "what is my IP" and you will be shown something in the format of x.x.x.x (e.g 123.456.78.9).  <br> <br> 
+   - The bot server port is the number the bot app "binds" to. If you don't know what this is then just leave the default.  <br> <br> 
+   - The website port is the number the website "binds" to. As with the bot port, if you don't know what it is then just leave it as default.  <br> <br> 
+   - The listen port is the IPs that the bot will be listening to. 0.0.0.0 means it will listen to everything. If you are going to run this locally you can change this to 127.0.0.1 so it only listens to your own pc, but this is not necessary and 0.0.0.0 will work just fine.  <br> <br> 
+   - the https option will just let the program know better how to generate the login URL (details about this below). This will not have any effect in the configuration of the system onwards.  <br> <br> 
+   - The Client secret is a code provided by Discord in order to connect with them. Do not share this code with anyone. This should be given in the Discord Developer Portal app, just follow the path given in the terminal.  <br> <br> 
+   - The Client ID is the id of the user created for your bot in discord. Follow the path given in the terminal.  <br> <br> 
+   - The token is a secret code that lets Discord know that bot is yours. Do not share this code with anyone. Can be found in the path given by the terminal.  <br> <br> 
+ </details>
+ 
+ Once everything has been filled the system will generate the configuration files for you. You can edit these manually if you have done something wrong (or just rerun the setup.bat file and introduce the data again). The routes of the relevant files are *configs/config.json* and *backend/Bot/bot.yaml*
+ 
+You will be given a login URL, this is important, so make sure to save it somewhere before continuing.
+ 
+---
+ 
+Next, if you want your page to be remotely available you have to open the ports shown in the fields **frontPort** and **backPort**, by default these are 12547 and 12546 respectively. The process of opening ports may be different depending on your ISP, but [this guide](https://nordvpn.com/es/blog/open-ports-on-router/) should work as a general guideline.
+ 
+**Remember this step is not needed if you plan to use the system locally (if you are the only one that will be accessing your webpage)**  
+ 
+---
+ 
+Next, we have to tell discord we trust this URL. In the Discord Developer Portal move to your application and go to the section called **oauth2 -> general**. There you should see a button called *add redirect*. Click in there and add the URL the setup file should have given you. Don't forget to save!
 
 ## Running
 
-Make sure you've gone through intallation and configuration sections before trying to run anything!!
+**Make sure you've gone through intallation and configuration sections before trying to run anything!!**
 
 Just run the file *runHTTPS.bat* inside the downloaded folder if you want the webpage to work over HTTPS or *runHTTP.bat* if you want it to work over HTTP (you can change at any time, just make sure you reconfigure the Discord Developer Portal accordingly). It will open two terminals: One for the webpage, and the other one for the bot.
 
