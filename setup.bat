@@ -1,5 +1,6 @@
 
 python configs/setup.py
+pause
 cd backend
 pip install virtualenv
 virtualenv venv

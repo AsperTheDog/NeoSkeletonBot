@@ -45,6 +45,17 @@ with open("configs/config.json", "w") as file:
     "backPort": backport
   }, file, indent=4)
 
+while True:
+  https = input("Do you want to use HTTPS? [y/n]: ")
+  if https.lower() == "y":
+    https = True
+  elif https.lower() == "n":
+    https = False
+  else:
+    print("Please answer with 'y' if you want or 'n' if you don't")
+    continue
+  break
+
 secret = input("Enter the client secret of your oauth2 app (found in the Discord Developer Portal -> your app -> oauth2 -> general): ")
 ID = input("Enter the client ID of your oauth2 app (found in the Discord Developer Portal -> your app -> OAuth2 -> General): ")
 token = input("Enter the token of your bot (found in the Discord Developer Portal -> your app -> Bot): ")
@@ -53,3 +64,6 @@ yml = "token: '{}'\nclientID: {}\nclientSecret: '{}'".format(token, ID, secret)
 
 with open("backend/Bot/bot.yaml", "w") as file:
   file.write(yml)
+
+
+print("\n\nThis is the URL you will have to provide to the Discord Developer Portal, make sure to copy it before continuing:\n http{}://{}:{}/login\n\n".format("s" if https else "", host, backport))
