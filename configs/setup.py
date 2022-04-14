@@ -33,7 +33,9 @@ while True:
       break
     except ValueError:
       print("Ports must be numbers between 1024 and 49151 (not included) and must be different from the bot server port")
-listen = "Which IPs do you want the bot server to listen to? (Default: 0.0.0.0)"
+listen = input("Which IPs do you want the bot server to listen to? (Default: 0.0.0.0): ")
+if listen == "":
+  listen = "0.0.0.0"
 
 with open("configs/config.json", "w") as file:
   json.dump({
