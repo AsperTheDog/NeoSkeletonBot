@@ -50,7 +50,7 @@ def formatMember(usr):
     }
 
 
-def formatReactions(reacts: list[disnake.Reaction]):
+def formatReactions(reacts):
     return {formatEmoji(react.emoji): react.count for react in reacts}
 
 
