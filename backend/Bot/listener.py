@@ -9,17 +9,17 @@ from Bot import utils
 
 
 class EventListener(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message: disnake.Message):
         if message.author == self.bot.user:
             return
         BoardManager.sendGlobalEvent(self.bot, "on message received", utils.formatMessage(message), message.guild)
 
     @commands.Cog.listener()
-    async def on_message_delete(self, message):
+    async def on_message_delete(self, message: disnake.Message):
         BoardManager.sendGlobalEvent(self.bot, "on message deleted", utils.formatMessage(message), message.guild)
 
     @commands.Cog.listener()

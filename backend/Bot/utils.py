@@ -3,7 +3,7 @@ import datetime
 import disnake
 
 
-def formatGuild(gld):
+def formatGuild(gld: disnake.Guild):
     return {
         'banner': gld.banner.url if gld.banner else "",
         'name': gld.name,
@@ -17,7 +17,7 @@ def formatGuild(gld):
     }
 
 
-def formatUser(usr):
+def formatUser(usr: disnake.User):
     return {
         'id': usr.id,
         'avatar': usr.display_avatar.url,
@@ -50,7 +50,7 @@ def formatMember(usr):
     }
 
 
-def formatReactions(reacts):
+def formatReactions(reacts: list[disnake.Reaction]):
     return {formatEmoji(react.emoji): react.count for react in reacts}
 
 
@@ -62,7 +62,7 @@ def formatReaction(react):
     }
 
 
-def formatEmoji(emoji):
+def formatEmoji(emoji: disnake.Emoji | disnake.PartialEmoji | str):
     if isinstance(emoji, str):
         return {
             'name': emoji,
@@ -74,7 +74,7 @@ def formatEmoji(emoji):
     }
 
 
-def formatFullEmoji(emoji):
+def formatFullEmoji(emoji: disnake.Emoji):
     return {
         'id': emoji.id,
         'name': emoji.name,
@@ -85,7 +85,7 @@ def formatFullEmoji(emoji):
     }
 
 
-def formatMessage(msg):
+def formatMessage(msg: disnake.Message):
     return {
         'id': msg.id,
         'content': msg.content,
@@ -96,7 +96,7 @@ def formatMessage(msg):
     }
 
 
-def formatChannel(channel):
+def formatChannel(channel: disnake.TextChannel):
     return {
         'id': channel.id,
         'created at': channel.created_at,
@@ -106,7 +106,7 @@ def formatChannel(channel):
     }
 
 
-def formatThread(thread):
+def formatThread(thread: disnake.Thread):
     return {
         'id': thread.id,
         'archived': thread.archived,
@@ -120,7 +120,7 @@ def formatThread(thread):
     }
 
 
-def formatCategory(category):
+def formatCategory(category: disnake.CategoryChannel):
     return {
         'id': category.id,
         'name': category.name,
@@ -128,7 +128,7 @@ def formatCategory(category):
     }
 
 
-def formatRole(role):
+def formatRole(role: disnake.Role):
     return {
         'id': role.id,
         'created at': role.created_at,
@@ -138,7 +138,7 @@ def formatRole(role):
     }
 
 
-def formatSticker(sticker):
+def formatSticker(sticker: disnake.GuildSticker):
     return {
         'id': sticker.id,
         'name': sticker.name,
@@ -148,7 +148,7 @@ def formatSticker(sticker):
     }
 
 
-def formatVoiceState(vstate):
+def formatVoiceState(vstate: disnake.VoiceState):
     return {
         'afk': vstate.afk,
         'channel ID': vstate.channel.id if vstate.channel else -1,
@@ -163,7 +163,7 @@ def formatVoiceState(vstate):
     }
 
 
-def formatGuildEvent(event):
+def formatGuildEvent(event: disnake.GuildScheduledEvent):
     return {
         'channel ID': event.channel_id if event.channel_id else -1,
         'creator ID': event.creator_id,
@@ -174,7 +174,7 @@ def formatGuildEvent(event):
     }
 
 
-def formatStageInstance(stage):
+def formatStageInstance(stage: disnake.StageInstance):
     return {
         'channelID': stage.channel_id,
         'id': stage.id,
@@ -182,7 +182,7 @@ def formatStageInstance(stage):
     }
 
 
-def formatInvite(invite):
+def formatInvite(invite: disnake.Invite):
     return {
         'id': invite.id,
         'created at': invite.created_at,
