@@ -196,6 +196,12 @@ export class ValueNode implements OnInit {
     this.activeTransition = null;
   }
 
+
+  gEvntUpdateInput() {
+    this.valData.preview = (this.parentNode as GEventNode).struct
+    this.updateInput()
+  }
+
   updateInput() {
     this.valData.offset = {
       x: this.arrowOrig.nativeElement.getBoundingClientRect().x - this.parentNode.mainRef.nativeElement.getBoundingClientRect().x,

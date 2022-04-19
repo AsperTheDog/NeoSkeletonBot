@@ -287,8 +287,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.mainController.saveProcess(data)
     })
   }
-
-
 }
 
 

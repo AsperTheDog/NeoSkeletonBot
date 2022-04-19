@@ -33,9 +33,9 @@ class EventListener(commands.Cog):
     @commands.Cog.listener()
     async def on_typing(self, channel, user, when):
         data = {
-            'channel': channel.id,
-            'user': utils.formatMember(user),
-            'when': when if when else datetime.now().timestamp()
+            'channel ID': channel.id,
+            'user ID': user.id,
+            'when': when if when else datetime.now()
         }
         BoardManager.sendGlobalEvent(self.bot, "on typing", data, channel.guild)
 
@@ -43,7 +43,7 @@ class EventListener(commands.Cog):
     async def on_reaction_add(self, reaction, user):
         data = {
             'reaction': utils.formatReaction(reaction),
-            'user': utils.formatMember(user)
+            'user ID': user.id
         }
         BoardManager.sendGlobalEvent(self.bot, "on reaction added", data, reaction.message.guild)
 
@@ -51,7 +51,7 @@ class EventListener(commands.Cog):
     async def on_reaction_remove(self, reaction, user):
         data = {
             'reaction': utils.formatReaction(reaction),
-            'user': utils.formatMember(user)
+            'user ID': user.id
         }
         BoardManager.sendGlobalEvent(self.bot, "on reaction removed", data, reaction.message.guild)
 
@@ -103,8 +103,8 @@ class EventListener(commands.Cog):
     async def on_thread_member_join(self, member):
         user = self.bot.get_guild(member.thread.guild.id).get_member(member.id)
         data = {
-            'thread': utils.formatThread(member.thread),
-            'user': utils.formatMember(user)
+            'thread ID': member.thread.id,
+            'user ID': user.id
         }
         BoardManager.sendGlobalEvent(self.bot, "on member joined thread", data, member.thread.guild)
 
@@ -112,8 +112,8 @@ class EventListener(commands.Cog):
     async def on_thread_member_remove(self, member):
         user = self.bot.get_guild(member.thread.guild.id).get_member(member.id)
         data = {
-            'thread': utils.formatThread(member.thread),
-            'user': utils.formatMember(user)
+            'thread ID': member.thread.id,
+            'user ID': user.id
         }
         BoardManager.sendGlobalEvent(self.bot, "on member left thread", data, member.thread.guild)
 
@@ -204,7 +204,7 @@ class EventListener(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         data = {
-            'member': utils.formatMember(member),
+            'user ID': member.id,
             'before': utils.formatVoiceState(before),
             "after": utils.formatVoiceState(after)
         }
@@ -229,16 +229,16 @@ class EventListener(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_scheduled_event_subscribe(self, event, user):
         data = {
-            'user': utils.formatMember(user),
-            'event': utils.formatGuildEvent(event)
+            'user ID': user.id,
+            'event ID': event.id
         }
         BoardManager.sendGlobalEvent(self.bot, "on event subscribed", data, event.guild)
 
     @commands.Cog.listener()
     async def on_guild_scheduled_event_unsubscribe(self, event, user):
         data = {
-            'user': utils.formatMember(user),
-            'event': utils.formatGuildEvent(event)
+            'user': user.id,
+            'event': event.id
         }
         BoardManager.sendGlobalEvent(self.bot, "on event unsubscribed", data, event.guild)
 
@@ -276,6 +276,11 @@ class EventListener(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
+        with open("fsmLogic/dataFiles/tracking/botGuilds.json", "w") as file:
+            json.dump([guild.id for guild in self.bot.guilds], file)
+
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild):
         with open("fsmLogic/dataFiles/tracking/botGuilds.json", "w") as file:
             json.dump([guild.id for guild in self.bot.guilds], file)
 

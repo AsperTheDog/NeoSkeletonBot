@@ -1,61 +1,182 @@
 {
-  "events":[
-    "init",
-    "on socket event",
-    "on message received",
-    "on message deleted",
-    "on message edited",
-    "on typing",
-    "on reaction added",
-    "on action removed",
-    "on reactions cleared",
-    "on reaction emoji cleared",
-    "on channel created",
-    "on channel deleted",
-    "on channel updated",
-    "on channel pins updated",
-    "on thread joined",
-    "on thread removed",
-    "on thread deleted",
-    "on member joined thread",
-    "on member left thread",
-    "on thread updated",
-    "on integrations updated",
-    "on integration created",
-    "on integration updated",
-    "on integration deleted",
-    "on weebhooks updated",
-    "on member joined",
-    "on member left",
-    "on member updated server profile",
-    "on member updated voice status",
-    "on member banned",
-    "on member unbanned",
-    "on member presence updated",
-    "on user updated profile",
-    "on guild joined",
-    "on guild left",
-    "on guild updated",
-    "on role created",
-    "on role deleted",
-    "on guild emojis updated",
-    "on guild stickers updated",
-    "on guild available",
-    "on guild unavailable",
-    "on event created",
-    "on event deleted",
-    "on event updated",
-    "on event subscribed",
-    "on event unsubscribed",
-    "on stage instance created",
-    "on stage instance deleted",
-    "on stage instance updated",
-    "on invite created"
+  "events": [
+      {
+          "name": "on message received",
+          "struct": "Message"
+      },
+      {
+          "name": "on message deleted",
+          "struct": "Message"
+      },
+      {
+          "name": "on message edited",
+          "struct": "'before' (Message), 'after' (Message)"
+      },
+      {
+          "name": "on typing",
+          "struct": "'channel ID' (Number), 'user ID' (Number), 'when' (Datetime)"
+      },
+      {
+          "name": "on reaction added",
+          "struct": "'reaction' (Reaction), 'user ID' (Number)"
+      },
+      {
+          "name": "on reaction removed",
+          "struct": "'reaction' (Reaction), 'user ID' (Number)"
+      },
+      {
+          "name": "on reactions cleared",
+          "struct": "'reactions' (Reaction List), 'message' (Message)"
+      },
+      {
+          "name": "on reaction emoji cleared",
+          "struct": "Reaction"
+      },
+      {
+          "name": "on channel created",
+          "struct": "Channel"
+      },
+      {
+          "name": "on channel deleted",
+          "struct": "Channel"
+      },
+      {
+          "name": "on channel edited",
+          "struct": "'before' (Channel), 'after' (Channel)"
+      },
+      {
+          "name": "on channel pins updated",
+          "struct": "Channel"
+      },
+      {
+          "name": "on thread joined",
+          "struct": "Thread"
+      },
+      {
+          "name": "on thread removed",
+          "struct": "Thread"
+      },
+      {
+          "name": "on thread deleted",
+          "struct": "Thread"
+      },
+      {
+          "name": "on member joined thread",
+          "struct": "'thread ID' (Number), 'user ID' (Number)"
+      },
+      {
+          "name": "on member left thread",
+          "struct": "'thread ID' (Number), 'user ID' (Number)"
+      },
+      {
+          "name": "on thread updated",
+          "struct": "'before' (Thread), 'after' (Thread)"
+      },
+      {
+          "name": "on webhooks updated",
+          "struct": "Channel"
+      },
+      {
+          "name": "on member joined",
+          "struct": "Member"
+      },
+      {
+          "name": "on member left",
+          "struct": "Member"
+      },
+      {
+          "name": "on member updated server profile",
+          "struct": "'before' (Member), 'after' (Member)"
+      },
+      {
+          "name": "on member presence updated",
+          "struct": "'before' (Member), 'after' (Member)"
+      },
+      {
+          "name": "on member voice updated",
+          "struct": "'user ID' (Number), 'before' (VoiceState), 'after' (VoiceState)"
+      },
+      {
+          "name": "on member banned",
+          "struct": "Member"
+      },
+      {
+          "name": "on member unbanned",
+          "struct": "Member"
+      },
+      {
+          "name": "on user updated profile",
+          "struct": "'before' (Member), 'after' (Member)"
+      },
+      {
+          "name": "on guild updated",
+          "struct": "'before' (Guild), 'after' (Guild)"
+      },
+      {
+          "name": "on role created",
+          "struct": "Role"
+      },
+      {
+          "name": "on role deleted",
+          "struct": "Role"
+      },
+      {
+          "name": "on role updated",
+          "struct": "'before' (Role), 'after' (Role)"
+      },
+      {
+          "name": "on emoji updated",
+          "struct": "'before' (Emoji), 'after' (Emoji)"
+      },
+      {
+          "name": "on sticker updated",
+          "struct": "'before' (Sticker), 'after' (Sticker)"
+      },
+      {
+          "name": "on event created",
+          "struct": "Event"
+      },
+      {
+          "name": "on event deleted",
+          "struct": "Event"
+      },
+      {
+          "name": "on event updated",
+          "struct": "'before' (Event), 'after' (Event)"
+      },
+      {
+          "name": "on event subscribed",
+          "struct": "'user ID' (Number), 'event ID' (Number)"
+      },
+      {
+          "name": "on event unsubscribed",
+          "struct": "'user ID' (Number), 'event ID' (Number)"
+      },
+      {
+          "name": "on stage instance created",
+          "struct": "Stage"
+      },
+      {
+          "name": "on stage instance deleted",
+          "struct": "Stage"
+      },
+      {
+          "name": "on stage instance updated",
+          "struct": "'before' (Stage), 'after' (Stage)"
+      },
+      {
+          "name": "on invite created",
+          "struct": "Invite"
+      },
+      {
+          "name": "on invite deleted",
+          "struct": "Invite"
+      }
   ],
-  "customActionEvents": [
-    "Value Input",
-    "Event Input",
-    "Value Output",
-    "Event Output"
+  "customAction": [
+      "Value Input",
+      "Event Input",
+      "Value Output",
+      "Event Output"
   ]
 }

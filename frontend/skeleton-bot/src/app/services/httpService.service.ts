@@ -79,7 +79,7 @@ export class httpService {
 
   getGlobalEvents() {
     const delURL = this.backendURL + "globalEvents"
-    return this.http.get<{events:string[], customActionEvents:string[]}>(delURL)
+    return this.http.get<{events:{name: string, struct: string}[], customActionEvents:string[]}>(delURL)
   }
 
   getValueTypes() {

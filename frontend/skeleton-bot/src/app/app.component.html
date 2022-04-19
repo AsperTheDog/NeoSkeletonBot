@@ -212,7 +212,7 @@
       <mat-tab label="GEvents" *ngIf="this.mainController.boardMan.activeBoard && this.mainController.boardMan.activeBoard.name == 'Main'">
         <div class="varSelectInputContainer">
           <select class="evSelectInput" [(ngModel)]="evType" (change)="updateShowcaseEvent()">
-            <option [selected]="op == 'on message received'" *ngFor="let op of mainController.typeValMan.globalEventList">{{op}}</option>
+            <option [selected]="op.name == 'on message received'" *ngFor="let op of mainController.typeValMan.globalEventList">{{op.name}}</option>
           </select>
         </div>
         <div class="eventShowcase" [ngStyle]="{height: (2 * 40 + 200) + 'px'}">

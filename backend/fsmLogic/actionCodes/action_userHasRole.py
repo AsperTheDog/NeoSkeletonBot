@@ -9,7 +9,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 @ActionManager.actionclass
 class UserHasRole(Action):
     guildID = -1
-    group = "Value"
+    group = "Values"
     templID = 65
     inputs = [
         ValueInput("user ID", ValueType.Number),

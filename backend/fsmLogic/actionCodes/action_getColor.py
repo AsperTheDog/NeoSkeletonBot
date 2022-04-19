@@ -9,7 +9,7 @@ from fsmLogic.nodeClasses.valueTypes import ValueType
 @ActionManager.actionclass
 class GetColor(Action):
     guildID = -1
-    group = "Value"
+    group = "Values"
     templID = 49
     inputs = [
         ValueInput("color", ValueType.Combo, "blue", combo=[

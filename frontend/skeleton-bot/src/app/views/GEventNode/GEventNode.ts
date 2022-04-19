@@ -26,9 +26,11 @@ export class GEventNode implements OnInit, AfterViewInit {
   dragDisabled = false;
   position = { x: 0, y: 0 }
   mainData: GlobalEvent;
+  struct: string;
 
   ngOnInit(): void {
     this.mainData = this.mainController.boardMan.idMan.get(this.mainDataID, this.mainController.sessionMan.getGuild()!)
+    this.struct = this.mainController.typeValMan.getStruct(this.mainData.name)
     this.position = this.mainData.cdkPos
   }
 
@@ -36,7 +38,7 @@ export class GEventNode implements OnInit, AfterViewInit {
     this.eventOutput.parentNode = this
     this.eventOutput.updateInput()
     this.valueOutput.parentNode = this
-    this.valueOutput.updateInput()
+    this.valueOutput.gEvntUpdateInput()
   }
 
   onDragStart() {

@@ -54,12 +54,12 @@ export class TypeValueManager {
     this.valueTypeMap = new Map<number, ValueType>();
   }
 
-  globalEventList: string[];
+  globalEventList: {name: string, struct: string}[];
   pipelineTypes: string[];
   allowedValues: [number, string][];
   valueTypeMap: Map<number, ValueType>;
 
-  setGlobalEvents(gEvs: string[]) {
+  setGlobalEvents(gEvs: {name: string, struct: string}[]) {
     this.globalEventList = gEvs
   }
 
@@ -79,6 +79,15 @@ export class TypeValueManager {
 
   getType(id: number) {
     return this.valueTypeMap.get(id)!
+  }
+
+  getStruct(name: string){
+    for (let gev of this.globalEventList){
+      if (gev.name == name){
+        return gev.struct
+      }
+    }
+    return ""
   }
 }
 
