@@ -13,7 +13,7 @@ class GetThread(Action):
         ValueInput("thread ID", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("thread", ValueType.Structure, "'id' (Number), 'archived' (Boolean), 'archive duration' (Number), 'created at' (Datetime), 'locked' (Boolean), 'mention' (Text), 'category ID' (Number), 'owner ID' (Number), 'parent ID' (Number)")
+        ValueOutput("thread", ValueType.Structure, "id (Number)\narchived (Boolean)\narchive duration (Number)\ncreated at (Datetime)\nlocked (Boolean)\nmention (Text)\ncategory ID (Number)\nowner ID (Number)\nparent ID (Number)")
     ]
     outEvents = [
         EventOutput("completed"),

@@ -13,7 +13,7 @@ class GetRoleByName(Action):
         ValueInput("role name", ValueType.Text)
     ]
     outputs = [
-        ValueOutput("role", ValueType.Structure, "'id' (Number), 'created at' (Datetime), 'mention' (Text), 'name' (Text), 'is admin' (Boolean)")
+        ValueOutput("role", ValueType.Structure, "id (Number)\ncreated at (Datetime)\nmention (Text)\nname (Text)\nis admin (Boolean)")
     ]
     outEvents = [
         EventOutput("completed"),

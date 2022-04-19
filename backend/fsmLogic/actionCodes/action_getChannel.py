@@ -13,7 +13,7 @@ class GetChannel(Action):
         ValueInput("channel ID", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("channel", ValueType.Structure, "'id' (Number), 'created at' (Datetime), 'name' (Text), 'mention' (Text), 'category ID' (Number)")
+        ValueOutput("channel", ValueType.Structure, "id (Number)\ncreated at (Datetime)\nname (Text)\nmention (Text)\ncategory ID (Number)")
     ]
     outEvents = [
         EventOutput("completed"),

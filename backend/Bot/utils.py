@@ -51,7 +51,7 @@ def formatMember(usr):
 
 
 def formatReactions(reacts):
-    return {formatEmoji(react.emoji): react.count for react in reacts}
+    return {react.emoji.id: react.count for react in reacts}
 
 
 def formatReaction(react):

@@ -13,7 +13,7 @@ class GetEvent(Action):
         ValueInput("event ID", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("event", ValueType.Structure, "'channel ID' (Number), 'creator ID' (Number), 'description' (Text), 'id' (Number), 'name' (Text), 'user count' (Number)")
+        ValueOutput("event", ValueType.Structure, "channel ID (Number)\ncreator ID (Number)\ndescription (Text)\nid (Number)\nname (Text)\nuser count (Number)")
     ]
     outEvents = [
         EventOutput("completed"),

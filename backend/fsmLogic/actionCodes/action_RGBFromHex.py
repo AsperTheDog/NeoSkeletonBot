@@ -13,7 +13,7 @@ class RGBFromHex(Action):
         ValueInput("Hex", ValueType.Text)
     ]
     outputs = [
-        ValueOutput("RBG", ValueType.Structure, "'r' (Number), 'g' (Number), 'b' (Number)")
+        ValueOutput("RBG", ValueType.Structure, "r (Number)\ng (Number)\nb (Number)")
     ]
     outEvents = [
         EventOutput("Completed"),

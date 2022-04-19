@@ -10,23 +10,23 @@
         },
         {
             "name": "on message edited",
-            "struct": "'before' (Message), 'after' (Message)"
+            "struct": "before (Message)\nafter (Message)"
         },
         {
             "name": "on typing",
-            "struct": "'channel ID' (Number), 'user ID' (Number), 'when' (Datetime)"
+            "struct": "channel ID (Number)\nuser ID (Number)\nwhen (Datetime)"
         },
         {
             "name": "on reaction added",
-            "struct": "'reaction' (Reaction), 'user ID' (Number)"
+            "struct": "reaction (Reaction)\nuser ID (Number)"
         },
         {
             "name": "on reaction removed",
-            "struct": "'reaction' (Reaction), 'user ID' (Number)"
+            "struct": "reaction (Reaction)\nuser ID (Number)"
         },
         {
             "name": "on reactions cleared",
-            "struct": "'reactions' (Reaction List), 'message' (Message)"
+            "struct": "reactions (Reaction List)\nmessage (Message)"
         },
         {
             "name": "on reaction emoji cleared",
@@ -42,7 +42,7 @@
         },
         {
             "name": "on channel edited",
-            "struct": "'before' (Channel), 'after' (Channel)"
+            "struct": "before (Channel)\nafter (Channel)"
         },
         {
             "name": "on channel pins updated",
@@ -62,15 +62,15 @@
         },
         {
             "name": "on member joined thread",
-            "struct": "'thread ID' (Number), 'user ID' (Number)"
+            "struct": "thread ID (Number)\nuser ID (Number)"
         },
         {
             "name": "on member left thread",
-            "struct": "'thread ID' (Number), 'user ID' (Number)"
+            "struct": "thread ID (Number)\nuser ID (Number)"
         },
         {
             "name": "on thread updated",
-            "struct": "'before' (Thread), 'after' (Thread)"
+            "struct": "before (Thread)\nafter (Thread)"
         },
         {
             "name": "on webhooks updated",
@@ -86,15 +86,15 @@
         },
         {
             "name": "on member updated server profile",
-            "struct": "'before' (Member), 'after' (Member)"
+            "struct": "before (Member)\nafter (Member)"
         },
         {
             "name": "on member presence updated",
-            "struct": "'before' (Member), 'after' (Member)"
+            "struct": "before (Member)\nafter (Member)"
         },
         {
             "name": "on member voice updated",
-            "struct": "'user ID' (Number), 'before' (VoiceState), 'after' (VoiceState)"
+            "struct": "user ID (Number)\nbefore (VoiceState)\nafter (VoiceState)"
         },
         {
             "name": "on member banned",
@@ -106,11 +106,11 @@
         },
         {
             "name": "on user updated profile",
-            "struct": "'before' (Member), 'after' (Member)"
+            "struct": "before (Member)\nafter (Member)"
         },
         {
             "name": "on guild updated",
-            "struct": "'before' (Guild), 'after' (Guild)"
+            "struct": "before (Guild)\nafter (Guild)"
         },
         {
             "name": "on role created",
@@ -122,15 +122,15 @@
         },
         {
             "name": "on role updated",
-            "struct": "'before' (Role), 'after' (Role)"
+            "struct": "before (Role)\nafter (Role)"
         },
         {
             "name": "on emoji updated",
-            "struct": "'before' (Emoji), 'after' (Emoji)"
+            "struct": "before (Emoji)\nafter (Emoji)"
         },
         {
             "name": "on sticker updated",
-            "struct": "'before' (Sticker), 'after' (Sticker)"
+            "struct": "before (Sticker)\nafter (Sticker)"
         },
         {
             "name": "on event created",
@@ -142,15 +142,15 @@
         },
         {
             "name": "on event updated",
-            "struct": "'before' (Event), 'after' (Event)"
+            "struct": "before (Event)\nafter (Event)"
         },
         {
             "name": "on event subscribed",
-            "struct": "'user ID' (Number), 'event ID' (Number)"
+            "struct": "user ID (Number)\nevent ID (Number)"
         },
         {
             "name": "on event unsubscribed",
-            "struct": "'user ID' (Number), 'event ID' (Number)"
+            "struct": "user ID (Number)\nevent ID (Number)"
         },
         {
             "name": "on stage instance created",
@@ -162,7 +162,7 @@
         },
         {
             "name": "on stage instance updated",
-            "struct": "'before' (Stage), 'after' (Stage)"
+            "struct": "before (Stage)\nafter (Stage)"
         },
         {
             "name": "on invite created",

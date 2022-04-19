@@ -51,7 +51,7 @@ class GetColor(Action):
         ])
     ]
     outputs = [
-        ValueOutput("rgb", ValueType.Structure, "r (Number), g (Number), b (Number)")
+        ValueOutput("rgb", ValueType.Structure, "r (Number)\ng (Number)\nb (Number)")
     ]
     outEvents = [
         EventOutput("completed")

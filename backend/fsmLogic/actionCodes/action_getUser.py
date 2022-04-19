@@ -15,7 +15,7 @@ class GetUser(Action):
         ValueInput("user ID", ValueType.Number)
     ]
     outputs = [
-        ValueOutput("user", ValueType.Structure, "'id' (Number), 'avatar' (Text), 'bot' (Boolean), 'banner' (Text), 'created date' (Datetime), 'name' (Text), 'nick' (Text), 'discriminator' (Text), 'fullUsername' (Text), 'mention' (Text), 'top role ID' (Number)")
+        ValueOutput("user", ValueType.Structure, "id (Number)\navatar (Text)\nbot (Boolean)\nbanner (Text)\ncreated date (Datetime)\nname (Text)\nnick (Text)\ndiscriminator (Text)\nfullUsername (Text)\nmention (Text)\ntop role ID (Number)")
     ]
     outEvents = [
         EventOutput("completed"),
