@@ -64,7 +64,7 @@ with open("configs/config.json", "w") as file:
     "backListen": listen,
     "frontPort": frontport,
     "backPort": backport,
-    "inviteURL": "https://discord.com/api/oauth2/authorize?client_id={}&permissions=8&scope=bot".format(ID),
+    "inviteURL": "https://discord.com/api/oauth2/authorize?client_id={}&permissions=8&scope=bot%20applications.commands".format(ID),
     "oauth2URL": "https://discord.com/api/oauth2/authorize?client_id={}&redirect_uri={}&response_type=code&scope=identify%20guilds%20guilds.join".format(ID, quote_plus(oauth2URL))
   }, file, indent=4)
 

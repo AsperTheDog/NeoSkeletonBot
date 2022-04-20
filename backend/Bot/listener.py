@@ -208,7 +208,7 @@ class EventListener(commands.Cog):
             'before': utils.formatVoiceState(before),
             "after": utils.formatVoiceState(after)
         }
-        BoardManager.sendGlobalEvent(self.bot, "on member voice updated", data, after.guild)
+        BoardManager.sendGlobalEvent(self.bot, "on member voice updated", data, member.guild)
 
     @commands.Cog.listener()
     async def on_guild_scheduled_event_create(self, event):

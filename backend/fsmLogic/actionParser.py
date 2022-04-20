@@ -210,7 +210,7 @@ def genCodePipelines(board):
 
 
 def genCodeGEvents(board):
-    gEvents = {event: [] for event in BoardManager.globalEvents}
+    gEvents = {event['name']: [] for event in BoardManager.globalEvents}
     gEventStr = "    gEvents = {\n"
     for event in board['globalEvents']:
         gEvents[event['name']].append((event['output']['hook'], event['eventOutput']['hook']))
@@ -284,6 +284,8 @@ def genCodeAction(board, guild, actID=None):
         for hook in inPipe['hook']:
             finalCode += "        vrs_" + bName + "[" + str(hook) + "]['value'] = values[" + str(count) + "]\n"
     finalCode += "        while nxt_" + bName + " in actions_" + bName + ":\n"
+    finalCode += "            if client.safe:\n"
+    finalCode += "                return super().sendEvent(-1)\n"
     finalCode += "            if client.debug:\n"
     finalCode += "                print('executing action', nxt_" + bName + ")\n"
     finalCode += "            nxt_" + bName + " = await actions_" + bName + "[nxt_" + bName + "](vrs_" + bName + ")\n"
@@ -355,6 +357,8 @@ def genCodeMain(board, guild):
     finalCode += "            vrs_Main[initVar]['value'] = initValue\n"
     finalCode += "        try:\n"
     finalCode += "            while nxt_Main in actions_Main:\n"
+    finalCode += "                if client.safe:\n"
+    finalCode += "                    return\n"
     finalCode += "                if client.debug:\n"
     finalCode += "                    print('executing action', nxt_Main)\n"
     finalCode += "                nxt_Main = await actions_Main[nxt_Main](vrs_Main)\n"

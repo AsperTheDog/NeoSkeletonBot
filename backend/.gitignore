@@ -164,3 +164,5 @@ fsmLogic/actionCodes/custom/*
 fsmLogic/dataFiles/front/*
 !fsmLogic/dataFiles/front/.gitkeep
 fsmLogic/dataFiles/tracking/botGuilds.json
+!database/dbFiles/.gitkeep
+database/dbFiles/*

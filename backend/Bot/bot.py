@@ -3,17 +3,21 @@ import os
 
 from disnake import Intents
 from disnake.ext.commands import Bot
+
+from Bot.cmds import InteractiveCog
 from Bot.listener import EventListener
 import yaml
 
 from database.dbManager import SkeletonDB
 
-client = Bot(intents=Intents.all())
+client = Bot(intents=Intents.all(), command_prefix="sk!")
 client.add_cog(EventListener(client))
+client.add_cog(InteractiveCog(client))
 client.errCh = {}
 client.errMsg = {}
 client.db = SkeletonDB()
 client.debug = True
+client.safe = False
 
 
 @client.event
