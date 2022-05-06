@@ -2,6 +2,7 @@ import os
 import random
 import pickle
 import asyncio
+import sys
 
 
 class SkeletonDB:
@@ -189,3 +190,8 @@ class SkeletonDB:
             return self.globals[guild][var]
         except KeyError:
             raise ValueError
+
+    def getSize(self, code, table):
+        if not self._exists(code=code, table=table):
+            raise ValueError()
+        return sys.getsizeof(self.access[code]['tables'][table]['table'])

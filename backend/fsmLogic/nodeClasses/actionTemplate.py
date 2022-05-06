@@ -2,9 +2,7 @@ from copy import deepcopy
 from disnake.ext.commands import Bot
 from disnake import Guild
 
-from fsmLogic.boardManager import BoardManager
-from fsmLogic.nodeClasses.inputs import EventInput, ValueInput, ValueOutput, EventOutput
-from fsmLogic.nodeClasses.variable import Variable
+from fsmLogic.nodeClasses.inputs import EventInput
 
 
 class Action:

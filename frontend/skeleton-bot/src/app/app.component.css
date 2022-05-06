@@ -226,7 +226,7 @@
   width: 100%;
   height: 100%;
   background-color: #161616;
-  background-image:  linear-gradient(#5c5c5c 5.2px, transparent 5.2px), linear-gradient(90deg, #5c5c5c 5.2px, transparent 5.2px), linear-gradient(#5c5c5c 2.6px, transparent 2.6px), linear-gradient(90deg, #5c5c5c 2.6px, #161616 2.6px);
+  background-image:  linear-gradient(#000000 2px, transparent 2px), linear-gradient(90deg, #000000 2px, transparent 2px), linear-gradient(#000000 1px, transparent 1px), linear-gradient(90deg, #000000 1px, #161616 1px);
   background-size: 130px 130px, 130px 130px, 26px 26px, 26px 26px;
   background-position: -5.2px -5.2px, -5.2px -5.2px, -2.6px -2.6px, -2.6px -2.6px;
   cursor: grab;

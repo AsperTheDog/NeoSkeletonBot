@@ -1,3 +1,4 @@
+cd \D "%~dp0"
 
 python configs/setup.py
 pause
