@@ -105,6 +105,7 @@ export class BoardManager {
   boards: Map<string, Board>
   boardList: string[];
   activeBoard: Board;
+  activeActionName: string;
   undoBuffer: string[];
   redoBuffer: string[];
 
@@ -319,6 +320,7 @@ export class BoardManager {
       this.boardList.push("...")
     }
     this.activeBoard = this.boards.get(loadBoard)!
+    this.activeActionName = this.activeBoard.name.replace(new RegExp(" ", 'g'), "")
   }
 
   clearBoard(name: string) {
@@ -380,6 +382,7 @@ export class BoardManager {
     this.boardList = Array.from(this.boards.keys())
     this.boardList.push("...")
     this.activeBoard = this.boards.get("Main")!
+    this.activeActionName = "Main"
   }
 
   getBoard(name: string): any {

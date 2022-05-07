@@ -118,35 +118,37 @@
               <div class="sideMenuDividerTitle">
                 {{gr}}
               </div>
-              <mat-expansion-panel *ngFor="let templ of mainController.templateMan.groups.get(gr)">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    {{templ.type}}
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    In:{{templ.inputs.length}} - Out:{{templ.outputs.length}} - Ev:{{templ.events.length}}
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <div class="actionShowcase"
-                  [ngStyle]="{height: ((templ.inputs.length + templ.outputs.length + templ.events.length) * 45 + 200) + 'px'}">
-                  <app-phantomActionNode [mainData]="templ"></app-phantomActionNode>
-                </div>
-                <div class="actionDescription">
-                  <button [disabled]="!dragged" class="sideMenuBottomButtonAdd"
-                    (click)="mainController.getNewAction(templ.id)">
-                    <svg class="sideMenuBottomSVG" width="100%" height="100%"
-                      viewBox="0 0 16 16">
-                      <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
-                    </svg>
-                  </button>
-                  <button class="sideMenuBottomButtonInfo" (click)="mainController.updateInfoModal(templ)">
-                    <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
-                      <path
-                        d="M 6.9 10.7 C 6.9 8.9 7.2 7.8 8.2 6.9 C 11.4 4.7 6.9 2.3 6.9 5.1 L 5.6 5.1 C 5.7 -0.1 14.4 3.5 9.2 7.7 C 8.5 8.3 8.2 9.1 8.2 10.6 L 8.2 11.4 L 6.9 11.4 Z M 6.9 13 A 0.4 0.4 90 0 0 8.2 13 A 0.4 0.4 90 0 0 6.9 13" />
-                    </svg>
-                  </button>
-                </div>
-              </mat-expansion-panel>
+              <div *ngFor="let templ of mainController.templateMan.groups.get(gr)">
+                <mat-expansion-panel *ngIf="templ.type != this.mainController.boardMan.activeActionName">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{templ.type}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      In:{{templ.inputs.length}} - Out:{{templ.outputs.length}} - Ev:{{templ.events.length}}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div class="actionShowcase"
+                    [ngStyle]="{height: ((templ.inputs.length + templ.outputs.length + templ.events.length) * 45 + 200) + 'px'}">
+                    <app-phantomActionNode [mainData]="templ"></app-phantomActionNode>
+                  </div>
+                  <div class="actionDescription">
+                    <button [disabled]="!dragged" class="sideMenuBottomButtonAdd"
+                      (click)="mainController.getNewAction(templ.id)">
+                      <svg class="sideMenuBottomSVG" width="100%" height="100%"
+                        viewBox="0 0 16 16">
+                        <path d="m 9 3 l -2 0 l 0 4 l -4 0 l 0 2 l 4 0 l 0 4 l 2 0 l 0 -4 l 4 0 l 0 -2 l -4 0" />
+                      </svg>
+                    </button>
+                    <button class="sideMenuBottomButtonInfo" (click)="mainController.updateInfoModal(templ)">
+                      <svg class="sideMenuBottomSVG" width="100%" height="100%" viewBox="0 0 16 16">
+                        <path
+                          d="M 6.9 10.7 C 6.9 8.9 7.2 7.8 8.2 6.9 C 11.4 4.7 6.9 2.3 6.9 5.1 L 5.6 5.1 C 5.7 -0.1 14.4 3.5 9.2 7.7 C 8.5 8.3 8.2 9.1 8.2 10.6 L 8.2 11.4 L 6.9 11.4 Z M 6.9 13 A 0.4 0.4 90 0 0 8.2 13 A 0.4 0.4 90 0 0 6.9 13" />
+                      </svg>
+                    </button>
+                  </div>
+                </mat-expansion-panel>
+              </div>
             </div>
             
           </mat-accordion>

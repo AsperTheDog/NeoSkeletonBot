@@ -126,7 +126,7 @@
         },
         {
             "name": "on emoji updated",
-            "struct": "before (Emoji)\nafter (Emoji)"
+            "struct": "before (FullEmoji)\nafter (FullEmoji)"
         },
         {
             "name": "on sticker updated",

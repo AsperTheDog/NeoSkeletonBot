@@ -176,7 +176,7 @@ def formatGuildEvent(event: disnake.GuildScheduledEvent):
 
 def formatStageInstance(stage: disnake.StageInstance):
     return {
-        'channelID': stage.channel_id,
+        'channel ID': stage.channel_id,
         'id': stage.id,
         'topic': stage.topic
     }
@@ -191,7 +191,7 @@ def formatInvite(invite: disnake.Invite):
         'max age': invite.max_age,
         'temporary': invite.temporary,
         'uses': invite.uses,
-        'creatorID': invite.inviter.id if invite.inviter else -1,
+        'creator ID': invite.inviter.id if invite.inviter else -1,
         'url': invite.url
     }
 
