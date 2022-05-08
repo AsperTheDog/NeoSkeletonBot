@@ -9,7 +9,6 @@ Because the possibilities of this bot are completely outside of what a normal ho
 SkeletonBot comes with a compiler and a web server. This allows you to access the controls from the web browser as if you were accessing a webpage, in there you will be able to create scripts for the bot using the visual design based on state machines. The system is made to be safe and intuitive but powerful.
 
 Programmers with experience can expand their capabilities making custom actions if they wish so, the system is made so new action classes are detected and added automatically as long as the template is followed.  
-**TODO: WIKI!!**
 
 ## Instalation
 
