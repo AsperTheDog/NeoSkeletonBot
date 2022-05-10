@@ -8,6 +8,6 @@ virtualenv venv
 venv\Scripts\pip3.exe install -r requirements.txt
 venv\Scripts\python.exe ..\configs\certsGenerator.py
 cd ../frontend/skeleton-bot
-call npm install @angular/cli
+call npm install -g @angular/cli
 call npm install
 pause
