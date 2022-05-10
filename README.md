@@ -9,9 +9,10 @@ Because the possibilities of this bot are completely outside of what a normal ho
 SkeletonBot comes with a compiler and a web server. This allows you to access the controls from the web browser as if you were accessing a webpage, in there you will be able to create scripts for the bot using the visual design based on state machines. The system is made to be safe and intuitive but powerful.
 
 Programmers with experience can expand their capabilities making custom actions if they wish so, the system is made so new action classes are detected and added automatically as long as the template is followed.  
-**TODO: WIKI!!**
 
 ## Instalation
+
+**This is the windows installation guide.** Linux installation has not been tested but it should be possible unless Angular uses an npm package that is not compatible (I don't think so though). Nonetheless if you want to install this on linux you will have to do the configuration by yourself until Im able to create a setup guide done.
 
 Before doing anything. Make sure you install these two programs:
 
@@ -27,6 +28,12 @@ Before doing anything. Make sure you install these two programs:
 ## Configuration
 
 In order to get the bot working a discord bot must be made. Follow [these](https://dsharpplus.github.io/articles/basics/bot_account.html) instructions to create a bot.
+
+Make sure you activate the following options in the Bot section of the app
+
+ - presence intent
+ - server members intent
+ - message content intent
 
 <ins>NOTE: You may want to setup a [ddns](https://www.noip.com) if you plan on allowing other people to access from their homes<ins>
 
