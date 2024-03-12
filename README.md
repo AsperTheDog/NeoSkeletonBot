@@ -10,7 +10,7 @@ SkeletonBot comes with a compiler and a web server. This allows you to access th
 
 Programmers with experience can expand their capabilities making custom actions if they wish so, the system is made so new action classes are detected and added automatically as long as the template is followed.  
 
-## Instalation
+## Installation
 
 **This is the windows installation guide.** Linux installation has not been tested but it should be possible unless Angular uses an npm package that is not compatible (I don't think so though). Nonetheless if you want to install this on linux you will have to do the configuration by yourself until Im able to create a setup guide done.
 
