@@ -16,9 +16,8 @@ Programmers with experience can expand their capabilities making custom actions 
 
 Before doing anything. Make sure you install these two programs:
 
- - [Python 3.10](https://www.python.org/downloads/release/python-3104/)  
+ - [Python 3 (***WHEN YOU INSTALL TICK THE OPTION THAT SAYS 'add python to PATH' THIS IS VERY IMPORTANT.***)](https://www.python.org/downloads/)  
 > Make sure you download the correct version for your operating system in the *files* section.  
-> ***WHEN YOU INSTALL TICK THE OPTION THAT SAYS 'add python to PATH' THIS IS VERY IMPORTANT.***
 
 
  - [Node.js](https://nodejs.org/en/download/)  
