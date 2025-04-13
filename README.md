@@ -1,6 +1,8 @@
 # NeoSkeletonBot
 
-SkeletonBot is a discord bot made to allow people to create their own custom bots without having to know how to program in a fully fledged programming language. 
+![image](https://github.com/user-attachments/assets/78b1e92f-2249-4364-82e5-5a1ecaf2afe9)
+
+SkeletonBot is a discord bot made to help people create their own custom bots without having to know how to program in a fully fledged programming language. 
 
 Because the possibilities of this bot are completely outside of what a normal host would be able to control **I am not able to host a public version of this**. Thus it's made to be self-hosted. Below you can find instructions to install it.
 
